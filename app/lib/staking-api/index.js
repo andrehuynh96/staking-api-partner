@@ -9,18 +9,40 @@ module.exports = {
   platformVote: async () => {
     try {
       let accessToken = await _getToken();
-      console.log("accessToken", accessToken);
-      return await axios.get(`${config.stakingApi.url}/platform-votes`, {
+      let result = await axios.get(`${config.stakingApi.url}/platform-votes`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`
         }
       });
+
+      return result.data;
     }
     catch (err) {
       logger.error("platformVote fail:", err);
+      return err.response.data;
     }
-    return [];
+  },
+  trackingVote: async ({ tx_id, voter_address, memo }) => {
+    try {
+      let accessToken = await _getToken();
+      let result = await axios.post(`${config.stakingApi.url}/voting`, {
+        tx_id: tx_id,
+        voter_address: voter_address,
+        memo: memo
+      }, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+
+      return result.data;
+    }
+    catch (err) {
+      logger.error("platformVote fail:", err);
+      return err.response.data;
+    }
   }
 }
 

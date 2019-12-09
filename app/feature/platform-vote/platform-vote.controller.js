@@ -5,8 +5,8 @@ const StakingAPI = require("app/lib/staking-api")
 module.exports = async (req, res, next) => {
   try {
     let items = await StakingAPI.platformVote();
-    if (items.data.data) {
-      return res.ok(items.data.data);
+    if (items.data) {
+      return res.ok(items.data);
     }
     else {
       return res.ok([]);
