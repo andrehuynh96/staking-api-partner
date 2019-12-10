@@ -31,7 +31,8 @@ route.post("/voting",
  *               {
                         "tx_id":"3f76680510bcca07e7e011dcc1effb079d1d0a34",
                         "voter_address":"cosmos18vwj2myc5l7taspq2nrmscldq7gzuxlv9m586h",
-                        "memo":"Infinito:ATOM"
+                        "memo":"Infinito:ATOM",
+                        "type":"DELEGATE|UNDELEGATE"
                   } 
  *     produces:
  *       - application/json

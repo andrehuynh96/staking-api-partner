@@ -7,7 +7,8 @@ module.exports = async (req, res, next) => {
     let result = await StakingAPI.trackingVote({
       tx_id: req.body.tx_id,
       voter_address: req.body.voter_address,
-      memo: req.body.memo
+      memo: req.body.memo,
+      type: req.body.type,
     });
     if (result.data) {
       return res.ok(true);
