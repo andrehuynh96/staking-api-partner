@@ -16,12 +16,7 @@ route.get("/platform-votes",
  *     tags:
  *       - Platform Voting
  *     description: Platform Voting
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         type: string
- *         required: true
- *         description: Bearer {token}  
+ *     parameters: 
  *     produces:
  *       - application/json
  *     responses:
