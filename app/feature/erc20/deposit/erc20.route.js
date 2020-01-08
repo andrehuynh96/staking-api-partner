@@ -23,11 +23,6 @@ module.exports = route;
  *       - erc20
  *     description: Get deposits of a depositor
  *     parameters:
- *       - in: header
- *         name: Authorization
- *         type: string
- *         required: true
- *         description: Bearer {token}
  *       - in: query
  *         name: deposit_id
  *         description: Id of a deposit.
@@ -126,11 +121,6 @@ module.exports = route;
  *       - erc20
  *     description: Get history of a depositor that includes deposit and withdraw information.
  *     parameters:
- *       - in: header
- *         name: Authorization
- *         type: string
- *         required: true
- *         description: Bearer {token}
  *       - in: query
  *         name: depositor_address
  *         description: Address of a depositor.

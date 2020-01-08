@@ -20,11 +20,6 @@ module.exports = route;
  *       - erc20
  *     description: Get all plans of erc20 staking
  *     parameters:
- *       - in: header
- *         name: Authorization
- *         type: string
- *         required: true
- *         description: Bearer {token}
  *       - in: query
  *         name: status
  *         type: string
