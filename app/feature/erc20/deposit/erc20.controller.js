@@ -1,0 +1,65 @@
+
+const logger = require("app/lib/logger");
+const StakingAPI = require("app/lib/staking-api")
+
+async function getDeposit(req, res, next) {
+  try {
+    var depositor_address = req.query.depositor_address;
+    var deposit_id = req.query.deposit_id;
+    var token_address = req.query.token_address;
+    var memo = req.query.memo;
+    var offset = req.query.offset;
+    var limit = req.query.limit;
+    var params = {
+      depositor_address,
+      deposit_id,
+      token_address,
+      memo,
+      offset,
+      limit,
+    }
+    let items = await StakingAPI.getERC20Deposit(params);
+    if (items.data) {
+      return res.ok(items.data);
+    }
+    else {
+      return res.ok([]);
+    }
+  }
+  catch (err) {
+    logger.error("get deposit fail:", err);
+    next(err);
+  }
+}
+
+async function getHistoryOfAddress(req, res, next) {
+  try {
+    var depositor_address = req.query.depositor_address;
+    var token_address = req.query.token_address;
+    var offset = req.query.offset;
+    var limit = req.query.limit;
+    var params = {
+      depositor_address,
+      token_address,
+      offset,
+      limit,
+    }
+    let items = await StakingAPI.getERC20History(params);
+    if (items.data) {
+      return res.ok(items.data);
+    }
+    else {
+      return res.ok([]);
+    }
+  }
+  catch (err) {
+    logger.error("get history fail:", err);
+    next(err);
+  }
+}
+
+
+module.exports = {
+  getDeposit: getDeposit,
+  getHistoryOfAddress: getHistoryOfAddress
+}
