@@ -44,7 +44,96 @@ module.exports = {
       logger.error("platformVote fail:", err);
       return err.response.data;
     }
+  },
+
+  getPlans: async ({ status, staking_platform_id, include_deleted }) => {
+    try {
+      let accessToken = await _getToken();
+      let result = await axios.get(
+        `${config.stakingApi.url}/erc20/plans`, {
+          params: {
+            status: status,
+            staking_platform_id: staking_platform_id,
+            include_deleted: include_deleted
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+
+      return result.data;
+    }
+    catch (err) {
+      logger.error("platformVote fail:", err);
+      return err.response.data;
+    }
+  },
+
+  getERC20Deposit: async ({
+    depositor_address,
+    deposit_id,
+    token_address,
+    memo,
+    offset,
+    limit 
+  }) => {
+    try {
+      let accessToken = await _getToken();
+      let result = await axios.get(
+        `${config.stakingApi.url}/erc20/deposits`, {
+          params: {
+            depositor_address: depositor_address,
+            deposit_id: deposit_id,
+            token_address: token_address,
+            memo: memo,
+            offset: offset,
+            limit: limit,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+
+      return result.data;
+    }
+    catch (err) {
+      logger.error("getERC20Deposit fail:", err);
+      return err.response.data;
+    }
+  },
+
+  getERC20History: async ({
+    depositor_address,
+    token_address,
+    offset,
+    limit 
+  }) => {
+    try {
+      let accessToken = await _getToken();
+      let result = await axios.get(
+        `${config.stakingApi.url}/erc20/history`, {
+          params: {
+            depositor_address: depositor_address,
+            token_address: token_address,
+            offset: offset,
+            limit: limit,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+
+      return result.data;
+    }
+    catch (err) {
+      logger.error("getERC20History fail:", err);
+      return err.response.data;
+    }
   }
+
 }
 
 async function _getToken() {
