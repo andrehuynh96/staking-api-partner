@@ -57,9 +57,31 @@ async function getHistoryOfAddress(req, res, next) {
     next(err);
   }
 }
+async function getAddressAggregation(req, res, next) {
+  try {
+    var depositor_address = req.query.depositor_address;
+    var token_address = req.query.token_address;
+    var params = {
+      depositor_address,
+      token_address
+    }
+    let items = await StakingAPI.getAddressAggregation(params);
+    if (items.data) {
+      return res.ok(items.data);
+    }
+    else {
+      return res.ok([]);
+    }
+  }
+  catch (err) {
+    logger.error("get address's aggregation failed:", err);
+    next(err);
+  }
+}
 
 
 module.exports = {
   getDeposit: getDeposit,
-  getHistoryOfAddress: getHistoryOfAddress
+  getHistoryOfAddress: getHistoryOfAddress,
+  getAddressAggregation: getAddressAggregation
 }

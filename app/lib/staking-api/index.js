@@ -132,6 +132,34 @@ module.exports = {
       logger.error("getERC20History fail:", err);
       return err.response.data;
     }
+  },
+
+  getAddressAggregation: async ({
+    depositor_address,
+    token_address,
+    offset,
+    limit 
+  }) => {
+    try {
+      let accessToken = await _getToken();
+      let result = await axios.get(
+        `${config.stakingApi.url}/erc20/aggregation`, {
+          params: {
+            depositor_address: depositor_address,
+            token_address: token_address,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+
+      return result.data;
+    }
+    catch (err) {
+      logger.error("getAddressAggregation fail:", err);
+      return err.response.data;
+    }
   }
 
 }

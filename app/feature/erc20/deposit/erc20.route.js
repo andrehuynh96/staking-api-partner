@@ -8,6 +8,9 @@ route.get("/erc20/deposits",
 route.get("/erc20/history",
   controller.getHistoryOfAddress
 );
+route.get("/erc20/aggregation",
+  controller.getAddressAggregation
+);
 
 module.exports = route;
 
@@ -174,6 +177,67 @@ module.exports = route;
                       "amount": "1000",
                       "type": "deposit"
                     }
+                ]
+ *             }
+ *       400:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/400'
+ *       401:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/401'
+ *       404:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/404'
+ *       500:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/500'
+ */
+
+
+/*********************************************************************/
+
+/**
+ * @swagger
+ * /api/v1/erc20/aggregation:
+ *   get:
+ *     summary: Get total deposit, withdraw, reward info of an address.
+ *     tags:
+ *       - erc20
+ *     description: Get total deposit, withdraw, reward info of an address.
+ *     parameters:
+ *       - in: query
+ *         name: depositor_address
+ *         description: Address of a depositor.
+ *         required: true
+ *         type: string
+ *       - in: query
+ *         name: token_address
+ *         description: Address of a token.
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Ok 
+ *         examples:
+ *           application/json:
+ *             {
+                  "data": [
+                    {
+                      "token_addr": "0x3A610F3B1cCc2087Ca4917098929dBB87e1Eff7b",
+                      "total_deposit": "2000",
+                      "total_withdraw": "2000",
+                      "total_reward": "54.400000000000000000"
+                    },
+                    {
+                      "token_addr": "0x423822d571bb697ddd993c04b507dd40e754cf05",
+                      "total_deposit": "2000",
+                      "total_withdraw": "2000",
+                      "total_reward": "86.800000000000000000"
+                    },
                 ]
  *             }
  *       400:
