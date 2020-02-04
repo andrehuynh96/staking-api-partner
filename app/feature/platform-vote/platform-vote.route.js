@@ -37,7 +37,8 @@ route.get("/platform-votes",
                           "lockup_unvote":21,
                           "lockup_unvote_unit":"DAY",
                           "payout_reward":2,
-                          "payout_reward_unit":"HOUR|DAY|MONTH|YEAR"
+                          "payout_reward_unit":"HOUR|DAY|MONTH|YEAR",
+                          "status":"0|1"
                         }
  *                   ]
  *             }
