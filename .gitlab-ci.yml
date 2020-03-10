@@ -1,0 +1,12 @@
+Stages:
+    - build
+    - test
+    - deploy
+
+build_js_app:
+ stage:
+  - build
+ script:
+  - whoami
+ tags:
+  - ssh
