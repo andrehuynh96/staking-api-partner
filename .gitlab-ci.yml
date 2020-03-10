@@ -11,7 +11,7 @@ BuildJSApp:
  stage: build
  script:
   - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
-  - echo $DEST
+  - echo $DEST;id;whoami
   - sudo "mkdir -p $DEST;cp -R * $DEST;chown $USER_DEPLOY -R $DEST"
   - sudo su $USER_DEPLOY -c "cd $DEST && npm install"
  tags:
