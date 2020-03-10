@@ -1,12 +1,18 @@
-Stages:
-    - build
-    - test
-    - deploy
+stages:
+ - build
+ - test
+ - deploy   
+variables:
+ HOME_DIR: "/home/isysadmin/test-ci/"
+ USER_DEPLOY: "isysadmin"
 
-build_js_app:
- stage:
-  - build
+
+BuildJSApp:
+ stage: build
  script:
-  - whoami
+  - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
+  - echo $DEST
+  - sudo "mkdir -p $DEST;cp -R * $DEST;chown $USER_DEPLOY -R $DEST"
+  - sudo su $USER_DEPLOY -c "cd $DEST && npm install"
  tags:
   - ssh
