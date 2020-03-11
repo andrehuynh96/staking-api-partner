@@ -5,8 +5,15 @@ stages:
 variables:
  HOME_DIR: "/home/isysadmin/test-ci/"
  USER_DEPLOY: "isysadmin"
-
-
+ 
+CreateConfig:
+ stage: build
+ script:
+  - cat <<EOT > ${CI_PROJECT_NAME}.config.js $ENV EOT
+  - cat ${CI_PROJECT_NAME}.config.js
+ tags:
+  - shh
+ 
 BuildJSApp:
  stage: build
  script:
