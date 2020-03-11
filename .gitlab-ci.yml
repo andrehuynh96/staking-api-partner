@@ -12,7 +12,7 @@ CreateConfig:
   - cat <<EOT > ${CI_PROJECT_NAME}.config.js $ENV EOT
   - cat ${CI_PROJECT_NAME}.config.js
  tags:
-  - shh
+  - ssh
  
 BuildJSApp:
  stage: build
