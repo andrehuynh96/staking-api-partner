@@ -9,7 +9,11 @@ variables:
 CreateConfig:
  stage: build
  script:
-  - cat <<EOT > ${CI_PROJECT_NAME}.config.js $ENV EOT
+  - export TMP=$ENV
+  - export pm2_config=${CI_PROJECT_NAME}.config.js
+  - echo $TMP
+  - echo -e "cat <<EOT > \$pm2_config \n\$TMP\nEOT" > tmp.sh
+  - sh tmp.sh
   - cat ${CI_PROJECT_NAME}.config.js
  tags:
   - ssh
@@ -24,4 +28,4 @@ BuildJSApp:
   - sudo chown $USER_DEPLOY -R $DEST
   - sudo su $USER_DEPLOY -c "cd $DEST && npm install"
  tags:
-  - ssh
+  - ssh_
