@@ -31,6 +31,8 @@ BuildJSApp:
   - sudo chown $USER_DEPLOY -R $DEST
   - sudo su $USER_DEPLOY -c "cd $DEST && npm install && pm2 start ${CI_PROJECT_NAME}.config.js"
  only:
+  - /^.*rc.*$/
+ except:
   - branches
  tags:
   - ssh
