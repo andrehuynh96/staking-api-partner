@@ -5,7 +5,7 @@ stages:
 variables:
  HOME_DIR: "/home/isysadmin/test-ci/"
  USER_DEPLOY: "isysadmin"
-####
+###
 CreateConfig:
  stage: build
  script:
