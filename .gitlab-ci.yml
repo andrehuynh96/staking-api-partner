@@ -15,7 +15,7 @@ CreateConfig:
   - sh tmp.sh
   - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
   - sudo mkdir -p $DEST
-  - mv ${CI_PROJECT_NAME}.config.js $DEST
+  - sudo mv ${CI_PROJECT_NAME}.config.js $DEST
  tags:
   - ssh
  
