@@ -21,7 +21,8 @@ CreateConfig:
  except:
   - branches
  tags:
-  - ssh
+  - stage-stak-ap-bs-dapp-api-1
+  - stage-stak-ap-bs-dapp-api-2
  
 BuildJSApp:
  stage: build
@@ -35,4 +36,5 @@ BuildJSApp:
  except:
   - branches
  tags:
-  - ssh
+  - stage-stak-ap-bs-dapp-api-1
+  - stage-stak-ap-bs-dapp-api-2
