@@ -11,10 +11,8 @@ CreateConfig:
  script:
   - export TMP=$ENV
   - export pm2_config=${CI_PROJECT_NAME}.config.js
-  - echo $TMP
   - echo -e "cat <<EOT > \$pm2_config \n\$TMP\nEOT" > tmp.sh
   - sh tmp.sh
-  - cat ${CI_PROJECT_NAME}.config.js
  tags:
   - ssh
  
@@ -22,10 +20,10 @@ BuildJSApp:
  stage: build
  script:
   - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
-  - echo $DEST
   - sudo mkdir -p $DEST
+  - mv ${CI_PROJECT_NAME}.config.js $DEST
   - sudo cp -R * $DEST
   - sudo chown $USER_DEPLOY -R $DEST
-  - sudo su $USER_DEPLOY -c "cd $DEST && npm install"
+  - sudo su $USER_DEPLOY -c "cd $DEST && npm install && pm2 start ${CI_PROJECT_NAME}.config.js $DEST"
  tags:
-  - ssh_
+  - ssh
