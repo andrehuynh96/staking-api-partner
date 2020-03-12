@@ -25,6 +25,6 @@ BuildJSApp:
   - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
   - sudo cp -R * $DEST
   - sudo chown $USER_DEPLOY -R $DEST
-  - sudo su $USER_DEPLOY -c "cd $DEST && npm install && pm2 start ${CI_PROJECT_NAME}.config.js $DEST"
+  - sudo su $USER_DEPLOY -c "cd $DEST && npm install && pm2 start ${CI_PROJECT_NAME}.config.js"
  tags:
   - ssh
