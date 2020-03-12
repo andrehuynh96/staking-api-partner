@@ -3,7 +3,7 @@ stages:
  - test
  - deploy   
 variables:
- HOME_DIR: "/home/isysadmin/test-ci/"
+ HOME_DIR: "/home/isysadmin/"
  USER_DEPLOY: "isysadmin"
 ###
 CreateConfig:
