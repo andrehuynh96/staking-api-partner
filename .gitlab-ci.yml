@@ -1,11 +1,12 @@
 stages:
  - build
  - test
- - deploy   
+ - deploy
+ 
 variables:
  HOME_DIR: "/home/isysadmin/"
  USER_DEPLOY: "isysadmin"
-###
+
 CreateConfig:
  stage: build
  script:
