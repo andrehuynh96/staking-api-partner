@@ -16,6 +16,10 @@ CreateConfig:
   - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
   - sudo mkdir -p $DEST
   - sudo mv ${CI_PROJECT_NAME}.config.js $DEST
+ only:
+  - /^.*rc.*$/
+ except:
+  - branches
  tags:
   - ssh
  
@@ -26,5 +30,7 @@ BuildJSApp:
   - sudo cp -R * $DEST
   - sudo chown $USER_DEPLOY -R $DEST
   - sudo su $USER_DEPLOY -c "cd $DEST && npm install && pm2 start ${CI_PROJECT_NAME}.config.js"
+ only:
+  - branches
  tags:
   - ssh
