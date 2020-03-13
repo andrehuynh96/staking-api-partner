@@ -28,10 +28,15 @@ variables:
   - sudo cp -R * $DEST
   - sudo chown $USER_DEPLOY -R $DEST
   - sudo su $USER_DEPLOY -c "cd $DEST && npm install && pm2 start ${CI_PROJECT_NAME}.config.js"
- only:
-  - branches
 
 Node01Build:
+ extends:
+  - .BuildJSApp
+  - .CreateConfig
+ tags:
+  - stage-stak-ap-bs-dapp-api-1
+  
+Node02Build:
  extends:
   - .BuildJSApp
   - .CreateConfig
