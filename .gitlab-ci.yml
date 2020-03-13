@@ -1,13 +1,12 @@
 stages:
  - build
  - test
- - deploy
- 
+ - deploy   
 variables:
- HOME_DIR: "/home/isysadmin/"
+ HOME_DIR: "/home/isysadmin/test-ci/"
  USER_DEPLOY: "isysadmin"
-
-CreateConfig:
+###
+.CreateConfig:
  stage: build
  script:
   - export TMP=$ENV
@@ -21,19 +20,20 @@ CreateConfig:
   - /^.*rc.*$/
  except:
   - branches
- tags:
-  - stage-stak-ap-bs-dapp-api
-   
-BuildJSApp:
+ 
+.BuildJSApp:
  stage: build
  script:
-  - export DEST="${HOME_DIR}${CI_PROJECT_NAME}/"
-  - sudo cp -a ./. $DEST
+  - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
+  - sudo cp -R * $DEST
   - sudo chown $USER_DEPLOY -R $DEST
   - sudo su $USER_DEPLOY -c "cd $DEST && npm install && pm2 start ${CI_PROJECT_NAME}.config.js"
  only:
-  - /^.*rc.*$/
- except:
   - branches
+
+Node01Build:
+ extends:
+  - .BuildJSApp
+  - .CreateConfig
  tags:
-  - stage-stak-ap-bs-dapp-api
+  - stage-stak-ap-bs-dapp-api-2
