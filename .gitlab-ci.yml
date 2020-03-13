@@ -6,7 +6,7 @@ variables:
  HOME_DIR: "/home/isysadmin/test-ci/"
  USER_DEPLOY: "isysadmin"
 ###
-.CreateConfig:
+.BuildJSApp:
  stage: build
  script:
   - export TMP=$ENV
@@ -16,15 +16,10 @@ variables:
   - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
   - sudo mkdir -p $DEST
   - sudo mv ${CI_PROJECT_NAME}.config.js $DEST
- 
-.BuildJSApp:
- stage: build
- script:
-  - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
   - sudo cp -R * $DEST
   - sudo chown $USER_DEPLOY -R $DEST
   - sudo su $USER_DEPLOY -c "cd $DEST && npm install && pm2 start ${CI_PROJECT_NAME}.config.js"
-  
+
 .OnlyProduction:
  only:
   - /^.*rc.*$/
@@ -34,7 +29,6 @@ variables:
 Node01Build:
  extends:
   - .BuildJSApp
-  - .CreateConfig
   - .OnlyProduction
  tags:
   - stage-stak-ap-bs-dapp-api-1
@@ -42,7 +36,6 @@ Node01Build:
 Node02Build:
  extends:
   - .BuildJSApp
-  - .CreateConfig
   - .OnlyProduction
  tags:
   - stage-stak-ap-bs-dapp-api-2
