@@ -7,14 +7,12 @@ async function getDeposit(req, res, next) {
     var depositor_address = req.query.depositor_address;
     var deposit_id = req.query.deposit_id;
     var token_address = req.query.token_address;
-    var memo = req.query.memo;
     var offset = req.query.offset;
     var limit = req.query.limit;
     var params = {
       depositor_address,
       deposit_id,
       token_address,
-      memo,
       offset,
       limit,
     }

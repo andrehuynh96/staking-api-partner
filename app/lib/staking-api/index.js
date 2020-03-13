@@ -46,15 +46,14 @@ module.exports = {
     }
   },
 
-  getPlans: async ({ status, staking_platform_id, include_deleted }) => {
+  getPlans: async ({ status, staking_platform_id }) => {
     try {
       let accessToken = await _getToken();
       let result = await axios.get(
         `${config.stakingApi.url}/erc20/plans`, {
           params: {
             status: status,
-            staking_platform_id: staking_platform_id,
-            include_deleted: include_deleted
+            staking_platform_id: staking_platform_id
           },
           headers: {
             "Content-Type": "application/json",
@@ -74,7 +73,6 @@ module.exports = {
     depositor_address,
     deposit_id,
     token_address,
-    memo,
     offset,
     limit 
   }) => {
@@ -86,7 +84,6 @@ module.exports = {
             depositor_address: depositor_address,
             deposit_id: deposit_id,
             token_address: token_address,
-            memo: memo,
             offset: offset,
             limit: limit,
           },
@@ -136,9 +133,7 @@ module.exports = {
 
   getAddressAggregation: async ({
     depositor_address,
-    token_address,
-    offset,
-    limit 
+    token_address
   }) => {
     try {
       let accessToken = await _getToken();
