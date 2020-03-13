@@ -6,8 +6,7 @@ async function getAllPlans(req, res, next) {
   try {
     var status = req.query.status;
     var staking_platform_id = req.query.staking_platform_id;
-    var include_deleted = req.query.include_deleted;
-    let items = await StakingAPI.getPlans({ status, staking_platform_id, include_deleted });
+    let items = await StakingAPI.getPlans({ status, staking_platform_id });
     if (items.data) {
       return res.ok(items.data);
     }

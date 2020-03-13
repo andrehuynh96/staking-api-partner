@@ -28,10 +28,6 @@ module.exports = route;
  *         name: staking_platform_id
  *         description: Staking platform id.
  *         type: string
- *       - in: query
- *         name: include_deleted
- *         description: Get deleted record or not.
- *         type: boolean
  *     produces:
  *       - application/json
  *     responses:
@@ -43,29 +39,31 @@ module.exports = route;
  *                 "data": [
                     {
                         "id": "0e37df36-f698-11e6-8dd4-cb9ced3df976",
-                        "staking_plan_code": "plan-001",
+                        "name": "plan-001",
                         "duration": 10,
                         "duration_type": "YEAR",
-                        "reward_per_year": "9.100",
-                        "actived_flg": true,
-                        "reward_in_diff_platform_flg": true,
-                        "reward_platform": "BTC",
-                        "reward_token_address": "btcAddres",
+                        "reward_percentage": "9.100",
+                        "status": 1,
+                        "reward_diff_token_flg": false,
+                        "diff_token_rate": 0,
+                        "tx_id": "",
+                        "wait_blockchain_confirm_status_flg": false,
                         "staking_platform_id": "36b7f440-1a3b-11ea-978f-2e728ce88125",
-                        "deleted_flg": false
+                        "created_at": ""
                     },
                     {
-                        "id": "0e37df36-f698-11e6-8dd4-cb9ced3df970",
-                        "staking_plan_code": "plan-051",
-                        "duration": 16,
-                        "duration_type": "MONTH",
-                        "reward_per_year": "5.300",
-                        "actived_flg": true,
-                        "reward_in_diff_platform_flg": true,
-                        "reward_platform": "ETH",
-                        "reward_token_address": "ETHAddres",
+                        "id": "0e37df36-f698-11e6-8dd4-cb9ced3df976",
+                        "name": "plan-003",
+                        "duration": 10,
+                        "duration_type": "YEAR",
+                        "reward_percentage": "9.100",
+                        "status": 1,
+                        "reward_diff_token_flg": false,
+                        "diff_token_rate": 0,
+                        "tx_id": "",
+                        "wait_blockchain_confirm_status_flg": false,
                         "staking_platform_id": "36b7f440-1a3b-11ea-978f-2e728ce88125",
-                        "deleted_flg": true
+                        "created_at": ""
                     }
                   ]
  *             }
