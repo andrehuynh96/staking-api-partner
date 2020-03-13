@@ -16,10 +16,6 @@ variables:
   - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
   - sudo mkdir -p $DEST
   - sudo mv ${CI_PROJECT_NAME}.config.js $DEST
- only:
-  - /^.*rc.*$/
- except:
-  - branches
  
 .BuildJSApp:
  stage: build
@@ -33,6 +29,10 @@ Node01Build:
  extends:
   - .BuildJSApp
   - .CreateConfig
+ only:
+  - /^.*rc.*$/
+ except:
+  - branches
  tags:
   - stage-stak-ap-bs-dapp-api-1
   
@@ -40,5 +40,9 @@ Node02Build:
  extends:
   - .BuildJSApp
   - .CreateConfig
+ only:
+  - /^.*rc.*$/
+ except:
+  - branches
  tags:
   - stage-stak-ap-bs-dapp-api-2
