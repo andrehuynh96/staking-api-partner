@@ -18,7 +18,7 @@ variables:
   - sudo mkdir -p $DEST $CURRENT
   - sudo mv ${CI_PROJECT_NAME}.config.js $DEST
   - sudo cp -R * $DEST
-  - sudo chown $USER_DEPLOY -R $DEST && sudo ln -s $CURRENT $DEST 
+  - sudo chown $USER_DEPLOY -R $DEST && sudo ln -s $DEST $CURRENT 
   - sudo su $USER_DEPLOY -c "cd $CURRENT && npm install && pm2 start ${CI_PROJECT_NAME}.config.js"
 
 .OnlyProduction:
@@ -37,6 +37,5 @@ Node01Build:
 Node02Build:
  extends:
   - .BuildJSApp
-  - .OnlyProduction
  tags:
   - stage-stak-ap-bs-dapp-api-2
