@@ -13,12 +13,13 @@ variables:
   - export pm2_config=${CI_PROJECT_NAME}.config.js
   - echo -e "cat <<EOT > \$pm2_config \n\$TMP\nEOT" > tmp.sh
   - sh tmp.sh
-  - export DEST="${HOME_DIR}${CI_PROJECT_NAME}"
-  - sudo mkdir -p $DEST
+  - export DEST="${HOME_DIR}${CI_PROJECT_NAME}/${CI_COMMIT_TAG}"
+  - export CURRENT="${HOME_DIR}${CI_PROJECT_NAME}/current"
+  - sudo mkdir -p $DEST $CURRENT
   - sudo mv ${CI_PROJECT_NAME}.config.js $DEST
   - sudo cp -R * $DEST
-  - sudo chown $USER_DEPLOY -R $DEST
-  - sudo su $USER_DEPLOY -c "cd $DEST && npm install && pm2 start ${CI_PROJECT_NAME}.config.js"
+  - sudo chown $USER_DEPLOY -R $DEST && sudo ln -s $CURRENT $DEST 
+  - sudo su $USER_DEPLOY -c "cd $CURRENT && npm install && pm2 start ${CI_PROJECT_NAME}.config.js"
 
 .OnlyProduction:
  only:
