@@ -73,6 +73,9 @@ module.exports = {
     depositor_address,
     deposit_id,
     token_address,
+    pool_id,
+    plan_id,
+    partner_id,
     offset,
     limit 
   }) => {
@@ -84,6 +87,9 @@ module.exports = {
             depositor_address: depositor_address,
             deposit_id: deposit_id,
             token_address: token_address,
+            pool_id: pool_id,
+            plan_id: plan_id,
+            partner_id: partner_id,
             offset: offset,
             limit: limit,
           },
