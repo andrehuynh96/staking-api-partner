@@ -38,6 +38,15 @@ module.exports = route;
  *         name: token_address
  *         description: Address of a token.
  *       - in: query
+ *         name: pool_id
+ *         description: Pool Id.
+ *       - in: query
+ *         name: plan_id
+ *         description: Plan Id.
+ *       - in: query
+ *         name: partner_id
+ *         description: Partner Id.
+ *       - in: query
  *         name: offset
  *         description: Offset of data for pagination.
  *         type: integer
@@ -60,6 +69,9 @@ module.exports = route;
                         "block_hash": "0x514b22f8ffcb7e39bb86cd0efe5f5735ecc9e09d34066fcb41c03e7c50118ab4",
                         "transaction_index": "0",
                         "deposit_id": "5",
+                        "plan_id": "83675dbc-7a2e-40b8-a97b-867d1fa90319",
+                        "pool_id": "b46d6e7e-7fd2-4862-96e9-d6046fc8b397",
+                        "partner_id": "ed483de6-2d14-11ea-978f-2e728ce88125",
                         "token_addr": "0x90A537b2904f47d958f8340B128c06b3768153BC",
                         "depositor": "0x2F0036792DF25362a2DE0Bab82B4798657B4BC36",
                         "token_amount": "1000",
@@ -79,6 +91,9 @@ module.exports = route;
                         "block_hash": "0xa54727ba8fe5d052cdd1be29a160735cc30451cb6c1dcb5f0259a300c886b3b6",
                         "transaction_index": "10",
                         "deposit_id": "0",
+                        "plan_id": "83675dbc-7a2e-40b8-a97b-867d1fa90319",
+                        "pool_id": "b46d6e7e-7fd2-4862-96e9-d6046fc8b397",
+                        "partner_id": "ed483de6-2d14-11ea-978f-2e728ce88125",
                         "token_addr": "0x90A537b2904f47d958f8340B128c06b3768153BC",
                         "depositor": "0x2F0036792DF25362a2DE0Bab82B4798657B4BC36",
                         "token_amount": "1000",

@@ -7,12 +7,18 @@ async function getDeposit(req, res, next) {
     var depositor_address = req.query.depositor_address;
     var deposit_id = req.query.deposit_id;
     var token_address = req.query.token_address;
+    var pool_id = req.query.pool_id;
+    var plan_id = req.query.plan_id;
+    var partner_id = req.query.partner_id;
     var offset = req.query.offset;
     var limit = req.query.limit;
     var params = {
       depositor_address,
       deposit_id,
       token_address,
+      pool_id,
+      plan_id,
+      partner_id,
       offset,
       limit,
     }
