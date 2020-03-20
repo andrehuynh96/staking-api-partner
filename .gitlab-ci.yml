@@ -34,10 +34,10 @@ Node01Build:
  tags:
   - stage-stak-ap-bs-dapp-api-1
   
-Node02Build:
- extends:
-  - .BuildJSApp
-  - .OnlyStaging
+#Node02Build:
+# extends:
+#  - .BuildJSApp
+#  - .OnlyStaging
   
  #tags:
  # - stage-stak-ap-bs-dapp-api-2
