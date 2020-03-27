@@ -11,9 +11,10 @@ variables:
  stage: build
  script:
   - cd ${ANSIBLE_DIR}
-  - ansible_file=`grep ${CI_PROJECT_NAME}.git *.yml | awk '{print $1}'|awk -F':' '{print $1}' | grep ${_ENV}`
+  - project=`echo ${CI_COMMIT_TAG} | awk -F'-' '{print $2}'`
+  - ansible_file=`grep ${CI_PROJECT_NAME}.git *.yml | awk '{print $1}'|awk -F':' '{print $1}' | grep ${_ENV} | grep $project`
   - sudo su ubuntu -c "ansible-playbook $ansible_file --extra-vars=\"${CI_COMMIT_TAG}\""
-  
+
 .OnlyStagingMS:
  only:
   - /^.*-ms-rc$/
@@ -38,7 +39,7 @@ variables:
  except:
   - branches
 
-Node01Build:
+StageBinaryStarDappApi:
  variables:
   _ENV: "stage" 
  extends:
@@ -47,4 +48,29 @@ Node01Build:
  tags:
   - stage-stak-ap-bs-ansible
 
-  
+StageMoonStakeDAppApi:
+ variables:
+  _ENV: "stage" 
+ extends:
+  - .BuildJSApp
+  - .OnlyStagingMS
+ tags:
+  - stage-stak-ap-ms-ansible
+
+ProdBinaryStarDappApi:
+ variables:
+  _ENV: "prod" 
+ extends:
+  - .BuildJSApp
+  - .OnlyProductionBS
+ tags:
+  - prod-stak-ap-bs-ansible
+
+ProdMoonStakeDAppApi:
+ variables:
+  _ENV: "prod" 
+ extends:
+  - .BuildJSApp
+  - .OnlyProductionMS
+ tags:
+  - prod-stak-ap-ms-ansible 
