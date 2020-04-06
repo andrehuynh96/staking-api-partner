@@ -3,7 +3,7 @@ const key = require('app/lib/staking-api/key');
 
 module.exports = async function (req, res, next) {
   let token = req.headers["x-access-token"] || req.headers["authorization"];
-  if (token && (token.startsWith("bearer ") || token.startsWith("bearer "))) {
+  if (token && (token.startsWith("bearer ") || token.startsWith("Bearer "))) {
     token = token.slice(7, token.length);
   }
   else {

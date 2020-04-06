@@ -42,7 +42,21 @@ const config = {
     secret: process.env.STAKING_API_SECRET,
     jwksUrl: process.env.STAKING_API_JWK_URL,
     kid: process.env.STAKING_API_KID,
-  }
+  },
+  db: {
+    wallet: {
+      database: process.env.WALLET_DB_NAME,
+      username: process.env.WALLET_DB_USER,
+      password: process.env.WALLET_DB_PASS,
+      options: {
+        host: process.env.WALLET_DB_HOST,
+        port: process.env.WALLET_DB_PORT,
+        dialect: 'postgres',
+        logging: false
+      }
+    }
+  },
+  appLimit: process.env.APP_LIMIT || 10
 };
 
 module.exports = config;
