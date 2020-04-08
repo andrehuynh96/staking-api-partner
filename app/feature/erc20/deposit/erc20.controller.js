@@ -23,12 +23,7 @@ async function getDeposit(req, res, next) {
       limit,
     }
     let items = await StakingAPI.getERC20Deposit(params);
-    if (items.data) {
-      return res.ok(items.data);
-    }
-    else {
-      return res.ok([]);
-    }
+    return res.status(items.httpCode).send(items.data);
   }
   catch (err) {
     logger.error("get deposit fail:", err);
@@ -49,12 +44,7 @@ async function getHistoryOfAddress(req, res, next) {
       limit,
     }
     let items = await StakingAPI.getERC20History(params);
-    if (items.data) {
-      return res.ok(items.data);
-    }
-    else {
-      return res.ok([]);
-    }
+    return res.status(items.httpCode).send(items.data);
   }
   catch (err) {
     logger.error("get history fail:", err);
@@ -70,12 +60,7 @@ async function getAddressAggregation(req, res, next) {
       token_address
     }
     let items = await StakingAPI.getAddressAggregation(params);
-    if (items.data) {
-      return res.ok(items.data);
-    }
-    else {
-      return res.ok([]);
-    }
+    return res.status(items.httpCode).send(items.data);
   }
   catch (err) {
     logger.error("get address's aggregation failed:", err);

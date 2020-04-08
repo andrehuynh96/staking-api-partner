@@ -11,4 +11,6 @@ router.use(require("./erc20/deposit/erc20.route"));
 // Wallet 
 router.use(require('./wallet/wallet.route'));
 
+router.use(require('./authentication'));
+
 module.exports = router;
