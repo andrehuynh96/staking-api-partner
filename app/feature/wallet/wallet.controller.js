@@ -6,6 +6,7 @@ const database = require('app/lib/database').db().wallet;
 const Member = require('app/model/wallet').members;
 const mapper = require('./wallet.response-schema');
 const config = require('app/config');
+const speakeasy = require('speakeasy');
 
 var wallet = {};
 
@@ -139,7 +140,26 @@ wallet.delete = async (req, res, next) => {
 
 wallet.getPassphrase = async (req, res, next) => {
   try {
-    const { params: { wallet_id } } = req;
+    const { params: { wallet_id }, query: {twofa_code} } = req;
+
+    let user = await Member.findOne({
+      where: {
+        id: req.user.id,
+        deleted_flg: false
+      }
+    });
+
+    if (user.twofa_download_key_flg) {
+      var verified = speakeasy.totp.verify({
+        secret: user.twofa_secret,
+        encoding: 'base32',
+        token: twofa_code,
+      });
+      if (!verified) {
+        return res.badRequest(res.__('TWOFA_CODE_INCORRECT'), 'TWOFA_CODE_INCORRECT', { fields: ['twofa_code'] });
+      }
+    }
+    
     let wallet = await Wallet.findOne({
       where: {
         id: wallet_id,
