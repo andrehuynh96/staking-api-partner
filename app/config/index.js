@@ -1,14 +1,16 @@
 /*eslint no-process-env: "off"*/
 require('dotenv').config();
+const fs = require("fs");
 const logFolder = process.env.LOG_FOLDER || './public/logs';
 
 const config = {
   logger: {
+    level: process.env.LOG_LEVEL,
     console: {
       enable: true,
-      level: 'debug',
+      level: process.env.LOG_LEVEL,
     },
-    defaultLevel: 'debug',
+    defaultLevel: "debug",
     file: {
       compress: false,
       app: `${logFolder}/app.log`,
@@ -56,7 +58,28 @@ const config = {
       }
     }
   },
-  appLimit: process.env.APP_LIMIT || 10
+  appLimit: process.env.APP_LIMIT || 10,
+  token: {
+    key: {
+      private: fs.readFileSync(__dirname + "/../keys/private.key", "utf8"),
+      public: fs.readFileSync(__dirname + "/../keys/public.key", "utf8")
+    },
+    signOption: {
+      issuer: process.env.TOKEN_SIGN_I || "Moonstake",
+      subject: process.env.TOKEN_SIGN_S || "info@moonstake.io",
+      audience: process.env.TOKEN_SIGN_A || "https://www.moonstake.io/",
+      expiresIn: process.env.TOKEN_EXPIRES_IN ? parseInt(process.env.TOKEN_EXPIRES_IN) : 84600,
+      algorithm: "RS256"
+    },
+    refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN ? parseInt(process.env.REFRESH_TOKEN_EXPIRES_IN) : 84600,
+  },
+  lockUser: {
+    maximumAttemptsLogin: process.env.MAXIMUM_ATTEMPTS_LOGIN,
+    lockTime: process.env.LOCK_TIME
+  },
+  expiredVefiryToken: process.env.EXPIRED_VERIFY_TOKEN ? parseInt(process.env.EXPIRED_VERIFY_TOKEN) : 2,
+  recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY,
+  recaptchaSecret: process.env.RECAPTCHA_SECRET,
 };
 
 module.exports = config;
