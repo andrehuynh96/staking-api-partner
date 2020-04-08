@@ -1,4 +1,5 @@
-
+const MemberStatus = require("./value-object/member-status");
+const KycStatus = require('./value-object/kyc-status');
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define("members", {
@@ -10,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING(128),
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     password_hash: {
       type: DataTypes.STRING(128),
@@ -18,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     member_sts: {
       type: DataTypes.STRING(36),
-      allowNull: false
+      allowNull: false,
+      defaultValue: MemberStatus.UNACTIVATED
     },
     fullname: {
       type: DataTypes.STRING(128),
@@ -26,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     phone: {
       type: DataTypes.STRING(32),
-      allowNull: false
+      allowNull: false,
+      // unique: true,
     },
     date_of_birth: {
       type: DataTypes.DATE,
@@ -86,7 +90,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     kyc_status: {
       type: DataTypes.STRING(16),
-      allowNull: false
+      allowNull: false,
+      defaultValue: KycStatus.APPROVED
     },
     deleted_flg: {
       type: DataTypes.BOOLEAN,

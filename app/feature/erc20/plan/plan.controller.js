@@ -7,12 +7,7 @@ async function getAllPlans(req, res, next) {
     var status = req.query.status;
     var staking_platform_id = req.query.staking_platform_id;
     let items = await StakingAPI.getPlans({ status, staking_platform_id });
-    if (items.data) {
-      return res.ok(items.data);
-    }
-    else {
-      return res.ok([]);
-    }
+    return res.status(items.httpCode).send(items.data);
   }
   catch (err) {
     logger.error("get plans fail:", err);
