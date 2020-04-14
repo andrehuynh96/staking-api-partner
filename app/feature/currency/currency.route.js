@@ -76,6 +76,7 @@ module.exports = router;
                             "payout_reward":2,
                             "payout_reward_unit":"HOUR|DAY|MONTH|YEAR",
                             "status":"0|1",
+                            "validator_address": "iva16ypqxg2m7wf3m8mkunfq96saqtaf70me4uf3gu",
                             "sc_lookup_addr":"",
                             "sc_token_address":"",
                             "erc20_duration":"",
