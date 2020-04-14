@@ -13,5 +13,6 @@ router.use(require('./wallet/wallet.route'));
 
 router.use(require('./authentication'));
 router.use(require('./member'));
+router.use(require('./currency/currency.route'));
 
 module.exports = router;
