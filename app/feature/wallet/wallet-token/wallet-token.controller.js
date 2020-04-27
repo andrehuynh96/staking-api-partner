@@ -22,12 +22,16 @@ token.create = async (req, res, next) => {
     if (!wallet) {
       return res.badRequest(res.__("WALLET_NOT_FOUND"), "WALLET_NOT_FOUND");
     }
-    let data = {
-    ...req.body,
-    wallet_id: wallet_id
+    let items = [];
+    for (item of req.body.items) {
+      let data = {
+        ...item,
+        wallet_id: wallet_id
+      }
+      items.push(data);
     }
-    let result = await WalletToken.create(data);
-    return res.ok(mapper(result));
+    let results = await WalletToken.bulkCreate(items);
+    return res.ok(mapper(results));
   } catch (ex) {
     logger.error(ex);
     next(ex);
