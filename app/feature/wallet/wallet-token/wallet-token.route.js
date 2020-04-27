@@ -70,13 +70,16 @@ module.exports = router;
  *            - sc_token_address
  *            - platform
  *            example:
- *               {     
-                    "sc_token_address": "",
-                    "platform": "",
-                    "symbol": "",
-                    "decimals": 18,
-                    "name": "",
-                    "icon": ""
+ *               {  "items": [
+ *                    {
+ *                      "sc_token_address": "",
+                        "platform": "",
+                        "symbol": "",
+                        "decimals": 18,
+                        "name": "",
+                        "icon": ""
+ *                    }
+ *                  ] 
                   }
  *     produces:
  *       - application/json
@@ -86,7 +89,7 @@ module.exports = router;
  *         examples:
  *           application/json:
  *             {
- *                 "data":{
+ *                 "data":[{
                         "id": "656b6f1c-1039-11ea-8d71-362b9e155667",     
                         "platform":"",
                         "sc_token_address": "",
@@ -95,7 +98,7 @@ module.exports = router;
                         "decimals":  18,
                         "icon": "",
                         "created_at":""
-                    }
+                    }]
  *             }
  *       400:
  *         description: Error
