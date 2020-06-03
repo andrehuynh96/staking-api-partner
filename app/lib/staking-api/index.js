@@ -22,14 +22,15 @@ module.exports = {
       return { httpCode: err.response.status, data: err.response.data };
     }
   },
-  trackingVote: async ({ tx_id, voter_address, memo, type }) => {
+  trackingVote: async ({ tx_id, voter_address, memo, type, amount }) => {
     try {
       let accessToken = await _getToken();
       let result = await axios.post(`${config.stakingApi.url}/voting`, {
         tx_id: tx_id,
         voter_address: voter_address,
         memo: memo,
-        type: type
+        type: type,
+        amount: amount
       }, {
           headers: {
             "Content-Type": "application/json",

@@ -9,6 +9,7 @@ module.exports = async (req, res, next) => {
       voter_address: req.body.voter_address,
       memo: req.body.memo,
       type: req.body.type,
+      amount: req.body.amount
     });
     return res.status(result.httpCode).send(result.data);
   }
