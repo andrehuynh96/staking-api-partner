@@ -49,7 +49,7 @@ module.exports = async (req, res, next) => {
       secret: user.twofa_secret,
       encoding: 'base32',
       token: req.body.twofa_code,
-      window: 10
+      window: config.twofaStep
     });
 
     if (!verified) {
