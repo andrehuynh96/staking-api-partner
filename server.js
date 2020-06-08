@@ -8,32 +8,39 @@ const morgan = require('morgan');
 const http = require('http');
 const logger = require('app/lib/logger');
 const redis = require('app/lib/redis');
+const database = require('app/lib/database');
 
 const app = express();
 app.use(morgan('dev'));
 
-
-redis.init(async err => {
+database.init(async err => {
   if (err) {
-    logger.error(`Redis start fail:`, err);
+    logger.error(`database start fail:`, err);
     return;
   }
 
-  app.set('trust proxy', 1);
-  app.use('/', require('app/index'));
-  app.use(express.static('public'));
-  const server = http.createServer(app);
-  server.listen(process.env.PORT, function () {
-    console.log(`server start successfully on port: ${process.env.PORT}`);
-  });
-  process.on('SIGINT', () => {
-    if (redis) {
-      redis.quit();
+  redis.init(async err => {
+    if (err) {
+      logger.error(`Redis start fail:`, err);
+      return;
     }
-    process.exit(0);
+    require('app/model').init();
+    app.set('trust proxy', 1);
+    app.use('/', require('app/index'));
+    app.use(express.static('public'));
+    const server = http.createServer(app);
+    server.listen(process.env.PORT, function () {
+      console.log(`server start successfully on port: ${process.env.PORT}`);
+    });
+
+    process.on('SIGINT', () => {
+      if (redis) {
+        redis.quit();
+      }
+      process.exit(0);
+    });
   });
 });
-
 
 process.on('unhandledRejection', function (reason, p) {
   logger.error('unhandledRejection', reason, p);

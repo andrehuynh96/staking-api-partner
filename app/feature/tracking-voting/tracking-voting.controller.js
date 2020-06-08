@@ -9,13 +9,9 @@ module.exports = async (req, res, next) => {
       voter_address: req.body.voter_address,
       memo: req.body.memo,
       type: req.body.type,
+      amount: req.body.amount
     });
-    if (result.data) {
-      return res.ok(true);
-    }
-    else {
-      return res.badRequest(result.message);
-    }
+    return res.status(result.httpCode).send(result.data);
   }
   catch (err) {
     logger.error("tracking voting fail:", err);

@@ -8,4 +8,11 @@ router.use(require("./tracking-voting/tracking-voting.route"));
 router.use(require("./erc20/plan/plan.route"));
 router.use(require("./erc20/deposit/erc20.route"));
 
+// Wallet 
+router.use(require('./wallet/wallet.route'));
+
+router.use(require('./authentication'));
+router.use(require('./member'));
+router.use(require('./currency/currency.route'));
+
 module.exports = router;

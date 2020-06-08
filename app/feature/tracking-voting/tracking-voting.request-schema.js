@@ -6,6 +6,7 @@ const schema = Joi.object().keys({
   tx_id: Joi.string().required(),
   memo: Joi.string().required(),
   type: Joi.string().required().valid(["DELEGATE", "UNDELEGATE"]),
+  amount: Joi.number().optional(),
 })
 
 module.exports = schema;

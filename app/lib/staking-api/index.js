@@ -15,34 +15,33 @@ module.exports = {
           Authorization: `Bearer ${accessToken}`
         }
       });
-
-      return result.data;
+      return { httpCode: 200, data: result.data };
     }
     catch (err) {
       logger.error("platformVote fail:", err);
-      return err.response.data;
+      return { httpCode: err.response.status, data: err.response.data };
     }
   },
-  trackingVote: async ({ tx_id, voter_address, memo, type }) => {
+  trackingVote: async ({ tx_id, voter_address, memo, type, amount }) => {
     try {
       let accessToken = await _getToken();
       let result = await axios.post(`${config.stakingApi.url}/voting`, {
         tx_id: tx_id,
         voter_address: voter_address,
         memo: memo,
-        type: type
+        type: type,
+        amount: amount
       }, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`
           }
         });
-
-      return result.data;
+      return { httpCode: 200, data: result.data };
     }
     catch (err) {
       logger.error("platformVote fail:", err);
-      return err.response.data;
+      return { httpCode: err.response.status, data: err.response.data };
     }
   },
 
@@ -60,12 +59,11 @@ module.exports = {
             Authorization: `Bearer ${accessToken}`
           }
         });
-
-      return result.data;
+      return { httpCode: 200, data: result.data };
     }
     catch (err) {
       logger.error("platformVote fail:", err);
-      return err.response.data;
+      return { httpCode: err.response.status, data: err.response.data };
     }
   },
 
@@ -77,7 +75,7 @@ module.exports = {
     plan_id,
     partner_id,
     offset,
-    limit 
+    limit
   }) => {
     try {
       let accessToken = await _getToken();
@@ -98,12 +96,12 @@ module.exports = {
             Authorization: `Bearer ${accessToken}`
           }
         });
+      return { httpCode: 200, data: result.data };
 
-      return result.data;
     }
     catch (err) {
       logger.error("getERC20Deposit fail:", err);
-      return err.response.data;
+      return { httpCode: err.response.status, data: err.response.data };
     }
   },
 
@@ -111,7 +109,7 @@ module.exports = {
     depositor_address,
     token_address,
     offset,
-    limit 
+    limit
   }) => {
     try {
       let accessToken = await _getToken();
@@ -128,12 +126,12 @@ module.exports = {
             Authorization: `Bearer ${accessToken}`
           }
         });
+      return { httpCode: 200, data: result.data };
 
-      return result.data;
     }
     catch (err) {
       logger.error("getERC20History fail:", err);
-      return err.response.data;
+      return { httpCode: err.response.status, data: err.response.data };
     }
   },
 
@@ -154,12 +152,11 @@ module.exports = {
             Authorization: `Bearer ${accessToken}`
           }
         });
-
-      return result.data;
+      return { httpCode: 200, data: result.data };
     }
     catch (err) {
       logger.error("getAddressAggregation fail:", err);
-      return err.response.data;
+      return { httpCode: err.response.status, data: err.response.data };
     }
   }
 
