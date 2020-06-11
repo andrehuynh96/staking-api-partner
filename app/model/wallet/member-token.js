@@ -34,7 +34,12 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     },
   }, {
-      underscored: true,
-      timestamps: true,
-    });
-} 
+    getterMethods: {
+      isExpired() {
+        return this.refresh_token_expire_at <= new Date();
+      }
+    },
+    underscored: true,
+    timestamps: true,
+  });
+}
