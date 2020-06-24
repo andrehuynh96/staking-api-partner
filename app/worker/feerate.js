@@ -10,6 +10,7 @@ module.exports = {
         // update each coin
         coins.forEach(async(element) => {
             switch(element.symbol){
+                // shatosi per byte
                 case 'BTC':
                     let response = await axios.get('https://bitcoinfees.earn.com/api/v1/fees/recommended')
                     let high = response.data.fastestFee
