@@ -3,7 +3,7 @@ const worker = require('./feerate')
 
 module.exports = {
     start: async () =>{
-        cron.schedule("* * * * *", async function() {
+        cron.schedule("*/5 * * * *", async function() {
             await worker.start()
         });
     }
