@@ -26,6 +26,21 @@ module.exports = {
                         }
                     });
                     break
+                case 'QTUM':
+                    let responseQTUM = await axios.get('https://qtum.info/api/info')
+                    let mediumQTUM = responseQTUM.data.feeRate
+                    let highQTUM = mediumQTUM * 1.15
+                    let lowQTUM = 0.004 
+                    await Feerates.update({ 
+                        high: highQTUM.toFixed(8),
+                        low: lowQTUM,
+                        medium: mediumQTUM
+                        }, {
+                        where: {
+                            symbol: element.symbol
+                        }
+                    });
+                    break
                 default:
             }
         });
