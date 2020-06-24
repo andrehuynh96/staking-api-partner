@@ -1,5 +1,5 @@
 const cron = require("node-cron");
-// const worker = require('./feerate')
+const worker = require('./feerate')
 
 module.exports = {
     start: async () =>{

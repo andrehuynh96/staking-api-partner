@@ -9,7 +9,7 @@ const http = require('http');
 const logger = require('app/lib/logger');
 const redis = require('app/lib/redis');
 const database = require('app/lib/database');
-const worker = require('app/worker')
+const { setTimeout } = require('timers');
 
 const app = express();
 app.use(morgan('dev'));
@@ -32,7 +32,10 @@ database.init(async err => {
     const server = http.createServer(app);
     server.listen(process.env.PORT, function () {
       console.log(`server start successfully on port: ${process.env.PORT}`);
-      worker.start()
+      setTimeout(()=>{
+        const worker = require('app/worker');
+        worker.start()
+      }, 10000)      
     });
 
     process.on('SIGINT', () => {

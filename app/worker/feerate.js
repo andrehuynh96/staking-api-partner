@@ -5,11 +5,11 @@ module.exports = {
         // get coin
         let coins = await Feerates.findAll({
             attributes: ["symbol"],
-            where:{deleted_flg: false}
+            raw: true,
         })
         // update each coin
         coins.forEach(async(element) => {
-            switch(element){
+            switch(element.symbol){
                 case 'BTC':
                     let response = await axios.get('https://bitcoinfees.earn.com/api/v1/fees/recommended')
                     let high = response.data.fastestFee
@@ -21,8 +21,8 @@ module.exports = {
                         medium: medium
                         }, {
                         where: {
-                            symbol: element
-                        }, returning: true
+                            symbol: element.symbol
+                        }
                     });
                     break
                 default:
