@@ -8,7 +8,7 @@ module.exports = {
             where:{deleted_flg: false}
         })
         // update each coin
-        coins.forEach(element => {
+        coins.forEach(async(element) => {
             switch(element){
                 case 'BTC':
                     let response = await axios.get('https://bitcoinfees.earn.com/api/v1/fees/recommended')
