@@ -1,14 +1,12 @@
 const express = require('express');
 const authenticate = require('app/middleware/authenticate.middleware');
-const validator = require('app/middleware/validator.middleware');
 const controller = require('./sso-link.controller');
-const ssoLinkRequestSchema = require('./sso-link.request-schema');
 
 const router = express.Router();
 
 router.post(
   '/me/sso-link',
-  validator(ssoLinkRequestSchema),
+  authenticate,
   controller
 );
 
@@ -24,18 +22,6 @@ module.exports = router;
  *     tags:
  *       - Accounts
  *     description:
- *     parameters:
- *       - in: body
- *         name: data
- *         description: Data for refresh token.
- *         schema:
- *            type: object
- *            required:
- *            - refresh_token
- *            example:
- *               {
-                        "refresh_token":"3f76680510bcca07e7e011dcc1effb079d1d0a34"
-                  }
  *     produces:
  *       - application/json
  *     responses:
