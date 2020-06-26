@@ -5,6 +5,7 @@ const MemberStatus = require('app/model/wallet/value-object/member-status');
 const MemberActivityLog = require('app/model/wallet').member_activity_logs;
 const ActionType = require('app/model/wallet/value-object/member-activity-action-type');
 const uuidV4 = require('uuid/v4');
+const moment = require('moment');
 const OTP = require('app/model/wallet').otps;
 const OtpType = require('app/model/wallet/value-object/otp-type');
 
@@ -54,24 +55,23 @@ async function _writeActionLog(memberId, req) {
 }
 
 async function _createOTP(memberId, token) {
-  let today = new Date();
-  today.setHours(today.getHours() + config.expiredSSOToken);
+  let expiredData = moment().add(config.expiredSsoTokenInMinutes, 'minutes').toDate();
 
   await OTP.update({
     expired: true
   }, {
-      where: {
-        member_id: memberId,
-        action_type: OtpType.SSO_TOKEN
-      },
-      returning: true
-    });
+    where: {
+      member_id: memberId,
+      action_type: OtpType.SSO_TOKEN
+    },
+    returning: true
+  });
 
   await OTP.create({
     code: token,
     used: false,
     expired: false,
-    expired_at: today,
+    expired_at: expiredData,
     member_id: memberId,
     action_type: OtpType.SSO_TOKEN
   });
