@@ -44,7 +44,6 @@ module.exports = {
       return { httpCode: err.response.status, data: err.response.data };
     }
   },
-
   getPlans: async ({ status, staking_platform_id }) => {
     try {
       let accessToken = await _getToken();

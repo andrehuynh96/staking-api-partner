@@ -87,3 +87,7 @@ typings/
 
 # Plantuml output folder
 out
+*.code-workspace
+.vscode/settings.json
+.vscode/launch.json
+.vscode/keybindings.json
