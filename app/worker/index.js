@@ -1,10 +1,22 @@
+require('dotenv').config();
+require('rootpath')();
+const database = require('app/lib/database')
 const cron = require("node-cron");
-const worker = require('./feerate')
 
-module.exports = {
-    start: async () =>{
-        cron.schedule("*/5 * * * *", async function() {
-            await worker.start()
-        });
-    }
+let start = async () =>{
+    cron.schedule("*/5 * * * *", async function() {
+        const worker = require('./feerate')
+        await worker.start()
+    });
 }
+
+database.init(async err => {
+    if (err) {
+        logger.error(`database start fail:`, err);
+        return;
+    }
+
+    setTimeout(async ()=>{
+        await start()
+    }, 10000)  
+})   
