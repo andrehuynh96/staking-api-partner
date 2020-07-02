@@ -1,31 +1,19 @@
 const logger = require('app/lib/logger');
 const Member = require('app/model/wallet').members;
-const config = require("app/config");
-const PluTXUserIdApi = require('app/lib/plutx-userid');
-const Token = require('app/model/wallet').member_tokens;
+const config = require('app/config');
 const MemberStatus = require('app/model/wallet/value-object/member-status');
+const MemberActivityLog = require('app/model/wallet').member_activity_logs;
+const ActionType = require('app/model/wallet/value-object/member-activity-action-type');
+const uuidV4 = require('uuid/v4');
+const moment = require('moment');
+const OTP = require('app/model/wallet').otps;
+const OtpType = require('app/model/wallet/value-object/otp-type');
 
 module.exports = async (req, res, next) => {
   try {
-    const { body } = req;
-    const { refresh_token } = body;
-    const token = await Token.findOne({
-      where: {
-        refresh_token: refresh_token,
-        revoked: false,
-      }
-    });
-    if (!token) {
-      return res.badRequest(res.__('REFRESH_TOKEN_INVALID'), 'REFRESH_TOKEN_INVALID', { fields: ['refresh_token'] });
-    }
-
-    if (token.isExpired) {
-      return res.badRequest(res.__('REFRESH_TOKEN_EXPIRED'), 'REFRESH_TOKEN_EXPIRED', { fields: ['refresh_token'] });
-    }
-
     const user = await Member.findOne({
       where: {
-        id: token.member_id
+        id: req.user.id,
       }
     });
 
@@ -41,15 +29,10 @@ module.exports = async (req, res, next) => {
       return res.forbidden(res.__('ACCOUNT_LOCKED'), 'ACCOUNT_LOCKED');
     }
 
-    // TODO: We use email to get SSO token for mobile app,
-    // will implement after integrate with PluTX UserID
-    const createSsoTokenResult = await PluTXUserIdApi.createSsoToken(user.plutx_userid_id, user.email);
-    if (createSsoTokenResult.httpCode !== 200) {
-      return res.status(createSsoTokenResult.httpCode).send(createSsoTokenResult.data);
-    }
-
-    const tokenId = createSsoTokenResult.data.id;
-    const ssoLink = `${config.website.ssoLoginUrl}${tokenId}`;
+    const token = Buffer.from(uuidV4()).toString('base64');
+    await _createOTP(user.id, token);
+    await _writeActionLog(user.id, req);
+    const ssoLink = `${config.website.ssoLoginUrl}${token}`;
 
     return res.ok({ ssoLink });
   }
@@ -59,3 +42,37 @@ module.exports = async (req, res, next) => {
     next(err);
   }
 };
+
+async function _writeActionLog(memberId, req) {
+  const registerIp = (req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.headers['x-client'] || req.ip).replace(/^.*:/, '');
+
+  await MemberActivityLog.create({
+    member_id: memberId,
+    client_ip: registerIp,
+    action: ActionType.SSO_TOKEN,
+    user_agent: req.headers['user-agent']
+  });
+}
+
+async function _createOTP(memberId, token) {
+  let expiredData = moment().add(config.expiredSsoTokenInMinutes, 'minutes').toDate();
+
+  await OTP.update({
+    expired: true
+  }, {
+    where: {
+      member_id: memberId,
+      action_type: OtpType.SSO_TOKEN
+    },
+    returning: true
+  });
+
+  await OTP.create({
+    code: token,
+    used: false,
+    expired: false,
+    expired_at: expiredData,
+    member_id: memberId,
+    action_type: OtpType.SSO_TOKEN
+  });
+}

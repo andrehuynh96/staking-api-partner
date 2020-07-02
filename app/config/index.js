@@ -78,6 +78,7 @@ const config = {
     lockTime: process.env.LOCK_TIME
   },
   expiredVefiryToken: process.env.EXPIRED_VERIFY_TOKEN ? parseInt(process.env.EXPIRED_VERIFY_TOKEN) : 2,
+  expiredSsoTokenInMinutes: parseInt(process.env.EXPIRED_SSO_TOKEN_IN_MINUTES || '2'),
   recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY,
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   twofaStep: process.env.TWOFA_STEP ? parseInt(process.env.TWOFA_STEP) : 3,

@@ -44,29 +44,6 @@ module.exports = {
       return { httpCode: err.response.status, data: err.response.data };
     }
   },
-  trackingVote3rd: async ({ tx_id, voter_address, memo, type }) => {
-    try {
-      let accessToken = await _getToken();
-      let result = await axios.post(`${config.stakingApi.url}/voting/3rd`, {
-        tx_id: tx_id,
-        voter_address: voter_address,
-        memo: memo,
-        type: type
-      }, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`
-          }
-        });
-
-      return result.data;
-    }
-    catch (err) {
-      logger.error("platformVote 3rd party fail:", err);
-      return err.response.data;
-    }
-  },
-
   getPlans: async ({ status, staking_platform_id }) => {
     try {
       let accessToken = await _getToken();
