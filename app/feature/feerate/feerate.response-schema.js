@@ -17,7 +17,7 @@ const destObject = {
     symbol: 'symbol',
     high: 'hig',
     medium: 'medium',
-    low: 'desclowription',
+    low: 'low',
     createdAt: 'created_at',
     updatedAt: 'updated_at'
   }
