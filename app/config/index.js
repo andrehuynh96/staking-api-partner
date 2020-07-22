@@ -89,7 +89,20 @@ const config = {
   },
   website: {
     url: process.env.WEBSITE_URL,
+    urlImages: process.env.PARTNER_NAME ? process.env.WEBSITE_URL + '/images/' + process.env.PARTNER_NAME.toLowerCase() : process.env.WEBSITE_URL + '/images',
     ssoLoginUrl: process.env.WEBSITE_URL + '/sign-in?token=',
+    urlActive: process.env.WEBSITE_URL + '/email-verification?token=',
+  },
+  rewardSystem: {
+    url: process.env.AFFILIATE_URL,
+    apiKey: process.env.AFFILIATE_API_KEY,
+    secretKey: process.env.AFFILIATE_SECRET_KEY,
+    affiliateTypeId: process.env.AFFILIATE_TYPE_ID,
+    membershipTypeId: process.env.MEMBERSHIP_AFFILIATE_TYPE_ID
+  },
+  emailTemplate: {
+    partnerName: process.env.PARTNER_NAME,
+    verifyEmail: process.env.PARTNER_NAME.toLowerCase() + "/verify-email.ejs"
   },
 };
 

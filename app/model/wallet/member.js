@@ -2,7 +2,7 @@ const MemberStatus = require("./value-object/member-status");
 const KycStatus = require('./value-object/kyc-status');
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define("members", {
+  const Member = sequelize.define("members", {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
@@ -24,6 +24,14 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: MemberStatus.UNACTIVATED
     },
     fullname: {
+      type: DataTypes.STRING(128),
+      allowNull: true
+    },
+    last_name: {
+      type: DataTypes.STRING(128),
+      allowNull: true
+    },
+    first_name: {
       type: DataTypes.STRING(128),
       allowNull: true
     },
@@ -67,11 +75,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     },
     referral_code: {
-      type: DataTypes.STRING(8),
+      type: DataTypes.STRING(12),
       allowNull: false
     },
     referrer_code: {
-      type: DataTypes.STRING(8),
+      type: DataTypes.STRING(12),
       allowNull: true
     },
     infinito_id: {
@@ -80,18 +88,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     kyc_id: {
       type: DataTypes.STRING(32),
-      allowNull: false,
+      allowNull: true,
       defaultValue: '0'
     },
     kyc_level: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1
+      type: DataTypes.STRING(256),
+      allowNull: true,
     },
     kyc_status: {
       type: DataTypes.STRING(16),
-      allowNull: false,
-      defaultValue: KycStatus.APPROVED
+      allowNull: true,
     },
     deleted_flg: {
       type: DataTypes.BOOLEAN,
@@ -106,9 +112,47 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0
-    }
+    },
+    affiliate_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
+    },
+    domain_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true
+    },
+    domain_name: {
+      type: DataTypes.STRING(256)
+    },
+    plutx_userid_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
+    membership_type_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
+    latest_membership_order_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    country_phone_code: {
+      type: DataTypes.STRING(64),
+      allowNull: true
+    },
+    current_language: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
   }, {
       underscored: true,
       timestamps: true,
     });
-} 
+
+  Member.associate = (models) => {
+    Member.hasMany(models.wallets, { foreignKey: 'member_id', as: "wallets" });
+  };
+
+  return Member;
+};

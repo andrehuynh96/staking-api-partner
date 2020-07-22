@@ -8,7 +8,8 @@ module.exports = async (req, res, next) => {
   try {
     let user = await Member.findOne({
       where: {
-        id: req.user.id
+        id: req.user.id,
+        deleted_flg: false
       }
     });
     if (!user) {

@@ -35,12 +35,10 @@ module.exports = router;
  *         schema:
  *            type: object
  *            required:
- *            - g-recaptcha-response
  *            - email
  *            - password
  *            example:
  *               {
-                        "g-recaptcha-response":"3f76680510bcca07e7e011dcc1effb079d1d0a34",
                         "email":"example@gmail.com",
                         "password":"Abc@123456"
                   }
