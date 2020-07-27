@@ -34,9 +34,29 @@ module.exports = async (req, res, next) => {
 
     const expiredHours = config.expiredVefiryToken;
     if (IS_ENABLED_PLUTX_USERID && member.plutx_userid_id) {
-      const subject = `${config.emailTemplate.partnerName} - Reset Password`;
-      const from = `${config.emailTemplate.partnerName} <${config.mailSendAs}>`;
-      const rawTemplate = mailer.getRawTemplate(config.emailTemplate.resetPassword);
+      let templateName = EmailTemplateType.RESET_PASSWORD
+      let template = await EmailTemplate.findOne({
+        where: {
+          name: templateName,
+          language: member.current_language
+        }
+      })
+
+      if (!template) {
+        template = await EmailTemplate.findOne({
+          where: {
+            name: templateName,
+            language: 'en'
+          }
+        })
+      }
+
+      if (!template)
+        return res.notFound(res.__("EMAIL_TEMPLATE_NOT_FOUND"), "EMAIL_TEMPLATE_NOT_FOUND", { fields: ["id"] });
+
+      let subject = `${config.emailTemplate.partnerName} - ${template.subject}`;
+      let from = `${config.emailTemplate.partnerName} <${config.smtp.mailSendAs}>`;
+      const rawTemplate = template.template;
       const data = {
         subject,
         from,
@@ -62,12 +82,12 @@ module.exports = async (req, res, next) => {
     await OTP.update({
       expired: true
     }, {
-        where: {
-          member_id: member.id,
-          action_type: OtpType.FORGOT_PASSWORD
-        },
-        returning: true
-      })
+      where: {
+        member_id: member.id,
+        action_type: OtpType.FORGOT_PASSWORD
+      },
+      returning: true
+    })
 
     await OTP.create({
       code: verifyToken,
@@ -90,7 +110,7 @@ module.exports = async (req, res, next) => {
 
 async function _sendEmail(member, verifyToken) {
   try {
-    let templateName = EmailTemplateType.RESET_PASSWORD 
+    let templateName = EmailTemplateType.RESET_PASSWORD
     let template = await EmailTemplate.findOne({
       where: {
         name: templateName,
@@ -98,7 +118,7 @@ async function _sendEmail(member, verifyToken) {
       }
     })
 
-    if(!template){
+    if (!template) {
       template = await EmailTemplate.findOne({
         where: {
           name: templateName,
@@ -107,10 +127,10 @@ async function _sendEmail(member, verifyToken) {
       })
     }
 
-    if(!template)
+    if (!template)
       return res.notFound(res.__("EMAIL_TEMPLATE_NOT_FOUND"), "EMAIL_TEMPLATE_NOT_FOUND", { fields: ["id"] });
-  
-    let subject =`${config.emailTemplate.partnerName} - ${template.subject}`;
+
+    let subject = `${config.emailTemplate.partnerName} - ${template.subject}`;
     let from = `${config.emailTemplate.partnerName} <${config.smtp.mailSendAs}>`;
     let data = {
       imageUrl: config.website.urlImages,
