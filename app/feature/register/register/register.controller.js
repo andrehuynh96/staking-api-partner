@@ -9,6 +9,8 @@ const mailer = require('app/lib/mailer');
 const uuidV4 = require('uuid/v4');
 const Affiliate = require('app/lib/reward-system/affiliate');
 const MemberStatus = require("app/model/wallet/value-object/member-status");
+const EmailTemplateType = require('app/model/wallet/value-object/email-template-type')
+const EmailTemplate = require('app/model/wallet').email_templates;
 
 module.exports = async (req, res, next) => {
   try {
@@ -63,12 +65,12 @@ async function _activeAccount(member, req, res, next) {
   await OTP.update({
     expired: true
   }, {
-      where: {
-        member_id: member.id,
-        action_type: OtpType.REGISTER
-      },
-      returning: true
-    });
+    where: {
+      member_id: member.id,
+      action_type: OtpType.REGISTER
+    },
+    returning: true
+  });
 
   let otp = await OTP.create({
     code: verifyToken,
@@ -122,12 +124,12 @@ async function _createAccount(req, res, next) {
   await OTP.update({
     expired: true
   }, {
-      where: {
-        member_id: member.id,
-        action_type: OtpType.REGISTER
-      },
-      returning: true
-    });
+    where: {
+      member_id: member.id,
+      action_type: OtpType.REGISTER
+    },
+    returning: true
+  });
 
   let otp = await OTP.create({
     code: verifyToken,
@@ -148,14 +150,35 @@ async function _createAccount(req, res, next) {
 
 async function _sendEmail(member, otp) {
   try {
-    let subject = `${config.emailTemplate.partnerName} - Create Account`;
+    let templateName = EmailTemplateType.VERIFY_EMAIL
+    let template = await EmailTemplate.findOne({
+      where: {
+        name: templateName,
+        language: member.current_language
+      }
+    })
+
+    if (!template) {
+      template = await EmailTemplate.findOne({
+        where: {
+          name: templateName,
+          language: 'en'
+        }
+      })
+    }
+
+    if (!template)
+      return res.notFound(res.__("EMAIL_TEMPLATE_NOT_FOUND"), "EMAIL_TEMPLATE_NOT_FOUND", { fields: ["id"] });
+
+    let subject = `${config.emailTemplate.partnerName} - ${template.subject}`;
     let from = `${config.emailTemplate.partnerName} <${config.smtp.mailSendAs}>`;
     let data = {
       imageUrl: config.website.urlImages,
       link: `${config.website.urlActive}${otp.code}`,
       hours: config.expiredVefiryToken
     }
-    await mailer.sendWithTemplate(subject, from, member.email, data, config.emailTemplate.verifyEmail);
+    data = Object.assign({}, data, config.email);
+    await mailer.sendWithDBTemplate(subject, from, member.email, data, template.template);
   } catch (err) {
     logger.error("send email create account fail", err);
   }
