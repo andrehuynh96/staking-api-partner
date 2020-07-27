@@ -105,7 +105,7 @@ const config = {
     verifyEmail: process.env.PARTNER_NAME.toLowerCase() + "/verify-email.ejs"
   },
   membership: {
-    referralUrl: process.env.MEMBERSHIP_REFERRAL_URL + '/sign-up?ref='
+    referralUrl: process.env.WEBSITE_URL + '/sign-up?ref='
   },
 };
 

@@ -2,6 +2,7 @@ const logger = require('app/lib/logger');
 const Member = require('app/model/wallet').members;
 const MemberStatus = require('app/model/wallet/value-object/member-status');
 const memberMapper = require('../member.response-schema');
+const config = require('app/config');
 
 
 module.exports = async (req, res, next) => {
@@ -23,6 +24,8 @@ module.exports = async (req, res, next) => {
     if (user.member_sts == MemberStatus.LOCKED) {
       return res.forbidden(res.__('ACCOUNT_LOCKED'), 'ACCOUNT_LOCKED');
     }
+
+    user.referral_link = `${config.membership.referralUrl}${user.referral_code}`
 
     return res.ok(memberMapper(user));
   }
