@@ -12,8 +12,8 @@ const router = express.Router();
 router.post(
   '/forgot-password',
   validator(requestSchema),
-  // recaptcha.middleware.verify,
-  // verifyRecaptcha,
+  recaptcha.middleware.verify,
+  verifyRecaptcha,
   controller
 );
 
@@ -26,7 +26,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/forgot-password:
+ * /api/v1/accounts/forgot-password:
  *   post:
  *     summary: forgot password
  *     tags:
