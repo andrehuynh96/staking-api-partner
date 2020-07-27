@@ -16,5 +16,6 @@ router.use(require('./member'));
 router.use(require('./currency/currency.route'));
 router.use(require('./feerate/feerate.route'));
 router.use(require('./register'));
+router.use(require('./forgot-password/forgot-password.route'));
 
 module.exports = router;
