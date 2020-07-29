@@ -31,7 +31,7 @@ module.exports = async (req, res, next) => {
     }
 
     user.referral_link = `${config.membership.referralUrl}${user.referral_code}`
-    user.membership_type_name = user.MembershipType.name
+    user.membership_type_name = user.MembershipType ? user.MembershipType.name : ''
     return res.ok(memberMapper(user));
   }
   catch (err) {
