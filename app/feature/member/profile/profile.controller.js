@@ -3,11 +3,16 @@ const Member = require('app/model/wallet').members;
 const MemberStatus = require('app/model/wallet/value-object/member-status');
 const memberMapper = require('../member.response-schema');
 const config = require('app/config');
-
+const MembershipType = require("app/model/wallet").membership_types;
 
 module.exports = async (req, res, next) => {
   try {
     let user = await Member.findOne({
+      include: [{
+        model: MembershipType,
+        as: 'MembershipType',
+        attributes: ['id', 'name', 'type']
+      }],
       where: {
         id: req.user.id,
         deleted_flg: false
@@ -26,7 +31,7 @@ module.exports = async (req, res, next) => {
     }
 
     user.referral_link = `${config.membership.referralUrl}${user.referral_code}`
-
+    user.membership_type_name = user.MembershipType.name
     return res.ok(memberMapper(user));
   }
   catch (err) {

@@ -59,7 +59,8 @@ const destObject = {
     first_name: 'first_name',
     last_name: 'last_name',
     current_language: 'current_language',
-    referral_link: 'referral_link'
+    referral_link: 'referral_link',
+    membership_type_name: 'membership_type_name'
   }
 };
 module.exports = srcObject => {

@@ -152,6 +152,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Member.associate = (models) => {
     Member.hasMany(models.wallets, { foreignKey: 'member_id', as: "wallets" });
+    Member.belongsTo(models.membership_types, {
+      as: 'MembershipType',
+      foreignKey: 'membership_type_id',
+    });
   };
 
   return Member;
