@@ -23,7 +23,12 @@ const destObject = {
     '[].latest_login_at': '[].latest_login_at',
     '[].kyc_id': '[].kyc_id',
     '[].kyc_level': '[].kyc_level',
-    '[].kyc_status': '[].kyc_status'
+    '[].kyc_status': '[].kyc_status',
+    '[].domain_name': '[].domain_id',
+    '[].plutx_userid_id': '[].plutx_userid_id?',
+    '[].membership_type_id': '[].membership_type_id?',
+    '[].last_name': '[].last_name',
+    '[].first_name': '[].first_name'
   },
   single: {
     id: 'id',
@@ -47,7 +52,15 @@ const destObject = {
     latest_login_at: 'latest_login_at',
     kyc_id: 'kyc_id',
     kyc_level: 'kyc_level',
-    kyc_status: 'kyc_status'
+    kyc_status: 'kyc_status',
+    domain_name: 'domain_name',
+    plutx_userid_id: 'plutx_userid_id?',
+    membership_type_id: 'membership_type_id?',
+    first_name: 'first_name',
+    last_name: 'last_name',
+    current_language: 'current_language',
+    referral_link: 'referral_link',
+    membership_type_name: 'membership_type_name'
   }
 };
 module.exports = srcObject => {

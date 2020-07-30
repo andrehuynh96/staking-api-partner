@@ -3,6 +3,9 @@ const keys = {
   stakingApi: {
     token: `${config.redis.prefix}:stakingapi:token`,
   },
+  rewardSystem: {
+    token: `${config.redis.prefix}:affiliate:token`,
+  },
   plutxUserID: {
     token: `${config.redis.prefix}:plutx-userid:token`,
   },

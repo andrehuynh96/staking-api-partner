@@ -9,6 +9,7 @@ const http = require('http');
 const logger = require('app/lib/logger');
 const redis = require('app/lib/redis');
 const database = require('app/lib/database');
+const loader = require('app/loader');
 
 const app = express();
 app.use(morgan('dev'));
@@ -25,12 +26,13 @@ database.init(async err => {
       return;
     }
     require('app/model').init();
+    loader.init(app);
     app.set('trust proxy', 1);
     app.use('/', require('app/index'));
     app.use(express.static('public'));
     const server = http.createServer(app);
     server.listen(process.env.PORT, function () {
-      console.log(`server start successfully on port: ${process.env.PORT}`); 
+      console.log(`server start successfully on port: ${process.env.PORT}`);
     });
 
     process.on('SIGINT', () => {
