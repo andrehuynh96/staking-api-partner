@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
   try {
     let member = await Member.findOne({
       where: {
-        deleted_flg: false,
+        //deleted_flg: false,
         email: req.body.email.toLowerCase()
       }
     });
@@ -34,11 +34,11 @@ module.exports = async (req, res, next) => {
     await OTP.update({
       expired: true
     }, {
-      where: {
-        member_id: member.id
-      },
-      returning: true
-    });
+        where: {
+          member_id: member.id
+        },
+        returning: true
+      });
     let newOtp = await OTP.create({
       code: verifyToken,
       used: false,
@@ -80,8 +80,10 @@ async function _sendEmail(member, otp) {
       })
     }
 
-    if (!template)
-      return res.notFound(res.__("EMAIL_TEMPLATE_NOT_FOUND"), "EMAIL_TEMPLATE_NOT_FOUND", { fields: ["id"] });
+    if (!template) {
+      logger.error(`EMAIL_TEMPLATE_NOT_FOUND: ${templateName}`);
+      return;
+    }
 
     let subject = `${config.emailTemplate.partnerName} - ${template.subject}`;
     let from = `${config.emailTemplate.partnerName} <${config.smtp.mailSendAs}>`;
