@@ -157,6 +157,24 @@ module.exports = {
       logger.error("getAddressAggregation fail:", err);
       return { httpCode: err.response.status, data: err.response.data };
     }
+  },
+
+  getValidators: async (platform) => {
+    try {
+      let accessToken = await _getToken();
+      let result = await axios.get(`${config.stakingApi.url}/validators-info/${platform}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
+
+      return { httpCode: 200, data: result.data };
+    }
+    catch (err) {
+      logger.error("getAllStakingPlan fail:", err);
+      return { httpCode: err.response.status, data: err.response.data };
+    }
   }
 
 }
