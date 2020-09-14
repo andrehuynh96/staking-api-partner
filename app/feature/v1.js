@@ -18,6 +18,7 @@ router.use(require('./feerate/feerate.route'));
 router.use(require('./register'));
 router.use(require('./referral/referral.route'))
 router.use(require('./validator/validator.route'))
+router.use(require('./exchange'));
 
 
 module.exports = router;
