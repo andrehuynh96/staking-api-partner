@@ -7,6 +7,11 @@ module.exports = async (req, res, next) => {
     logger.info('transaction::detail');
     const where = { member_id: req.user.id, id: req.params.id };
     const transaction = await ExchangeTransaction.findOne({ where: where });
+    if (!transaction) {
+      return res.badRequest(res.__("TRANSACTION_NOT_FOUND"), "TRANSACTION_NOT_FOUND", {
+        fields: ['id'],
+      });
+    }
     return res.ok(Mapper(transaction));
   }
   catch (err) {
