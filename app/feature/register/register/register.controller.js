@@ -59,18 +59,20 @@ module.exports = async (req, res, next) => {
 
 async function _activeAccount(member, req, res, next) {
   member.password_hash = bcrypt.hashSync(req.body.password, 10);
+  member.member_sts = MemberStatus.UNACTIVATED;
+
   const now = new Date();
   let verifyToken = Buffer.from(uuidV4()).toString('base64');
   now.setHours(now.getHours() + config.expiredVefiryToken);
   await OTP.update({
     expired: true
   }, {
-    where: {
-      member_id: member.id,
-      action_type: OtpType.REGISTER
-    },
-    returning: true
-  });
+      where: {
+        member_id: member.id,
+        action_type: OtpType.REGISTER
+      },
+      returning: true
+    });
 
   let otp = await OTP.create({
     code: verifyToken,
@@ -124,12 +126,12 @@ async function _createAccount(req, res, next) {
   await OTP.update({
     expired: true
   }, {
-    where: {
-      member_id: member.id,
-      action_type: OtpType.REGISTER
-    },
-    returning: true
-  });
+      where: {
+        member_id: member.id,
+        action_type: OtpType.REGISTER
+      },
+      returning: true
+    });
 
   let otp = await OTP.create({
     code: verifyToken,
@@ -167,8 +169,10 @@ async function _sendEmail(member, otp) {
       })
     }
 
-    if (!template)
-      return res.notFound(res.__("EMAIL_TEMPLATE_NOT_FOUND"), "EMAIL_TEMPLATE_NOT_FOUND", { fields: ["id"] });
+    if (!template) {
+      logger.error(`EMAIL_TEMPLATE_NOT_FOUND: ${templateName}`);
+      return;
+    }
 
     let subject = `${config.emailTemplate.partnerName} - ${template.subject}`;
     let from = `${config.emailTemplate.partnerName} <${config.smtp.mailSendAs}>`;
