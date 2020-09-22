@@ -6,5 +6,6 @@ router.use('/exchange', require("./estimate/estimate.route"));
 router.use('/exchange', require("./make-transaction/make-transaction.route"));
 router.use('/exchange', require("./transaction-history/transaction-history.route"));
 router.use('/exchange', require("./transaction-detail/transaction-detail.route"));
+router.use('/exchange', require("./update-transaction/update-transaction.route"));
 
 module.exports = router;
