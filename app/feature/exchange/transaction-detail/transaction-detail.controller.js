@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
       return res.badRequest(res.__("TRANSACTION_NOT_FOUND"), "TRANSACTION_NOT_FOUND", {
         fields: ['id'],
       });
-    }eck
+    }
     return res.ok(Mapper(transaction));
   }
   catch (err) {
