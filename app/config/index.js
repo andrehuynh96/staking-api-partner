@@ -107,6 +107,16 @@ const config = {
   membership: {
     referralUrl: process.env.WEBSITE_URL + '/sign-up?ref='
   },
+  exchange: {
+    changelly: {
+      url: process.env.CHANGELLY_URL,
+      apiKey: process.env.CHANGELLY_API_KEY,
+      secretKey: process.env.CHANGELLY_API_SECRET
+    }
+  },
+  webWallet: {
+    apiUrl: process.env.WEB_WALLET_API_URL || 'https://dev-staking-wallet-web.chainservices.info',
+  },
 };
 
 module.exports = config;
