@@ -1,5 +1,5 @@
 const express = require('express');
-const authenticate = require('app/middleware/authenticate.middleware');
+const parseUser = require('app/middleware/parse-user.middleware');
 const controller = require('./estimate.controller');
 const validator = require('app/middleware/validator.middleware');
 const requestSchema = require('./estimate.request-schema');
@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post(
   '/estimate',
-  authenticate,
+  parseUser,
   validator(requestSchema),
   controller
 );
@@ -30,7 +30,6 @@ module.exports = router;
  *     parameters:
  *       - name: authorization
  *         in: header
- *         required: true
  *         schema:
  *           type: string
  *           example:

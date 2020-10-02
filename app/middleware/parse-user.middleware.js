@@ -7,17 +7,16 @@ module.exports = async function (req, res, next) {
   if (token && (token.toLowerCase().startsWith("bearer"))) {
     token = token.replace(/bearer/i, '').trim();
   }
-  else {
-    return res.unauthorized();
-  }
 
   if (token) {
     try {
       var legit = jwt.verify(token, config.token.key.public);
       req.user = legit;
-      return next();
     } catch (err) {
-      return res.unauthorized();
+      return res.badRequest(res.__("TOKEN_INVALID"), "TOKEN_INVALID", {
+        fields: ['authorization'],
+      });
     }
   }
+  return next();
 }

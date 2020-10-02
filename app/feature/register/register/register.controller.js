@@ -11,6 +11,7 @@ const Affiliate = require('app/lib/reward-system/affiliate');
 const MemberStatus = require("app/model/wallet/value-object/member-status");
 const EmailTemplateType = require('app/model/wallet/value-object/email-template-type')
 const EmailTemplate = require('app/model/wallet').email_templates;
+// const MemberSetting = require('app/model/wallet').member_settings;
 
 module.exports = async (req, res, next) => {
   try {
@@ -144,6 +145,12 @@ async function _createAccount(req, res, next) {
   if (!otp) {
     return res.serverInternalError();
   }
+
+  // const memberSetting = await MemberSetting.create({ member_id: member.id });
+  // if (!memberSetting) {
+  //   return res.serverInternalError();
+  // }
+
   _sendEmail(member, otp);
   member.referral_code = "";
   let response = memberMapper(member);

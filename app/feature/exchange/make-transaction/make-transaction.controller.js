@@ -24,7 +24,7 @@ module.exports = async (req, res, next) => {
     }
     result = result.result;
     let response = await ExchangeTransaction.create({
-      member_id: req.user.id,
+      member_id: req.user ? req.user.id : null,
       from_currency: req.body.from_currency.toUpperCase(),
       to_currency: req.body.to_currency.toUpperCase(),
       request_recipient_address: req.body.address,
@@ -45,12 +45,13 @@ module.exports = async (req, res, next) => {
       amount_to: result.amount_to > 0 ? result.amount_to : result.amount_expected_to,
       payin_address: result.payin_address,
       payout_address: result.payout_address,
-      response: JSON.stringify(result)
+      response: JSON.stringify(result),
+      device_code: req.body.device_code
     });
     return res.ok(Mapper(response));
   }
   catch (err) {
-    logger.error('estimate fail:', err);
+    logger.error('make transaction fail:', err);
     next(err);
   }
 }

@@ -1,11 +1,11 @@
 const express = require('express');
 const controller = require('./transaction-detail.controller');
-const authenticate = require('app/middleware/authenticate.middleware');
 const router = express.Router();
+const parseUser = require('app/middleware/parse-user.middleware');
 
 router.get(
   '/transactions/:id',
-  authenticate,
+  parseUser,
   controller
 );
 
@@ -25,7 +25,6 @@ module.exports = router;
  *     parameters:
  *       - name: authorization
  *         in: header
- *         required: true
  *         schema:
  *           type: string
  *           example:
@@ -68,7 +67,8 @@ module.exports = router;
                       "payout_address": "0x95970e5869799a6d7b8efe5dc7bcbedd4b95b604",
                       "created_at": "2020-09-08T05:06:38.673Z",
                       "payout_tx_id":"",
-                      "tx_id":""
+                      "tx_id":"",
+                      "device_code":""
                     }
  *             }
  *       400:
