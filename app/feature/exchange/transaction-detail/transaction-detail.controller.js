@@ -1,11 +1,20 @@
 const logger = require('app/lib/logger');
 const ExchangeTransaction = require('app/model/wallet').exchange_transactions;
 const Mapper = require("app/feature/response-schema/exchange/transaction.response-schema");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = async (req, res, next) => {
   try {
     logger.info('transaction::detail');
-    const where = { member_id: req.user.id, id: req.params.id };
+    const where = {
+      [Op.or]: [{
+        id: req.params.id
+      },
+      {
+        transaction_id: req.params.id
+      }]
+    };
     const transaction = await ExchangeTransaction.findOne({ where: where });
     if (!transaction) {
       return res.badRequest(res.__("TRANSACTION_NOT_FOUND"), "TRANSACTION_NOT_FOUND", {

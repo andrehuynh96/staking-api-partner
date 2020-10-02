@@ -1,13 +1,13 @@
 const express = require('express');
-const authenticate = require('app/middleware/authenticate.middleware');
 const controller = require('./update-transaction.controller');
-const validator = require('app/middleware/validator.middleware');
+const parseUser = require('app/middleware/parse-user.middleware');
 const requestSchema = require('./update-transaction.request-schema');
+const validator = require('app/middleware/validator.middleware');
 const router = express.Router();
 
 router.put(
   '/transactions/:id',
-  authenticate,
+  parseUser,
   validator(requestSchema),
   controller
 );
@@ -27,6 +27,15 @@ module.exports = router;
  *       - Exchange
  *     description:
  *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         schema:
+ *           type: string
+ *           example:
+ *             Bearer access_token
+ *       - name: id
+ *         in: path
+ *         type: string
  *       - in: body
  *         name: data
  *         description: Data.
@@ -34,7 +43,8 @@ module.exports = router;
  *            type: object
  *            example:
  *               {
-                      "tx_id": "0xd8de614b6cbf4acecaa47536fb34e90eb33bf39c2a440329ab9774d82f54422f"
+                      "tx_id": "0xd8de614b6cbf4acecaa47536fb34e90eb33bf39c2a440329ab9774d82f54422f",
+                      "device_code": "4e90eb33bf39c2a440329ab9774dsfdsfds"
                   }
  *     produces:
  *       - application/json

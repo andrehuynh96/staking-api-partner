@@ -6,8 +6,8 @@ const Mapper = require("app/feature/response-schema/exchange/transaction.respons
 module.exports = async (req, res, next) => {
   try {
     logger.info('transaction::all');
-    const { query: { offset, limit, address }, user } = req;
-    const where = { member_id: user.id };
+    const { query: { offset, limit, device_code, address } } = req;
+    const where = { device_code: device_code };
     if (address) {
       where.payin_address = address;
     }

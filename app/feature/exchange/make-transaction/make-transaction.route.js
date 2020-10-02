@@ -1,5 +1,5 @@
 const express = require('express');
-const authenticate = require('app/middleware/authenticate.middleware');
+const parseUser = require('app/middleware/parse-user.middleware');
 const controller = require('./make-transaction.controller');
 const validator = require('app/middleware/validator.middleware');
 const requestSchema = require('./make-transaction.request-schema');
@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post(
   '/make-transaction',
-  authenticate,
+  parseUser,
   validator(requestSchema),
   controller
 );
@@ -30,7 +30,6 @@ module.exports = router;
  *     parameters:
  *       - name: authorization
  *         in: header
- *         required: true
  *         schema:
  *           type: string
  *           example:
@@ -44,6 +43,7 @@ module.exports = router;
  *            - from_currency
  *            - to_currency
  *            - amount
+ *            - device_code
  *            example:
  *               {
                       "from_currency": "btc",
@@ -53,7 +53,8 @@ module.exports = router;
                       "extra_id": "",
                       "refund_address": "",
                       "refund_extra_id": "",
-                      "rate_id": ""
+                      "rate_id": "",
+                      "device_code": ""
                   }
  *     produces:
  *       - application/json

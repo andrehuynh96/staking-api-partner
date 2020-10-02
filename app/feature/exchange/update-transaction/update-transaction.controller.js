@@ -3,7 +3,7 @@ const ExchangeTransaction = require('app/model/wallet').exchange_transactions;
 
 module.exports = async (req, res, next) => {
   try {
-    const where = { member_id: req.user.id, id: req.params.id };
+    const where = { id: req.params.id, device_code: req.body.device_code };
     const transaction = await ExchangeTransaction.findOne({ where: where });
     if (!transaction) {
       return res.badRequest(res.__("TRANSACTION_NOT_FOUND"), "TRANSACTION_NOT_FOUND", {
