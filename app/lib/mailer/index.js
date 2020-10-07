@@ -1,8 +1,8 @@
 const nodemailer = require('nodemailer');
 const config = require('app/config');
 const logger = require('app/lib/logger');
-const path = require('path');
-const fs = require('fs');
+const path = require("path");
+const fs = require("fs");
 const ejs = require('ejs');
 const uuidV4 = require('uuid/v4');
 const EmailTemplate = require('email-templates');
@@ -10,7 +10,7 @@ const EmailTemplateModel = require('app/model/wallet').email_templates;
 const EmailLoggingModel = require('app/model/wallet').email_loggings;
 const EmailLoggingStatus = require('app/model/wallet/value-object/email-logging-status');
 
-const TEMPLATES_PATH = path.resolve(__dirname + '../../../../public/email-template/');
+const TEMPLATES_PATH = path.resolve(__dirname + "../../../../public/email-template/");
 
 class EmailService {
 
@@ -139,6 +139,7 @@ class EmailService {
     const image = `<br /><img src="${url}" width="0" height="0" style="display:block" />`;
 
     mailOptions.html = mailOptions.html + image;
+    let mailMessageId = null;
 
     return new Promise((resolve, reject) => {
       this.transporter.sendMail(mailOptions, (err, info) => {
@@ -153,12 +154,15 @@ class EmailService {
             status: EmailLoggingStatus.Failed,
             error_message: err.message,
             sent_result: null,
+            mail_message_id: mailMessageId,
           });
 
           return reject(err);
         }
 
-        logger.info('Message sent: ' + info.response);
+        // logger.info('Message sent: ' + info.response);
+        mailMessageId = info.messageId;
+
         EmailLoggingModel.create({
           id,
           email,
@@ -168,6 +172,7 @@ class EmailService {
           status: EmailLoggingStatus.Success,
           error_message: null,
           sent_result: JSON.stringify(info, null, 2),
+          mail_message_id: mailMessageId,
         });
 
         return resolve(info);
