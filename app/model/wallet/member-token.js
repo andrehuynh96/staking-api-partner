@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     member_id: {
       type: DataTypes.UUID,
-      allowNull: false
+      allowNull: true
     },
     access_token: {
-      type: DataTypes.TEXT,
+      type: DataTypes.TEXT('long'),
       unique: true,
       allowNull: false,
     },
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     refresh_token: {
-      type: DataTypes.TEXT,
+      type: DataTypes.TEXT('long'),
       unique: true,
       allowNull: false,
     },
@@ -33,13 +33,17 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false
     },
-  }, {
-    getterMethods: {
-      isExpired() {
-        return this.refresh_token_expire_at <= new Date();
-      }
+    grant_type: {
+      type: DataTypes.STRING(32),
+      allowNull: true,
     },
-    underscored: true,
-    timestamps: true,
-  });
+  }, {
+      getterMethods: {
+        isExpired() {
+          return this.refresh_token_expire_at <= new Date();
+        }
+      },
+      underscored: true,
+      timestamps: true,
+    });
 }
