@@ -7,6 +7,15 @@ module.exports = {
     try {
       const { body, params } = req;
       let value = {};
+      let member = await Member.findOne({
+        where: {
+          id: params.id
+        }
+      });
+      if (!member) {
+        return res.badRequest(res.__('USER_NOT_FOUND'), 'USER_NOT_FOUND');
+      }
+
       if (body.fullname) {
         value.fullname = body.fullname;
       }
@@ -39,10 +48,11 @@ module.exports = {
         where: {
           id: params.id
         },
-        returning: true
+        returning: true,
+        plain: true
       });
-      if (!response || response.length == 0) {
-        res.notFound('Not Found');
+      if (!response) {
+        res.serverInternalError();
       }
       return res.ok(true);
     } catch (error) {

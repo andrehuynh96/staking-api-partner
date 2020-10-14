@@ -5,7 +5,7 @@ const authenticate = require('app/middleware/authenticate.middleware');
 const router = express.Router();
 
 router.put(
-  '/account/:id',
+  '/accounts/:id',
   authenticate,
   controller.update
 );
@@ -18,7 +18,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v2/account/{id}:
+ * /api/v2/accounts/{id}:
  *   put:
  *     summary: Update account
  *     tags:
