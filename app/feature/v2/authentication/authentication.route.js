@@ -30,11 +30,11 @@ module.exports = router;
  *            type: object
  *            example:
  *               {
-                    "client_id":"",
-                    "client_secret":"",
-                    "grant_type":"",
-                    "username":"",
-                    "password":"",
+                    "client_id":"872a4a9d-cabe-4524-a01d-c70f74884d2a",
+                    "client_secret":"39yce55G7iyS2E5x5fKTKf1Oh1gpsvrm",
+                    "grant_type":"client_credentials|password|passwordless|refresh_token",
+                    "username":"huyht+223@blockchainlabs.asia",
+                    "password":"abc123456",
                     "refresh_token":"3f76680510bcca07e7e011dcc1effb079d1d0a34"
                   }
  *     produces:

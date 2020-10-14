@@ -13,7 +13,7 @@ const jwt = require("jsonwebtoken");
 
 module.exports = async (req, res, next) => {
   try {
-    let { body } = req.body;
+    let body = req.body;
     let checkInputData = _checkInputData(req.body);
     if (checkInputData.code != "") {
       return res.badRequest(res.__(checkInputData.code), checkInputData.code, { fields: checkInputData.fields });
@@ -99,6 +99,16 @@ module.exports = async (req, res, next) => {
               }
             });
           }
+
+          await Token.update({
+            revoked: true
+          },
+            {
+              where: {
+                id: token.id
+              }
+            }
+          )
 
           break;
         }
