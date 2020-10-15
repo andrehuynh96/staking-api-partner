@@ -1,6 +1,7 @@
 const logger = require('app/lib/logger');
 const Member = require('app/model/wallet').members;
 const moment = require('moment');
+const MemberStatus = require('app/model/wallet/value-object/member-status');
 
 module.exports = {
   update: async (req, res, next) => {
@@ -45,6 +46,36 @@ module.exports = {
       }
 
       let [_, response] = await Member.update(value, {
+        where: {
+          id: params.id
+        },
+        returning: true,
+        plain: true
+      });
+      if (!response) {
+        res.serverInternalError();
+      }
+      return res.ok(true);
+    } catch (error) {
+      logger.error(error);
+      next(error);
+    }
+  },
+
+  activeAccount: async (req, res, next) => {
+    try {
+      const { params } = req;
+      const member = await Member.findOne({
+        where: {
+          id: params.id
+        }
+      });
+      if (!member) {
+        return res.badRequest(res.__('USER_NOT_FOUND'), 'USER_NOT_FOUND');
+      }
+      const [_, response] = await Member.update({
+        member_sts: MemberStatus.ACTIVATED
+      }, {
         where: {
           id: params.id
         },
