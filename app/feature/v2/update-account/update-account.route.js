@@ -31,7 +31,6 @@ module.exports = router;
  *       - 3RD Integrate
  *     description:
  *     parameters:
- *     parameters:
  *       - name: authorization
  *         in: header
  *         schema:
