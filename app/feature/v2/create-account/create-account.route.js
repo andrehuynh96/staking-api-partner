@@ -1,11 +1,13 @@
 const express = require('express');
-const controller = require('./member-info.controller');
+const controller = require('./create-account.controller');
 const authenticate = require('app/middleware/authenticate.middleware');
+const validator = require('app/middleware/validator.middleware');
+const { createAccount } = require('./validator');
 const router = express.Router();
 
-router.get(
-  '/accounts/member-info',
-  authenticate,
+router.post(
+  '/accounts',
+  validator(createAccount),
   controller
 );
 
@@ -15,23 +17,32 @@ module.exports = router;
 /*********************************************************************/
 /**
  * @swagger
- * /api/v2/accounts/member-info:
- *   get:
- *     summary: Get member information
+ * /api/v2/accounts:
+ *   post:
+ *     summary: Create new member
  *     tags:
- *       - 3RD Integrate
+ *       - Accounts
  *     description:
  *     parameters:
- *       - name: authorization
- *         in: header
+ *       - in: body
+ *         name: data
+ *         description: Data for register.
  *         schema:
- *           type: string
- *           example:
- *             Bearer access_token
- *       - in: query
- *         name: email
- *         description: email of user
- *         type: string
+ *            type: object
+ *            required:
+ *            - email
+ *            - password
+ *            - fullname
+ *            - first_name
+ *            - last_name
+ *            example:
+ *               {
+                        "email":"example@gmail.com",
+                        "password":"abc123456",
+                        "fullname":"Nguyen A",
+                        "first_name":"A",
+                        "last_name": "Nguyen"
+                  }
  *     produces:
  *       - application/json
  *     responses:
