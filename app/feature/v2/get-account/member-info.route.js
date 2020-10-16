@@ -19,9 +19,15 @@ module.exports = router;
  *   get:
  *     summary: Get member information
  *     tags:
- *       - Accounts
+ *       - 3RD Integrate
  *     description:
  *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         schema:
+ *           type: string
+ *           example:
+ *             Bearer access_token
  *       - in: query
  *         name: email
  *         description: email of user

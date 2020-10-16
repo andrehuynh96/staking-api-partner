@@ -76,12 +76,12 @@ module.exports = {
       const [_, response] = await Member.update({
         member_sts: MemberStatus.ACTIVATED
       }, {
-        where: {
-          id: params.id
-        },
-        returning: true,
-        plain: true
-      });
+          where: {
+            id: params.id
+          },
+          returning: true,
+          plain: true
+        });
       if (!response) {
         res.serverInternalError();
       }

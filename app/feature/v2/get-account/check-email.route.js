@@ -23,9 +23,15 @@ module.exports = router;
  *   post:
  *     summary: check email exist
  *     tags:
- *       - Accounts
+ *       - 3RD Integrate
  *     description:
  *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         schema:
+ *           type: string
+ *           example:
+ *             Bearer access_token
  *       - in: body
  *         name: data
  *         description: Data for
