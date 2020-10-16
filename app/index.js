@@ -69,7 +69,7 @@ router.get('/', function (req, res) {
 });
 router.get('/health', (req, res) => res.send('OK!'));
 require('app/config/swagger')(router, '/staking-api-partner');
-router.use("/.well-known", express.static(path.join(__dirname, "public")));
+router.use("/.well-known", express.static(path.join(__dirname, "../public")));
 router.use('/api', require('app/feature'));
 
 router.use(function (req, res) {
