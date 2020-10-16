@@ -28,6 +28,12 @@ module.exports = router;
 *       - 3RD Integrate
 *     description:
 *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         schema:
+ *           type: string
+ *           example:
+ *             Bearer access_token
  *       - in: body
  *         name: data
  *         description: Data for change password

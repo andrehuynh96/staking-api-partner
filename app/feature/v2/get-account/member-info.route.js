@@ -22,6 +22,12 @@ module.exports = router;
  *       - 3RD Integrate
  *     description:
  *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         schema:
+ *           type: string
+ *           example:
+ *             Bearer access_token
  *       - in: query
  *         name: email
  *         description: email of user
