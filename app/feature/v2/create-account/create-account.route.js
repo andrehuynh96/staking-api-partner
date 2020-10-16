@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post(
   '/accounts',
+  authenticate,
   validator(createAccount),
   controller
 );
@@ -21,7 +22,7 @@ module.exports = router;
  *   post:
  *     summary: Create new member
  *     tags:
- *       - Accounts
+ *       - 3RD Integrate
  *     description:
  *     parameters:
  *       - in: body

@@ -15,13 +15,12 @@ module.exports = async (req, res, next) => {
       }
     });
 
-    if (emailExists && undefined === emailExists.deleted_flg) {
+    if (emailExists && !emailExists.deleted_flg) {
       return res.badRequest(res.__("EMAIL_EXISTS_ALREADY"), "EMAIL_EXISTS_ALREADY", { fields: ['email'] });
     }
 
     if (emailExists
-      && false === emailExists.deleted_flg
-      && MemberStatus.UNACTIVATED === emailExists.member_sts) {
+      && emailExists.deleted_flg) {
       return _updateAccount(req, res, next);
     }
 
@@ -84,12 +83,12 @@ async function _updateAccount(req, res, next) {
     last_name,
     first_name,
   }, {
-    where: {
-      email
-    },
-    returning: true,
-    plain: true
-  });
+      where: {
+        email
+      },
+      returning: true,
+      plain: true
+    });
 
   if (!member) {
     return res.serverInternalError();
