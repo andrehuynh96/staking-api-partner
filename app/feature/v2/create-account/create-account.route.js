@@ -6,7 +6,7 @@ const { createAccount } = require('./validator');
 const router = express.Router();
 
 router.post(
-  '/',
+  '/accounts',
   validator(createAccount),
   controller
 );
@@ -18,16 +18,31 @@ module.exports = router;
 /**
  * @swagger
  * /api/v2/accounts:
- *   get:
- *     summary: Get member information
+ *   post:
+ *     summary: Create new member
  *     tags:
- *       - INFT Authentication
+ *       - Accounts
  *     description:
  *     parameters:
- *       - in: query
- *         name: email
- *         description: email of user
- *         format: string
+ *       - in: body
+ *         name: data
+ *         description: Data for register.
+ *         schema:
+ *            type: object
+ *            required:
+ *            - email
+ *            - password
+ *            - fullname
+ *            - first_name
+ *            - last_name
+ *            example:
+ *               {
+                        "email":"example@gmail.com",
+                        "password":"abc123456",
+                        "fullname":"Nguyen A",
+                        "first_name":"A",
+                        "last_name": "Nguyen"
+                  }
  *     produces:
  *       - application/json
  *     responses:

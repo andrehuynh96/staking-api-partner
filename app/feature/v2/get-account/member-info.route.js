@@ -19,13 +19,13 @@ module.exports = router;
  *   get:
  *     summary: Get member information
  *     tags:
- *       - INFT Authentication
+ *       - Accounts
  *     description:
  *     parameters:
  *       - in: query
  *         name: email
  *         description: email of user
- *         format: string
+ *         type: string
  *     produces:
  *       - application/json
  *     responses:

@@ -11,25 +11,20 @@ module.exports = async (req, res, next) => {
     const email = req.body.email.toLowerCase().trim();
     let emailExists = await Member.findOne({
       where: {
-        deleted_flg: false,
         email,
       }
     });
 
-    if (emailExists) {
+    if (emailExists && undefined === emailExists.deleted_flg) {
       return res.badRequest(res.__("EMAIL_EXISTS_ALREADY"), "EMAIL_EXISTS_ALREADY", { fields: ['email'] });
     }
 
-    let deactivateAccount = await Member.findOne({
-      where: {
-        deleted_flg: true,
-        email: email,
-      }
-    });
-
-    if (deactivateAccount) {
-      return res.badRequest(res.__("EMAIL_DEACTIVATED"), "EMAIL_DEACTIVATED", { fields: ['email'] });
+    if (emailExists
+      && false === emailExists.deleted_flg
+      && MemberStatus.UNACTIVATED === emailExists.member_sts) {
+      return _updateAccount(req, res, next);
     }
+
     return _createAccount(req, res, next);
   }
   catch (err) {
@@ -39,7 +34,7 @@ module.exports = async (req, res, next) => {
 }
 
 async function _createAccount(req, res, next) {
-  let { email, password, fullname, last_name, first_name } = req.body;
+  let { email, password, full_name, last_name, first_name } = req.body;
   email = email.toLowerCase().trim();
   let affiliateInfo = {};
   let createAffiliate = await Affiliate.register({ email, referrerCode: "" });
@@ -56,7 +51,7 @@ async function _createAccount(req, res, next) {
   let member = await Member.create({
     email,
     password_hash: password,
-    fullname,
+    fullname: full_name,
     last_name,
     first_name,
     member_sts: MemberStatus.UNACTIVATED,
@@ -71,6 +66,32 @@ async function _createAccount(req, res, next) {
 
   const memberSetting = await MemberSetting.create({ member_id: member.id });
   if (!memberSetting) {
+    return res.serverInternalError();
+  }
+
+  let response = memberMapper(member);
+  return res.ok(response);
+}
+
+async function _updateAccount(req, res, next) {
+  let { email, password, full_name, last_name, first_name } = req.body;
+  email = email.toLowerCase().trim();
+
+  password = bcrypt.hashSync(password, 10);
+  let [_, member] = await Member.update({
+    password_hash: password,
+    fullname: full_name,
+    last_name,
+    first_name,
+  }, {
+    where: {
+      email
+    },
+    returning: true,
+    plain: true
+  });
+
+  if (!member) {
     return res.serverInternalError();
   }
 
