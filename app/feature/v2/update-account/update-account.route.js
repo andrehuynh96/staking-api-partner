@@ -10,7 +10,7 @@ router.put(
   controller.update
 );
 
-router.patch(
+router.put(
   '/accounts/:id/active',
   authenticate,
   controller.activeAccount
@@ -85,7 +85,7 @@ module.exports = router;
 /**
 * @swagger
 * /api/v2/accounts/{id}/active:
-*   patch:
+*   put:
 *     summary: Active account
 *     tags:
 *       - 3RD Integrate

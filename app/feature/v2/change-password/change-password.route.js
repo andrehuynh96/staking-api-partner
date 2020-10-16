@@ -6,7 +6,7 @@ const { changePassword } = require('./validator');
 
 const router = express.Router();
 
-router.patch(
+router.put(
   '/accounts/:id/change-password',
   validator(changePassword),
   authenticate,
@@ -22,7 +22,7 @@ module.exports = router;
 /**
 * @swagger
 * /api/v2/accounts/{id}/change-password:
-*   patch:
+*   put:
 *     summary: change password
 *     tags:
 *       - 3RD Integrate
