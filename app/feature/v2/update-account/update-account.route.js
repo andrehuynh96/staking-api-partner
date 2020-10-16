@@ -28,7 +28,7 @@ module.exports = router;
  *   put:
  *     summary: Update account
  *     tags:
- *       - Accounts
+ *       - 3RD Integrate
  *     description:
  *     parameters:
  *       - in: body
@@ -82,7 +82,7 @@ module.exports = router;
 *   patch:
 *     summary: Active account
 *     tags:
-*       - Accounts
+*       - 3RD Integrate
 *     description:
 *     responses:
 *       200:

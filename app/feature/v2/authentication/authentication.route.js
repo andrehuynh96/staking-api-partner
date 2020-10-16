@@ -20,7 +20,7 @@ module.exports = router;
  *   post:
  *     summary: Get token
  *     tags:
- *       - INFT Authentication
+ *       - 3RD Integrate
  *     description:
  *     parameters:
  *       - in: body

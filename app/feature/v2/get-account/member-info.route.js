@@ -19,7 +19,7 @@ module.exports = router;
  *   get:
  *     summary: Get member information
  *     tags:
- *       - INFT Authentication
+ *       - 3RD Integrate
  *     description:
  *     parameters:
  *       - in: query

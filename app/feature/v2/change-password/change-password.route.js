@@ -25,7 +25,7 @@ module.exports = router;
 *   patch:
 *     summary: change password
 *     tags:
-*       - Accounts
+*       - 3RD Integrate
 *     description:
 *     parameters:
  *       - in: body

@@ -23,7 +23,7 @@ module.exports = router;
  *   post:
  *     summary: check email exist
  *     tags:
- *       - Accounts
+ *       - 3RD Integrate
  *     description:
  *     parameters:
  *       - in: body
