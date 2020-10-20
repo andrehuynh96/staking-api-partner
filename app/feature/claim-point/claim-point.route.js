@@ -9,6 +9,12 @@ router.get(
   controller.getAll
 );
 
+router.get(
+  '/claim-points/setting',
+  authenticate,
+  controller.setting
+)
+
 module.exports = router;
 
 
@@ -17,13 +23,20 @@ module.exports = router;
 
 /**
  * @swagger
- * /v1/claim-points:
+ * /api/v1/claim-points:
  *   get:
  *     summary: history list
  *     tags:
  *       - Claim Point
  *     description:
  *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example:
+ *             Bearer 123123123
  *       - name: offset
  *         in: query
  *         type: integer
@@ -55,6 +68,53 @@ module.exports = router;
                       "offset": 0,
                       "limit": 10,
                       "total": 1
+ *                 }
+ *             }
+ *       400:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/400'
+ *       401:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/401'
+ *       404:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/404'
+ *       500:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/500'
+ */
+
+/**
+ * @swagger
+ * /api/v1/claim-points/setting:
+ *   get:
+ *     summary: get setting
+ *     tags:
+ *       - Claim Point
+ *     description:
+ *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example:
+ *             Bearer 123123123
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Ok
+ *         examples:
+ *           application/json:
+ *             {
+ *                 "data": {
+                      "amount": 100,
+                      "time": 86400
  *                 }
  *             }
  *       400:
