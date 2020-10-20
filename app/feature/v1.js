@@ -20,5 +20,8 @@ router.use(require('./referral/referral.route'))
 router.use(require('./validator/validator.route'))
 router.use(require('./exchange'));
 
+// Claim Point
+router.use(require('./claim-point/claim-point.route'))
+
 
 module.exports = router;
