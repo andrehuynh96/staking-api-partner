@@ -15,6 +15,19 @@ router.get(
   controller.setting
 )
 
+router.post(
+  '/claim-points',
+  authenticate,
+  controller.create
+)
+
+router.get(
+  '/claim-points/check',
+  authenticate,
+  controller.check
+)
+
+
 module.exports = router;
 
 
@@ -162,6 +175,45 @@ module.exports = router;
  *           application/json:
  *             {
  *                 "data": true
+ *             }
+ *       400:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/400'
+ *       401:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/401'
+ *       404:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/404'
+ *       500:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/500'
+ */
+
+/**
+ * @swagger
+ * /api/v1/claim-points/check:
+ *   get:
+ *     summary: check
+ *     tags:
+ *       - Claim Point
+ *     description:
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Ok
+ *         examples:
+ *           application/json:
+ *             {
+ *                 "data": {
+                      "claimable": true,
+                      "next_time": 86400
+ *                 }
  *             }
  *       400:
  *         description: Error
