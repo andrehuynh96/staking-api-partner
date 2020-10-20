@@ -54,5 +54,33 @@ module.exports = {
       logger.error("get setting claim point fail: ", err);
       next(err);
     }
+  },
+  create: async (req, res, next) => {
+    try {
+      let member = await Member.findOne({
+        where: {
+          id: req.user.id
+        }
+      })
+      let membershipType = await MembershipType.findOne({
+        where: {
+          id: member.membership_type_id,
+          deleted_flg: false
+        }
+      })
+      if (membershipType) {
+        await ClaimPoint.create({
+          member_id: req.user.id,
+          amount: membershipType.claim_points,
+          currency_symbol: req.body.currency_symbol || "MS_POINT"
+        });
+        return res.ok(true);
+      } else {
+        return res.ok(false);
+      }
+    } catch (err) {
+      logger.error("create claim point fail: ", err);
+      next(err);
+    }
   }
 }
