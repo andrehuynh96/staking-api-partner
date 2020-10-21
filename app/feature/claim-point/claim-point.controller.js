@@ -5,6 +5,7 @@ const claimPointMapper = require('./claim-point.response-schema');
 const MembershipType = require('app/model/wallet').membership_types;
 const Setting = require('app/model/wallet').settings;
 const Member = require('app/model/wallet').members;
+const database = require('app/lib/database').db().wallet;
 module.exports = {
   getAll: async (req, res, next) => {
     try {
@@ -56,6 +57,7 @@ module.exports = {
     }
   },
   create: async (req, res, next) => {
+    let transaction;
     try {
       let member = await Member.findOne({
         where: {
@@ -69,17 +71,30 @@ module.exports = {
         }
       })
       if (membershipType) {
+        transaction = await database.transaction();
         await ClaimPoint.create({
           member_id: req.user.id,
           amount: membershipType.claim_points,
           currency_symbol: req.body.currency_symbol || "MS_POINT"
-        });
+        }, transaction);
+        await Member.increment({
+          points: parseInt(membershipType.claim_points)
+        },{
+          where: {
+            id: req.user.id
+          },
+          transaction
+        })
+        transaction.commit();
         return res.ok(true);
       } else {
         return res.ok(false);
       }
     } catch (err) {
       logger.error("create claim point fail: ", err);
+      if(transaction) {
+        transaction.rollback();
+      }
       next(err);
     }
   },
