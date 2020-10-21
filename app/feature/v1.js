@@ -23,5 +23,7 @@ router.use(require('./exchange'));
 // Claim Point
 router.use(require('./claim-point/claim-point.route'))
 
+// Coin Gecko API
+router.use(require('./coin-gecko'));
 
 module.exports = router;
