@@ -20,6 +20,12 @@ router.get('/prices',
 *       - Coin Gecko
 *     description:
 *     parameters:
+*       - name: authorization
+*         in: header
+*         schema:
+*           type: string
+*           example:
+*             Bearer access_token
 *       - in: query
 *         name: platform
 *         type: string
@@ -69,6 +75,12 @@ router.get('/histories',
 *       - Coin Gecko
 *     description:
 *     parameters:
+*       - name: authorization
+*         in: header
+*         schema:
+*           type: string
+*           example:
+*             Bearer access_token
 *       - in: query
 *         name: platform
 *         type: string
@@ -183,6 +195,12 @@ router.get('/markets',
 *       - Coin Gecko
 *     description:
 *     parameters:
+*       - name: authorization
+*         in: header
+*         schema:
+*           type: string
+*           example:
+*             Bearer access_token
 *       - in: query
 *         name: platform
 *         type: string
