@@ -71,6 +71,22 @@ module.exports = {
         }
       })
       if (membershipType) {
+        let claim = await ClaimPoint.findOne({
+          where: {
+            member_id: req.user.id,
+          },
+          order: [['created_at','DESC']]
+        });
+        let setting = await Setting.findOne({
+          where: {
+            key: config.setting.MS_POINT_DELAY_TIME_IN_SECONDS
+          }
+        })
+        let next_time = claim ? Date.parse(claim.createdAt) / 1000 + parseInt(setting.value) : 0;
+        if (Date.now() / 1000 < next_time)
+          return res.badRequest(res.__("CANNOT_CLAIM_POINT"), "CANNOT_CLAIM_POINT", {
+            next_time
+          });
         transaction = await database.transaction();
         await ClaimPoint.create({
           member_id: req.user.id,
@@ -123,9 +139,13 @@ module.exports = {
             key: config.setting.MS_POINT_DELAY_TIME_IN_SECONDS
           }
         })
-        let next_time = Date.parse(claim.createdAt) / 1000 + parseInt(setting.value);
+        let next_time = claim ? Date.parse(claim.createdAt) / 1000 + parseInt(setting.value) : 0;
+        let claimable = true;
+        let now = Date.now() / 1000;
+        if (now < next_time) 
+          claimable = false;
         return res.ok({
-          claimable: true,
+          claimable: claimable,
           next_time: next_time
         });
       } else {
