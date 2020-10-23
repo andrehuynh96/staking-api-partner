@@ -1,11 +1,12 @@
 const logger = require('app/lib/logger');
 const config = require('app/config');
-const ClaimPoint = require('app/model/wallet').claim_points;
-const claimPointMapper = require('./claim-point.response-schema');
+const ClaimPoint = require('app/model/wallet').point_histories;
+const claimPointMapper = require('./point-history.response-schema');
 const MembershipType = require('app/model/wallet').membership_types;
 const Setting = require('app/model/wallet').settings;
 const Member = require('app/model/wallet').members;
 const database = require('app/lib/database').db().wallet;
+const ClaimPointStatus = require('../../model/wallet/value-object/point-status');
 module.exports = {
   getAll: async (req, res, next) => {
     try {
@@ -91,7 +92,8 @@ module.exports = {
         await ClaimPoint.create({
           member_id: req.user.id,
           amount: membershipType.claim_points,
-          currency_symbol: req.body.currency_symbol || "MS_POINT"
+          currency_symbol: req.body.currency_symbol || "MS_POINT",
+          status: ClaimPointStatus.APPROVED
         }, transaction);
         await Member.increment({
           points: parseInt(membershipType.claim_points)
