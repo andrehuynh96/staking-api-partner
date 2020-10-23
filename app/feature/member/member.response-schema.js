@@ -28,7 +28,8 @@ const destObject = {
     '[].plutx_userid_id': '[].plutx_userid_id?',
     '[].membership_type_id': '[].membership_type_id?',
     '[].last_name': '[].last_name',
-    '[].first_name': '[].first_name'
+    '[].first_name': '[].first_name',
+    '[].points': '[].points'
   },
   single: {
     id: 'id',
@@ -60,7 +61,8 @@ const destObject = {
     last_name: 'last_name',
     current_language: 'current_language',
     referral_link: 'referral_link',
-    membership_type_name: 'membership_type_name'
+    membership_type_name: 'membership_type_name',
+    points: 'points'
   }
 };
 module.exports = srcObject => {

@@ -117,6 +117,10 @@ const config = {
   webWallet: {
     apiUrl: process.env.WEB_WALLET_API_URL || 'https://dev-staking-wallet-web.chainservices.info',
   },
+  setting: {
+    MS_POINT_DELAY_TIME_IN_SECONDS: "MS_POINT_DELAY_TIME_IN_SECONDS"
+  },
+  cacheDurationTime: process.env.CACHE_DURATION_TIME || 10,
 };
 
 module.exports = config;
