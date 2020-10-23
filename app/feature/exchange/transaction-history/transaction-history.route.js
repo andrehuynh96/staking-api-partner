@@ -45,6 +45,9 @@ module.exports = router;
  *         in: query
  *         type: string
  *         required: true
+ *       - name: sent
+ *         in: query
+ *         type: boolean
  *     produces:
  *       - application/json
  *     responses:
