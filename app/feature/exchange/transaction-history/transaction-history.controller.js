@@ -6,10 +6,23 @@ const Mapper = require("app/feature/response-schema/exchange/transaction.respons
 module.exports = async (req, res, next) => {
   try {
     logger.info('transaction::all');
-    const { query: { offset, limit, device_code, address } } = req;
+    let { query: { offset, limit, device_code, address, sent } } = req;
     const where = { device_code: device_code };
     if (address) {
       where.payin_address = address;
+    }
+    if (sent != undefined) {
+      sent = (sent == "true");
+      if (sent) {
+        where.tx_id = {
+          [Op.ne]: null
+        }
+      }
+      else {
+        where.tx_id = {
+          [Op.is]: null
+        }
+      }
     }
     const off = parseInt(offset) || 0;
     const lim = parseInt(limit) || parseInt(config.appLimit);
