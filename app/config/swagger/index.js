@@ -42,7 +42,7 @@ module.exports = function (app, prefix) {
     swaggerUrl: prefix + '/api-docs.json',
     showExplorer: true,
   };
-
+  console.log(prefix);
   app.use(
     prefix + '/api-docs',
     swaggerUi.serve,
