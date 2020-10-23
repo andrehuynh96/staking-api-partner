@@ -48,7 +48,8 @@ module.exports = router;
                         "latest_login_at": "2020-03-29T10:50:23.236Z",
                         "kyc_id": "0",
                         "kyc_level": 1,
-                        "kyc_status": "Approved"
+                        "kyc_status": "Approved",
+                        "points": 100
                       }
  *             }
  *       400:
