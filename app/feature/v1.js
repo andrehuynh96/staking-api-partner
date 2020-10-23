@@ -26,4 +26,6 @@ router.use(require('./claim-point/claim-point.route'))
 // Coin Gecko API
 router.use(require('./coin-gecko'));
 
+// Get Asset
+router.use(require('./get-asset/get-asset.route'));
 module.exports = router;
