@@ -20,5 +20,12 @@ router.use(require('./referral/referral.route'))
 router.use(require('./validator/validator.route'))
 router.use(require('./exchange'));
 
+//  Point
+router.use(require('./point/point.route'))
 
+// Coin Gecko API
+router.use(require('./coin-gecko'));
+
+// Get Asset
+router.use(require('./get-asset/get-asset.route'));
 module.exports = router;
