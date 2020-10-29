@@ -53,7 +53,7 @@ module.exports = {
         plain: true
       });
       if (!response) {
-        res.serverInternalError();
+        return res.serverInternalError();
       }
       return res.ok(true);
     } catch (error) {
@@ -83,7 +83,7 @@ module.exports = {
           plain: true
         });
       if (!response) {
-        res.serverInternalError();
+        return res.serverInternalError();
       }
       return res.ok(true);
     } catch (error) {

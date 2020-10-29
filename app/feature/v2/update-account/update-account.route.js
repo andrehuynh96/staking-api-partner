@@ -37,6 +37,10 @@ module.exports = router;
  *           type: string
  *           example:
  *             Bearer access_token
+ *       - in: path
+ *         name: id
+ *         description: user id
+ *         type: string
  *       - in: body
  *         name: data
  *         description: Data for
@@ -91,6 +95,10 @@ module.exports = router;
 *       - 3RD Integrate
 *     description:
 *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: user id
+ *         type: string
 *       - name: authorization
 *         in: header
 *         schema:
