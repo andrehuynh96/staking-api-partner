@@ -1,12 +1,12 @@
 const express = require('express');
-const authenticate = require('app/middleware/authenticate.middleware');
+const parseUser = require('app/middleware/parse-user.middleware');
 const controller = require('./payment-method.controller');
 
 const router = express.Router();
 
 router.get(
   '/payment-methods',
-  authenticate,
+  parseUser,
   controller
 );
 

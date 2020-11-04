@@ -1,12 +1,12 @@
 const express = require('express');
-const authenticate = require('app/middleware/authenticate.middleware');
+const parseUser = require('app/middleware/parse-user.middleware');
 const controller = require('./crypto-currency.controller');
 
 const router = express.Router();
 
 router.get(
   '/crypto-currencies',
-  authenticate,
+  parseUser,
   controller
 );
 

@@ -7,7 +7,8 @@ const schema = Joi.object().keys({
   dest_address: Joi.string().required(),
   payment_method: Joi.string().required(),
   redirect_url: Joi.string().optional(),
-  failure_redirect_url: Joi.string().optional() 
+  failure_redirect_url: Joi.string().optional(),
+  device_code: Joi.string().required()
 });
 
 module.exports = schema;

@@ -1,5 +1,6 @@
 const express = require('express');
 const authenticate = require('app/middleware/authenticate.middleware');
+const parseUser = require('app/middleware/parse-user.middleware');
 const controller = require('./transaction.controller');
 const validator = require('app/middleware/validator.middleware');
 const { estimate, create, update } = require('./validator');
@@ -7,34 +8,34 @@ const router = express.Router();
 
 router.post(
   '/estimate',
-  authenticate,
+  parseUser,
   validator(estimate),
   controller.estimate
 );
 
 router.post(
   '/transactions',
-  authenticate,
+  parseUser,
   validator(create),
   controller.create
 );
 
 router.put(
   '/transactions/:id',
-  authenticate,
+  parseUser,
   validator(update),
   controller.update
 );
 
 router.get(
-  '/transactions/:id',
-  authenticate,
+  '/transactions/:id/:deviceCode',
+  parseUser,
   controller.getTxById
 );
 
 router.get(
-  '/transactions',
-  authenticate,
+  '/transactions/:deviceCode',
+  parseUser,
   controller.getTxs
 );
 
@@ -171,7 +172,8 @@ module.exports = router;
                         "dest_address": "moTXHK5dfgT62Y8XMM6RxRAVV8ojmofAnR",
                         "payment_method":"debit-card",
                         "redirect_url": "https://www.google.com",
-                        "failure_redirect_url": "https://www.google.com"
+                        "failure_redirect_url": "https://www.google.com",
+                        "device_code":""
                   }
  *     produces:
  *       - application/json
@@ -234,7 +236,8 @@ module.exports = router;
  *            - order_id
  *            example:
  *               {
-                        "order_id":""
+                        "order_id":"",
+                        "device_code":""
                   }
  *     produces:
  *       - application/json
@@ -266,7 +269,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/fiat/transactions/{id}:
+ * /api/v1/fiat/transactions/{id}/{deviceCode}:
  *   get:
  *     summary: get transaction by id
  *     tags:
@@ -281,6 +284,10 @@ module.exports = router;
  *             Bearer access_token
  *       - in: path
  *         name: id
+ *         type: string
+ *         required: true
+ *       - in: path
+ *         name: deviceCode
  *         type: string
  *         required: true
  *     produces:
@@ -345,7 +352,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/fiat/transactions:
+ * /api/v1/fiat/transactions/{deviceCode}:
  *   get:
  *     summary: get transaction by current log in user
  *     tags:
@@ -358,6 +365,10 @@ module.exports = router;
  *           type: string
  *           example:
  *             Bearer access_token
+ *       - in: path
+ *         name: deviceCode
+ *         type: string
+ *         required: true 
  *       - in: query
  *         name: offset
  *         type: integer
