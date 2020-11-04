@@ -20,10 +20,11 @@ module.exports = async (req, res, next) => {
       return res.badRequest(res.__('REFRESH_TOKEN_INVALID'), 'REFRESH_TOKEN_INVALID', { fields: ['refresh_token'] });
     }
 
-    let today = new Date();
-    if (token.refresh_token_expire_at < today) {
-      return res.badRequest(res.__('REFRESH_TOKEN_EXPIRED'), 'REFRESH_TOKEN_EXPIRED', { fields: ['refresh_token'] });
-    }
+    //TODO: temporary disable
+    // let today = new Date();
+    // if (token.refresh_token_expire_at < today) {
+    //   return res.badRequest(res.__('REFRESH_TOKEN_EXPIRED'), 'REFRESH_TOKEN_EXPIRED', { fields: ['refresh_token'] });
+    // }
 
     let user = await Member.findOne({
       where: {
@@ -45,10 +46,10 @@ module.exports = async (req, res, next) => {
     await Token.update({
       revoked: true
     }, {
-        where: {
-          id: token.id
-        },
-      });
+      where: {
+        id: token.id
+      },
+    });
 
     await _writeActionLog(user.id, req);
     let newToken = _generateToken(user);
