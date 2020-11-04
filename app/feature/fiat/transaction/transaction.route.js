@@ -172,7 +172,8 @@ module.exports = router;
                         "dest_address": "moTXHK5dfgT62Y8XMM6RxRAVV8ojmofAnR",
                         "payment_method":"debit-card",
                         "redirect_url": "https://www.google.com",
-                        "failure_redirect_url": "https://www.google.com"
+                        "failure_redirect_url": "https://www.google.com",
+                        "device_code":""
                   }
  *     produces:
  *       - application/json
@@ -235,7 +236,8 @@ module.exports = router;
  *            - order_id
  *            example:
  *               {
-                        "order_id":""
+                        "order_id":"",
+                        "device_code":""
                   }
  *     produces:
  *       - application/json
