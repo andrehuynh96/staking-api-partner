@@ -66,7 +66,8 @@ module.exports = {
         from_amount: req.body.amount,
         failure_redirect_url: req.body.failure_redirect_url,
         redirect_url: req.body.redirect_url,
-        fee_currency: req.body.source_currency.toUpperCase()
+        fee_currency: req.body.source_currency.toUpperCase(),
+        device_code: req.body.device_code
       };
       let transaction = await FiatTransaction.create(data);
       result.id = transaction.id;
@@ -104,9 +105,10 @@ module.exports = {
       await FiatTransaction.update(data, {
         where: {
           member_id: req.user.id,
+          device_code: req.body.device_code,
           id: req.params.id
         }
-      })
+      });
       return res.ok(true);
     } catch (err) {
       logger.error('update fiat transaction fail:', err);
@@ -115,7 +117,7 @@ module.exports = {
   },
   getTxById: async (req, res, next) => {
     try {
-      const where = { member_id: req.user.id, id: req.params.id };
+      const where = { device_code: req.params.deviceCode, id: req.params.id };
       let transaction = await FiatTransaction.findOne({
         where: where
       });
@@ -134,8 +136,15 @@ module.exports = {
   },
   getTxs: async (req, res, next) => {
     try {
-      let { query: { offset, limit, sort_field, sort_by }, user } = req;
-      const where = { member_id: user.id };
+      let { query: { offset, limit, sort_field, sort_by }, params, user } = req;
+      const where = {};
+      if (params.deviceCode) {
+        where.device_code = params.deviceCode;
+      }
+      if (user.id) {
+        where.member_id = user.id;
+      }
+
       const off = parseInt(offset) || 0;
       const lim = parseInt(limit) || parseInt(conf.appLimit);
       const field = sort_field || 'createdAt';
