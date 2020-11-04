@@ -124,6 +124,14 @@ const config = {
     MS_POINT_UPGRADING_MEMBERSHIP_IS_ENABLED: "MS_POINT_UPGRADING_MEMBERSHIP_IS_ENABLED",
   },
   cacheDurationTime: process.env.CACHE_DURATION_TIME || 10,
+  fiat: {
+    wyre: {
+      url: process.env.WYRE_URL,
+      apiKey: process.env.WYRE_API_KEY,
+      secretKey: process.env.WYRE_SECRET_KEY,
+      accountId: process.env.WYRE_ACCOUNT_ID
+    }
+  },
 };
 
 module.exports = config;
