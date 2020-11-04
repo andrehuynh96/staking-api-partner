@@ -21,7 +21,8 @@ router.use(require('./validator/validator.route'));
 router.use(require('./exchange'));
 
 //  Point
-router.use(require('./point/point.route'));
+router.use(require('./point/point.route'))
+router.use(require('./point/tracking/tracking.route'))
 
 // Coin Gecko API
 router.use(require('./coin-gecko'));
