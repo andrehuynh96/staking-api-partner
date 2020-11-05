@@ -1,5 +1,4 @@
 const express = require('express');
-const authenticate = require('app/middleware/authenticate.middleware');
 const parseUser = require('app/middleware/parse-user.middleware');
 const controller = require('./transaction.controller');
 const validator = require('app/middleware/validator.middleware');
@@ -16,9 +15,17 @@ router.post(
 router.post(
   '/transactions',
   parseUser,
-  validator(create),
+  validator(update),
   controller.create
 );
+
+router.post(
+  '/make-transaction',
+  parseUser,
+  validator(create),
+  controller.make
+);
+
 
 router.put(
   '/transactions/:id',
@@ -54,12 +61,6 @@ module.exports = router;
  *       - Fiat
  *     description:
  *     parameters:
- *       - name: authorization
- *         in: header
- *         schema:
- *           type: string
- *           example:
- *             Bearer access_token
  *       - in: body
  *         name: data
  *         description: Data.
@@ -142,17 +143,11 @@ module.exports = router;
  * @swagger
  * /api/v1/fiat/transactions:
  *   post:
- *     summary: make transaction
+ *     summary: update transaction
  *     tags:
  *       - Fiat
  *     description:
  *     parameters:
- *       - name: authorization
- *         in: header
- *         schema:
- *           type: string
- *           example:
- *             Bearer access_token
  *       - in: body
  *         name: data
  *         description: Data.
@@ -166,13 +161,7 @@ module.exports = router;
  *            - payment_method
  *            example:
  *               {
-                        "source_currency":"USD",
-                        "dest_currency":"BTC",
-                        "amount": 1,
-                        "dest_address": "moTXHK5dfgT62Y8XMM6RxRAVV8ojmofAnR",
-                        "payment_method":"debit-card",
-                        "redirect_url": "https://www.google.com",
-                        "failure_redirect_url": "https://www.google.com",
+                        "order_id":"",
                         "device_code":""
                   }
  *     produces:
@@ -207,6 +196,66 @@ module.exports = router;
  *           $ref: '#/definitions/500'
  */
 
+/**
+ * @swagger
+ * /api/v1/fiat/make-transaction:
+ *   post:
+ *     summary: make transaction
+ *     tags:
+ *       - Fiat
+ *     description:
+ *     parameters:
+ *       - in: body
+ *         name: data
+ *         description: Data.
+ *         schema:
+ *            type: object
+ *            required:
+ *            - amount
+ *            - source_currency
+ *            - dest_currency
+ *            - dest_address
+ *            - payment_method
+ *            example:
+ *               {
+                        "source_currency":"USD",
+                        "dest_currency":"BTC",
+                        "amount": 1,
+                        "dest_address": "moTXHK5dfgT62Y8XMM6RxRAVV8ojmofAnR",
+                        "payment_method":"debit-card",
+                        "redirect_url": "https://www.google.com",
+                        "failure_redirect_url": "https://www.google.com"
+                  }
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Ok
+ *         examples:
+ *           application/json:
+ *             {
+ *                 "data": {
+                    url: "",
+                    reservation: ""
+                }
+ *             }
+ *       400:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/400'
+ *       401:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/401'
+ *       404:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/404'
+ *       500:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/500'
+ */
 
 /**
  * @swagger
@@ -217,12 +266,6 @@ module.exports = router;
  *       - Fiat
  *     description:
  *     parameters:
- *       - name: authorization
- *         in: header
- *         schema:
- *           type: string
- *           example:
- *             Bearer access_token
  *       - in: path
  *         name: id
  *         type: string
@@ -246,9 +289,10 @@ module.exports = router;
  *         description: Ok
  *         examples:
  *           application/json:
- *             {
- *                 "data": true
- *             }
+ *             "data": {
+ *                     "success": true,
+ *                     "status": 1
+ *                   }
  *       400:
  *         description: Error
  *         schema:
@@ -276,12 +320,6 @@ module.exports = router;
  *       - Fiat
  *     description:
  *     parameters:
- *       - name: authorization
- *         in: header
- *         schema:
- *           type: string
- *           example:
- *             Bearer access_token
  *       - in: path
  *         name: id
  *         type: string
@@ -359,12 +397,6 @@ module.exports = router;
  *       - Fiat
  *     description:
  *     parameters:
- *       - name: authorization
- *         in: header
- *         schema:
- *           type: string
- *           example:
- *             Bearer access_token
  *       - in: path
  *         name: deviceCode
  *         type: string
