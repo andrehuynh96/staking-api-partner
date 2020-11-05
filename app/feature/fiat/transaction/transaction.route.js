@@ -143,7 +143,7 @@ module.exports = router;
  * @swagger
  * /api/v1/fiat/transactions:
  *   post:
- *     summary: make transaction
+ *     summary: update transaction
  *     tags:
  *       - Fiat
  *     description:
@@ -289,9 +289,10 @@ module.exports = router;
  *         description: Ok
  *         examples:
  *           application/json:
- *             {
- *                 "data": true
- *             }
+ *             "data": {
+ *                     "success": true,
+ *                     "status": 1
+ *                   }
  *       400:
  *         description: Error
  *         schema:

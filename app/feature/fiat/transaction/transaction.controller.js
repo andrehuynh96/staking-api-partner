@@ -5,6 +5,7 @@ const Member = require('app/model/wallet').members;
 const FiatTransaction = require('app/model/wallet').fiat_transactions;
 const Mapper = require('app/feature/response-schema/fiat/fiat-transaction.response-schema');
 const conf = require('app/config');
+const FiatStatus = require('app/model/wallet/value-object/fiat-transaction-status');
 
 module.exports = {
   estimate: async (req, res, next) => {
@@ -36,7 +37,7 @@ module.exports = {
         }
       });
       if (transaction)
-        return res.ok(false);
+        return res.ok({ success: false });
       let result = await Service.getOrder({ orderId: req.body.order_id });
       if (!result)
         return res.ok(false);
@@ -67,7 +68,10 @@ module.exports = {
         }
       }
       await FiatTransaction.create(data);
-      return res.ok(true);
+      return res.ok({
+        success: true,
+        status: result.status == FiatStatus.FAILED ? 0 : 1
+      });
     } catch (err) {
       logger.error('create fiat transaction fail:', err);
       next(err);
