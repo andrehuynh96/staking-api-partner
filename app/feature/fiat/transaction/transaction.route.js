@@ -366,8 +366,8 @@ module.exports = router;
  *                    "message": ,
  *                    "response": ,
  *                    "device_code": ,
- *                    "createdAt": "",
- *                    "updatedAt": ""
+ *                    "created_at": "",
+ *                    "updated_at": ""
  *                }
  *             }
  *       400:
@@ -400,7 +400,7 @@ module.exports = router;
  *       - in: path
  *         name: deviceCode
  *         type: string
- *         required: true 
+ *         required: true
  *       - in: query
  *         name: offset
  *         type: integer
@@ -454,8 +454,8 @@ module.exports = router;
  *                    "message": ,
  *                    "response": ,
  *                    "device_code": ,
- *                    "createdAt": "",
- *                    "updatedAt": ""
+ *                    "created_at": "",
+ *                    "updated_at": ""
  *                  }
  *                 ],
  *                 "offset": 0,
