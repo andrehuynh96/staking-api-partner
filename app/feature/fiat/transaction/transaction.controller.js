@@ -158,7 +158,7 @@ module.exports = {
   },
   getTxById: async (req, res, next) => {
     try {
-      const where = { device_code: req.params.deviceCode, id: req.params.id };
+      const where = { device_code: req.params.device_code, id: req.params.id };
       let transaction = await FiatTransaction.findOne({
         where: where
       });
@@ -179,10 +179,10 @@ module.exports = {
     try {
       let { query: { offset, limit, sort_field, sort_by }, params, user } = req;
       const where = {};
-      if (params.deviceCode) {
-        where.device_code = params.deviceCode;
+      if (params.device_code) {
+        where.device_code = params.device_code;
       }
-      if (user.id) {
+      if (user) {
         where.member_id = user.id;
       }
 
