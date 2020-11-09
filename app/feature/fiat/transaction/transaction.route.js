@@ -35,13 +35,13 @@ router.put(
 );
 
 router.get(
-  '/transactions/:id/:deviceCode',
+  '/transactions/:id/:device_code',
   parseUser,
   controller.getTxById
 );
 
 router.get(
-  '/transactions/:deviceCode',
+  '/transactions/:device_code',
   parseUser,
   controller.getTxs
 );
@@ -313,7 +313,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/fiat/transactions/{id}/{deviceCode}:
+ * /api/v1/fiat/transactions/{id}/{device_code}:
  *   get:
  *     summary: get transaction by id
  *     tags:
@@ -325,7 +325,7 @@ module.exports = router;
  *         type: string
  *         required: true
  *       - in: path
- *         name: deviceCode
+ *         name: device_code
  *         type: string
  *         required: true
  *     produces:
@@ -390,7 +390,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api/v1/fiat/transactions/{deviceCode}:
+ * /api/v1/fiat/transactions/{device_code}:
  *   get:
  *     summary: get transaction by current log in user
  *     tags:
@@ -398,7 +398,7 @@ module.exports = router;
  *     description:
  *     parameters:
  *       - in: path
- *         name: deviceCode
+ *         name: device_code
  *         type: string
  *         required: true
  *       - in: query
