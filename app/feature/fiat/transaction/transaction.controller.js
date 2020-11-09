@@ -146,7 +146,6 @@ module.exports = {
       }
       await FiatTransaction.update(data, {
         where: {
-          member_id: req.user.id,
           device_code: req.body.device_code,
           id: req.params.id
         }
