@@ -81,12 +81,7 @@ module.exports = {
   make: async (req, res, next) => {
     try {
       const Service = FiatFactory.create(FiatProvider.Wyre, {});
-      let member = await Member.findOne({
-        where: {
-          id: req.user.id
-        }
-      });
-      let result = await Service.makeTransaction({
+      const data = {
         amount: req.body.amount,
         sourceCurrency: req.body.source_currency,
         destCurrency: req.body.dest_currency,
@@ -94,14 +89,26 @@ module.exports = {
         paymentMethod: req.body.payment_method,
         failureRedirectUrl: req.body.failure_redirect_url,
         redirectUrl: req.body.redirect_url,
-        email: member.email,
-        phone: member.phone,
-        firstName: member.first_name,
-        lastName: member.last_name,
-        postalCode: member.post_code,
-        city: member.city,
-        address: member.address
-      });
+      };
+
+      if (req.user) {
+        let member = await Member.findOne({
+          where: {
+            id: req.user.id
+          }
+        });
+
+        data.email = member.email;
+        data.phone = member.phone;
+        data.firstName = member.first_name;
+        data.lastName =  member.last_name;
+        data.postalCode = member.post_code;
+        data.city = member.city;
+        data.address = member.address;
+      }
+
+      let result = await Service.makeTransaction(data);
+      
       if (result.error) {
         return res.badRequest(result.error.message, 'FIAT_PROVIDER_ERROR');
       }
@@ -139,7 +146,6 @@ module.exports = {
       }
       await FiatTransaction.update(data, {
         where: {
-          member_id: req.user.id,
           device_code: req.body.device_code,
           id: req.params.id
         }
