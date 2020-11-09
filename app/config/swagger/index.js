@@ -1,14 +1,17 @@
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const path = require('path');
+const config = require('app/config');
 
 module.exports = function (app, prefix) {
   prefix = prefix || '';
   var options = {
     swaggerDefinition: {
       info: {
-        title: 'Staking API',
-        version: '1.0.0',
+        title: 'Staking API partner',
+        version: config.app.version,
+        buildNumber: config.app.buildNumber,
+        description: config.app.description,
       },
       servers: [
         {
