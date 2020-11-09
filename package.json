@@ -1,7 +1,7 @@
 {
   "name": "staking-api-partner",
-  "version": "1.0.0",
-  "description": "staking api partner",
+  "version": "1.1.0",
+  "description": "v1.16.0-ms-rc",
   "main": "index.js",
   "scripts": {
     "dev": "NODE_PATH=. nodemon",
@@ -26,6 +26,7 @@
   "license": "ISC",
   "dependencies": {
     "@panva/jose": "^1.9.2",
+    "@kevit/log4js-hangout": "^1.0.3",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "bignumber.js": "^9.0.0",
