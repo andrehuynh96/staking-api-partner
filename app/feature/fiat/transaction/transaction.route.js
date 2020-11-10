@@ -27,13 +27,6 @@ router.post(
 );
 
 
-router.put(
-  '/transactions/:id',
-  parseUser,
-  validator(update),
-  controller.update
-);
-
 router.get(
   '/transactions/:id/:device_code',
   parseUser,
@@ -239,60 +232,6 @@ module.exports = router;
                     reservation: ""
                 }
  *             }
- *       400:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/400'
- *       401:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/401'
- *       404:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/404'
- *       500:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/500'
- */
-
-/**
- * @swagger
- * /api/v1/fiat/transactions/{id}:
- *   put:
- *     summary: update transaction
- *     tags:
- *       - Fiat
- *     description:
- *     parameters:
- *       - in: path
- *         name: id
- *         type: string
- *         required: true
- *       - in: body
- *         name: data
- *         description: Data.
- *         schema:
- *            type: object
- *            required:
- *            - order_id
- *            example:
- *               {
-                        "order_id":"",
-                        "device_code":""
-                  }
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Ok
- *         examples:
- *           application/json:
- *             "data": {
- *                     "success": true,
- *                     "status": 1
- *                   }
  *       400:
  *         description: Error
  *         schema:
