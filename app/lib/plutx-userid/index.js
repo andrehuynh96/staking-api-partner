@@ -39,7 +39,7 @@ const PluTXUserIdApi = {
       return { httpCode: 200, data: result.data.data };
     }
     catch (err) {
-      logger.error("Register client fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("Register client fail:", err);
 
       return { httpCode: err.response.status, data: err.response.data };
     }
@@ -71,7 +71,7 @@ const PluTXUserIdApi = {
       return { httpCode: 200, data: result.data.data };
     }
     catch (err) {
-      logger.error("Register client fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("Register client fail:", err);
 
       return { httpCode: err.response.status, data: err.response.data };
     }
@@ -91,7 +91,7 @@ const PluTXUserIdApi = {
       return { httpCode: 200, data: result.data.data };
     }
     catch (err) {
-      logger.error("Register client fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("Register client fail:", err);
 
       return { httpCode: err.response.status, data: err.response.data };
     }
@@ -115,7 +115,7 @@ const PluTXUserIdApi = {
       return { httpCode: 200, data: result.data.data };
     }
     catch (err) {
-      logger.error("Login fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("Login fail:", err);
 
       return { httpCode: err.response.status, data: err.response.data };
     }
@@ -135,7 +135,7 @@ const PluTXUserIdApi = {
       return { httpCode: 200, data: result.data.data };
     }
     catch (err) {
-      logger.error("Forgot password fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("Forgot password fail:", err);
 
       return { httpCode: err.response.status, data: err.response.data };
     }
@@ -158,7 +158,7 @@ const PluTXUserIdApi = {
       return { httpCode: 200, data: result.data.data };
     }
     catch (err) {
-      logger.error("Set new password fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("Set new password fail:", err);
 
       return { httpCode: err.response.status, data: err.response.data };
     }
@@ -181,7 +181,7 @@ const PluTXUserIdApi = {
       return { httpCode: 200, data: result.data.data };
     }
     catch (err) {
-      logger.error("Change password fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("Change password fail:", err);
 
       return { httpCode: err.response.status, data: err.response.data };
     }
@@ -201,7 +201,7 @@ const PluTXUserIdApi = {
       return { httpCode: 200, data: result.data.data };
     }
     catch (err) {
-      logger.error("Get token", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("Get token", err);
 
       return { httpCode: err.response.status, data: err.response.data };
     }
@@ -223,7 +223,7 @@ const PluTXUserIdApi = {
       return { httpCode: 200, data: result.data.data };
     }
     catch (err) {
-      logger.error("Create SSO token:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("Create SSO token:", err);
 
       return { httpCode: err.response.status, data: err.response.data };
     }
@@ -246,7 +246,7 @@ const PluTXUserIdApi = {
       return { httpCode: 200, data: result.data.data };
     }
     catch (err) {
-      logger.error("Login fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("Login fail:", err);
 
       return { httpCode: err.response.status, data: err.response.data };
     }
