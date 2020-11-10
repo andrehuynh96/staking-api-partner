@@ -24,6 +24,9 @@ router.use(require('./exchange'));
 router.use(require('./point/point.route'))
 router.use(require('./point/tracking/tracking.route'))
 
+//Bank
+router.use('/bank', require('./bank'))
+
 // Coin Gecko API
 router.use(require('./coin-gecko'));
 
