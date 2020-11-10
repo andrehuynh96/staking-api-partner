@@ -48,12 +48,14 @@ module.exports = {
         transaction_id: result.transferId,
         payment_method_name: result.paymentMethodName,
         order_type: result.orderType,
-        member_id: req.user.id,
         from_currency: result.sourceCurrency,
         to_cryptocurrency: result.destCurrency,
         to_address: result.dest,
         device_code: req.body.device_code
       };
+      if (req.user) {
+        data.member_id = req.user.id;
+      }
       if (result.transferId) {
         let transaction = await Service.getTransaction({ transferId: result.transferId });
         if (transaction) {
@@ -108,7 +110,7 @@ module.exports = {
       }
 
       let result = await Service.makeTransaction(data);
-      
+
       if (result.error) {
         return res.badRequest(result.error.message, 'FIAT_PROVIDER_ERROR');
       }
@@ -119,43 +121,6 @@ module.exports = {
     }
   },
 
-  update: async (req, res, next) => {
-    try {
-      const Service = FiatFactory.create(FiatProvider.Wyre, {});
-      let result = await Service.getOrder({ orderId: req.body.order_id });
-      let data = {
-        order_id: result.id,
-        status: result.status,
-        from_amount: result.sourceAmount,
-        transaction_id: result.transferId,
-        payment_method_name: result.paymentMethodName,
-        order_type: result.orderType
-      };
-      if (result.transferId) {
-        let transaction = await Service.getTransaction({ transferId: result.transferId });
-        if (transaction) {
-          data.tx_id = transaction.blockchainNetworkTx;
-          data.rate = transaction.rate;
-          data.to_amount = transaction.destAmount;
-          data.fee_currency = transaction.feeCurrency;
-          data.message = transaction.message;
-          data.fees = transaction.fees;
-          data.total_fee = transaction.fee;
-          data.response = JSON.stringify(transaction);
-        }
-      }
-      await FiatTransaction.update(data, {
-        where: {
-          device_code: req.body.device_code,
-          id: req.params.id
-        }
-      });
-      return res.ok(true);
-    } catch (err) {
-      logger.error('update fiat transaction fail:', err);
-      next(err);
-    }
-  },
   getTxById: async (req, res, next) => {
     try {
       const where = { device_code: req.params.device_code, id: req.params.id };
