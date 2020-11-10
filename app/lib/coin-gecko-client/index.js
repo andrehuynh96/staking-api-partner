@@ -13,13 +13,12 @@ module.exports = {
         return coinPrices.data[coingeckoId];
     }
     catch (error) {
-      logger.info('coinGeckoClient.simple.price no found data with currency' + coinId);
+      logger.info('coinGeckoClient.simple.price no found data with currency' + coingeckoId);
       throw error;
     }
   },
   getHistories: async (coinId, from, to) => {
     try {
-      console.log(from,to);
       const coinHistories = await coinGeckoClient.coins.fetchMarketChartRange(coinId, { from: from, to: to });
       return coinHistories.data;
     }
@@ -45,7 +44,6 @@ module.exports = {
   },
   getTokenHistories: async (coingecko_id, contract_addresses , from, to) => {
     try {
-      console.log(coingecko_id, contract_addresses , from, to);
       const tokenHistories = await coinGeckoClient.coins.fetchCoinContractMarketChartRange(contract_addresses,coingecko_id, { from: from, to: to });
       return tokenHistories.data;
     }

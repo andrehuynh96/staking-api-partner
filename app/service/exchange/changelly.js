@@ -7,7 +7,7 @@ const Exchange = require("./base");
 
 const mappingCoin = {
   "USDT": "USDT20"
-}
+};
 
 class Changelly extends Exchange {
   constructor() {
@@ -19,10 +19,10 @@ class Changelly extends Exchange {
       return await this._makeRequest({
         method: 'getCurrenciesFull',
         params: {}
-      })
+      });
     }
     catch (err) {
-      logger.error(`changelly getCurrencies error:`, err);
+      logger[err.canLogAxiosError ? 'error' : 'info'](`changelly getCurrencies error:`, err);
       throw err;
     }
   }
@@ -35,10 +35,10 @@ class Changelly extends Exchange {
           from: _getPlatform(from.toUpperCase()),
           to: _getPlatform(to.toUpperCase())
         }
-      })
+      });
     }
     catch (err) {
-      logger.error(`changelly getMinAmount error:`, err);
+      logger[err.canLogAxiosError ? 'error' : 'info'](`changelly getMinAmount error:`, err);
       throw err;
     }
   }
@@ -51,7 +51,7 @@ class Changelly extends Exchange {
       return await this._estimateFixRate({ from, to, amount });
     }
     catch (err) {
-      logger.error(`changelly getExchangeAmount error:`, err);
+      logger[err.canLogAxiosError ? 'error' : 'info'](`changelly getExchangeAmount error:`, err);
       throw err;
     }
   }
@@ -64,7 +64,7 @@ class Changelly extends Exchange {
       return await this._makeTransaction({ from, to, amount, address, extra_id, refund_address, refund_extra_id });
     }
     catch (err) {
-      logger.error(`changelly createTransaction error:`, err);
+      logger[err.canLogAxiosError ? 'error' : 'info'](`changelly createTransaction error:`, err);
       throw err;
     }
   }
@@ -85,7 +85,7 @@ class Changelly extends Exchange {
         to: _getPlatform(to.toUpperCase()),
         amount: amount
       }]
-    })
+    });
   }
 
   async _estimateFixRate({ from, to, amount }) {
@@ -96,7 +96,7 @@ class Changelly extends Exchange {
         to: _getPlatform(to.toUpperCase()),
         // amountFrom: amount
       }]
-    })
+    });
   }
   async _makeTransaction({ from, to, amount, address, extra_id, refund_address, refund_extra_id }) {
     return await this._makeRequest({
@@ -110,7 +110,7 @@ class Changelly extends Exchange {
         refundAddress: refund_address,
         refundExtraId: refund_extra_id
       }
-    })
+    });
   }
 
   async _makeTransactionFixRate({ from, to, amount, address, extra_id, refund_address, refund_extra_id, rate_id, amount_to }) {
@@ -127,7 +127,7 @@ class Changelly extends Exchange {
         rateId: rate_id,
         // amountTo: amount_to
       }
-    })
+    });
   }
 
   async _makeRequest({ method, params }) {
