@@ -9,19 +9,36 @@ const Member = require('app/model/wallet').members;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const database = require('app/lib/database').db().wallet;
+const NotificationService = require('app/lib/notification');
+const EmailTemplateType = require('app/model/wallet/value-object/email-template-type');
+const EmailTemplate = require('app/model/wallet').email_templates;
+
 
 module.exports = {
   staking: async (req, res, next) => {
     let transaction;
     try {
-      if (!req.user.membership_type_id) {
+      let { body: { amount, tx_id, platform } } = req;
+      platform = platform == "TADA" ? "ADA" : platform;
+
+      let member = await Member.findOne({
+        where: {
+          id: req.user.id
+        }
+      });
+      if (!member) {
+        return res.badRequest(res.__("NOT_FOUND_MEMBER"), "NOT_FOUND_MEMBER");
+      }
+
+      if (!member.membership_type_id) {
         return res.badRequest(res.__("UPGRADE_MEMBERSHIP_TYPE_TO_RECEIVE_STAKING_POINT"), "UPGRADE_MEMBERSHIP_TYPE_TO_RECEIVE_STAKING_POINT");
       }
 
       let history = await PointHistory.findOne({
         where: {
-          member_id: req.user.id,
+          member_id: member.id,
           action: PointAction.STAKING,
+          platform: platform,
           status: {
             [Op.ne]: PointStatus.CANCELED
           }
@@ -42,7 +59,7 @@ module.exports = {
 
       let membershipType = await MembershipType.findOne({
         where: {
-          id: req.user.membership_type_id,
+          id: member.membership_type_id,
           deleted_flg: false
         }
       });
@@ -52,14 +69,14 @@ module.exports = {
 
       transaction = await database.transaction();
       await PointHistory.create({
-        member_id: req.user.id,
+        member_id: member.id,
         amount: membershipType.staking_points || 0,
         currency_symbol: "MS_POINT",
         status: PointStatus.APPROVED,
         action: PointAction.STAKING,
-        tx_id: req.body.tx_id,
-        platform: req.body.platform,
-        source_amount: req.body.amount,
+        tx_id: tx_id,
+        platform: platform,
+        source_amount: amount,
         description: JSON.stringify(req.body)
       }, transaction);
 
@@ -67,18 +84,18 @@ module.exports = {
         points: parseInt(membershipType.staking_points || 0)
       }, {
           where: {
-            id: req.user.id
+            id: member.id
           },
           transaction
         })
       transaction.commit();
 
       _sendNotification({
-        member_id: req.user.id,
-        amount: req.body.amount,
-        platform: req.body.platform,
+        member_id: member.id,
+        amount: amount,
+        platform: platform,
         point: membershipType.staking_points,
-        tx_id: req.body.tx_id
+        tx_id: tx_id
       });
 
       return res.ok(true);
@@ -95,9 +112,51 @@ module.exports = {
 
 async function _sendNotification({ member_id, point, platform, tx_id, amount }) {
   try {
+    let member = await Member.findOne({
+      where: {
+        id: member_id
+      }
+    });
 
+    let data = {
+      sent_all_flg: false,
+      actived_flg: true,
+      deleted_flg: false
+    };
+    let templates = await _findEmailTemplate(EmailTemplateType.MS_POINT_NOTIFICATION_ADD_POINT_STAKING);
+
+    for (let t of templates) {
+      let content = NotificationService.buildNotificationContent(t.template, {
+        firstName: member.first_name,
+        lastName: member.last_name,
+        point: point,
+        point_unit: 'points',
+        amount: amount,
+        platform: platform
+      });
+      if (t.language.toLowerCase() == 'ja') {
+        data.title_ja = t.subject;
+        data.content_ja = content;
+      }
+      else {
+        data.title = t.subject;
+        data.content = content;
+      }
+    }
+
+    await NotificationService.createNotificationMember(data, member_id);
   }
   catch (err) {
     logger.error(`point tracking _sendNotification::`, err);
   }
 }
+
+async function _findEmailTemplate(templateName) {
+  let templates = await EmailTemplate.findAll({
+    where: {
+      name: templateName
+    }
+  });
+
+  return templates;
+} 
