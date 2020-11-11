@@ -28,6 +28,13 @@ module.exports = router;
  *       - Claim Point
  *     description:
  *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example:
+ *             Bearer 123123123
  *       - in: body
  *         name: data
  *         description: Data .
