@@ -141,6 +141,18 @@ const config = {
       accountId: process.env.WYRE_ACCOUNT_ID
     }
   },
+  banking: {
+    nexo: {
+      usingIBP: process.env.NEXO_USING_IBP == "1",
+      url: process.env.NEXO_URL,
+      apiKey: process.env.NEXO_API_KEY,
+    }
+  },
+  sdk: {
+    baseUrl: process.env.SDK_URL,
+    apiKey: process.env.SDK_API_KEY,
+    secretKey: process.env.SDK_SECRET_KEY
+  },
   hangoutError: {
     isEnabled: process.env.HANGOUT_ERROR_IS_ENABLED === 'true',
     logLevel: process.env.HANGOUT_ERROR_LOG_LEVEL || 'error',
