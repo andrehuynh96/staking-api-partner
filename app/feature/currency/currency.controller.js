@@ -32,7 +32,8 @@ module.exports = {
       if (req.query.default != undefined) {
         where.default_flg = req.query.default;
       }
-      where.status = CurrencyStatus.ENABLED;
+
+      where.mobile_status = { [Op.or]: [CurrencyStatus.ENABLED, CurrencyStatus.MAINTENANCE] };
       const { count: total, rows: items } = await Currency.findAndCountAll({ limit, offset, where: where, order: [['order_index', 'ASC']] });
 
       let votings = await StakingAPI.platformVote();

@@ -49,6 +49,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: CurrencyStatus.ENABLED
     },
+    mobile_status: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: CurrencyStatus.ENABLED
+    },
     created_by: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -63,6 +68,26 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
+    },
+    web_site_url: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    network: {
+      type: DataTypes.STRING(128),
+      allowNull: false,
+    },
+    explore_url: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    transaction_format_link: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    address_format_link: {
+      type: DataTypes.STRING(500),
+      allowNull: true
     }
   }, {
       underscored: true,

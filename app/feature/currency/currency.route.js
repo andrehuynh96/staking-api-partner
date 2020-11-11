@@ -42,7 +42,7 @@ module.exports = router;
  *       - application/json
  *     responses:
  *       200:
- *         description: Ok
+ *         description: Ok, status =1 is ENABLED, 2 is MAINTENANCE
  *         examples:
  *           application/json:
  *             {
@@ -61,6 +61,12 @@ module.exports = router;
                           "sc_token_address":"0x423822D571Bb697dDD993c04B507dD40E754cF05",
                           "created_at":"2020-01-13T06:47:41.248Z",
                           "updated_at":"2020-01-13T06:47:41.248Z",
+                          "network":"mainnet",
+                          "url": "https://blockscout.com/etc/mainnet",
+                          "transactionFormatLink": "https://blockscout.com/etc/mainnet/tx/{0}",
+                          "addressFormatLink": "https://blockscout.com/etc/mainnet/address/{0}",
+                          "web_site_url": "https://ethereumclassic.org/",
+                          "status": 1,
                           "default_flg": true,
                           "staking_flg": true,
                           "staking_info": {
