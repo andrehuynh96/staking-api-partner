@@ -5,6 +5,67 @@ const NexoMember = require('app/model/wallet').nexo_members;
 const balanceMapper = require('./nexo-balance.response-schema');
 const mapper = require('./nexo-member.response-schema');
 module.exports = {
+  create: async (req, res, next) => {
+    try {
+      let member = await NexoMember.findOne({
+        where: {
+          email: req.body.email
+        }
+      });
+      if (member)
+        return res.badRequest(res.__("EMAIL_EXISTED"), "EMAIL_EXISTED");
+      const Service = BankFactory.create(BankProvider.Nexo, {});
+      let account = await Service.createAccount(req.body);
+      if (account.error)
+        return res.badRequest(account.error.message, "NEXO_CREATE_ACCOUNT_ERROR");
+      let nexoMember = await NexoMember.create({
+        ...req.body,
+        member_id: req.user ? req.user.id : req.user,
+        nexo_id: account.id,
+        user_secret: account.secret
+      });
+      return res.ok(mapper(nexoMember));
+    } catch (err) {
+      logger[err.canLogAxiosError ? 'error' : 'info']('create nexo account fail:', err);
+      if (err.response.status == 400) {
+        return res.badRequest(err.response.data.error.detail, "NEXO_CREATE_ACCOUNT_ERROR");
+      }
+      next(err);
+    }
+  },
+  verify: async (req, res, next) => {
+    try {
+      let member = await NexoMember.findOne({
+        where: {
+          email: req.body.email
+        }
+      });
+      if (!member)
+        return res.badRequest(res.__("NEXO_MEMBER_NOT_EXISTED"), "NEXO_MEMBER_NOT_EXISTED");
+      const Service = BankFactory.create(BankProvider.Nexo, {});
+      let result = await Service.verifyEmail({
+        nexo_id: member.nexo_id,
+        secret: member.user_secret,
+        code: req.body.code
+      });
+      if (result.error)
+        return res.badRequest(result.error.message, "NEXO_VERIFY_ACCOUNT_ERROR");
+      await NexoMember.update({
+        status: Status.ACTIVATED
+      }, {
+        where: {
+          email: req.body.email
+        }
+      });
+      return res.ok(true);
+    } catch (err) {
+      logger[err.canLogAxiosError ? 'error' : 'info']('verify nexo account fail:', err);
+      if (err.response.status == 400) {
+        return res.badRequest(err.response.data.error.detail, "NEXO_VERIFY_ACCOUNT_ERROR");
+      }
+      next(err);
+    }
+  },
   recoveryRequest: async (req, res, next) => {
     try {
       let member = NexoMember.findOne({

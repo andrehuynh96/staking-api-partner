@@ -37,6 +37,8 @@ module.exports = {
           id: req.user.id
         }
       })
+      if (!member)
+        return res.badRequest(res.__('MEMBER_NOT_FOUND'), 'MEMBER_NOT_FOUND');
       let membershipType = await MembershipType.findOne({
         where: {
           id: member.membership_type_id,
@@ -65,6 +67,8 @@ module.exports = {
           id: req.user.id
         }
       })
+      if (!member)
+        return res.badRequest(res.__('MEMBER_NOT_FOUND'), 'MEMBER_NOT_FOUND');
       let membershipType = await MembershipType.findOne({
         where: {
           id: member.membership_type_id,
@@ -123,6 +127,8 @@ module.exports = {
           id: req.user.id
         }
       })
+      if (!member)
+        return res.badRequest(res.__('MEMBER_NOT_FOUND'), 'MEMBER_NOT_FOUND');
       let membershipType = await MembershipType.findOne({
         where: {
           id: member.membership_type_id,
