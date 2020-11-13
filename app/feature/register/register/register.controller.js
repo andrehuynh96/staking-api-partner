@@ -145,7 +145,7 @@ async function _createAccount(req, res, next) {
   if (!otp) {
     return res.serverInternalError();
   }
-  
+
   const memberSetting = await MemberSetting.create({ member_id: member.id });
   if (!memberSetting) {
     return res.serverInternalError();
