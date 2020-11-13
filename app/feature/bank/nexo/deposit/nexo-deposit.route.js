@@ -27,7 +27,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /web/bank/nexo/deposit/{nexo_id}/{currency_id}:
+ * /api/v1/bank/nexo/deposit/{nexo_id}/{currency_id}:
  *   get:
  *     summary: get deposit information
  *     tags:
@@ -77,7 +77,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /web/bank/nexo/deposit/transactions/track:
+ * /api/v1/bank/nexo/deposit/transactions/track:
  *   post:
  *     summary: tracking deposit
  *     tags:

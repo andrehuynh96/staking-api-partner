@@ -56,7 +56,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /web/bank/nexo/members:
+ * /api/v1/bank/nexo/members:
  *   post:
  *     summary: create nexo account
  *     tags:
@@ -118,7 +118,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /web/bank/nexo/members/verify:
+ * /api/v1/bank/nexo/members/verify:
  *   post:
  *     summary: verify nexo account
  *     tags:
