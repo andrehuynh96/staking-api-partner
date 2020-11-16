@@ -14,9 +14,6 @@ module.exports = {
             const filter = query.filter ? req.query.filter : 'all';
 
             const userId = req.user.id;
-            
-            console.log("User ID: ",userId);
-
             let selected_lang = await _getMemberCurrentLanguage(userId);
 
             let where_notification_details = {
