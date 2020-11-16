@@ -4,6 +4,7 @@ const BankProvider = require('app/service/banking/provider');
 const NexoMember = require('app/model/wallet').nexo_members;
 const balanceMapper = require('./nexo-balance.response-schema');
 const mapper = require('./nexo-member.response-schema');
+const Status = require('app/model/wallet/value-object/nexo-member-status');
 module.exports = {
   create: async (req, res, next) => {
     try {
