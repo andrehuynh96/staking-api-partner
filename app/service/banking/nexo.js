@@ -64,7 +64,7 @@ class Nexo extends Banking {
       })
     }
     catch (err) {
-      logger.error(`nexo requestRecoveryCode error:`, err);
+      logger[err.canLogAxiosError ? 'error' : 'info'](`nexo requestRecoveryCode error:`, err);
       throw err;
     }
   }
@@ -86,7 +86,7 @@ class Nexo extends Banking {
       })
     }
     catch (err) {
-      logger.error(`nexo verifyRecoveryCode error:`, err);
+      logger[err.canLogAxiosError ? 'error' : 'info'](`nexo verifyRecoveryCode error:`, err);
       throw err;
     }
   }
@@ -116,7 +116,7 @@ class Nexo extends Banking {
       })
     }
     catch (err) {
-      logger.error(`nexo getDepositAddress error:`, err);
+      logger[err.canLogAxiosError ? 'error' : 'info'](`nexo getDepositAddress error:`, err);
       throw err;
     }
   }
