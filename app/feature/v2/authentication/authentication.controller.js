@@ -114,7 +114,7 @@ module.exports = async (req, res, next) => {
         }
     }
 
-    let token = _generateToken(key, (member ? member.id : null));
+    let token = _generateToken(key, (member ? member.id : null), (member ? member.email : null));
     await _writeToken(member, token, body.grant_type);
     return res.ok(token);
   }
@@ -179,10 +179,12 @@ function _checkInputData(data) {
 }
 
 
-function _generateToken(client, memberId) {
+function _generateToken(client, memberId, email) {
   var payload = {
     client_id: client.api_key,
-    member_id: memberId
+    member_id: memberId,
+    email: email,
+    user_id: memberId,
   };
   let accessToken = jwt.sign(payload, config.token.key.private, config.token.signOption);
   let refreshToken = Buffer.from(uuidV4()).toString('base64');

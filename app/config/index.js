@@ -1,9 +1,18 @@
-/*eslint no-process-env: "off"*/
+/* eslint no-process-env: "off"*/
 require('dotenv').config();
 const fs = require("fs");
+const pkg = require('../../package.json');
+
 const logFolder = process.env.LOG_FOLDER || './public/logs';
 
 const config = {
+  app: {
+    name: process.env.APP_NAME || 'staking-api-partner',
+    version: pkg.version,
+    description: pkg.description,
+    buildNumber: process.env.BUILD_NUMBER || process.env.CI_JOB_ID || '',
+    port: parseInt(process.env.PORT || process.env.APP_PORT),
+  },
   logger: {
     level: process.env.LOG_LEVEL,
     console: {
@@ -118,9 +127,25 @@ const config = {
     apiUrl: process.env.WEB_WALLET_API_URL || 'https://dev-staking-wallet-web.chainservices.info',
   },
   setting: {
-    MS_POINT_DELAY_TIME_IN_SECONDS: "MS_POINT_DELAY_TIME_IN_SECONDS"
+    MS_POINT_DELAY_TIME_IN_SECONDS: "MS_POINT_DELAY_TIME_IN_SECONDS",
+    MS_POINT_STAKING_IS_ENABLED: "MS_POINT_STAKING_IS_ENABLED",
+    MS_POINT_EXCHANGE_IS_ENABLED: "MS_POINT_EXCHANGE_IS_ENABLED",
+    MS_POINT_UPGRADING_MEMBERSHIP_IS_ENABLED: "MS_POINT_UPGRADING_MEMBERSHIP_IS_ENABLED",
   },
   cacheDurationTime: process.env.CACHE_DURATION_TIME || 10,
+  fiat: {
+    wyre: {
+      url: process.env.WYRE_URL,
+      apiKey: process.env.WYRE_API_KEY,
+      secretKey: process.env.WYRE_SECRET_KEY,
+      accountId: process.env.WYRE_ACCOUNT_ID
+    }
+  },
+  hangoutError: {
+    isEnabled: process.env.HANGOUT_ERROR_IS_ENABLED === 'true',
+    logLevel: process.env.HANGOUT_ERROR_LOG_LEVEL || 'error',
+    webhookUrl: process.env.HANGOUT_ERROR_CHANEL_WEBHOOK_URL,
+  },
 };
 
 module.exports = config;

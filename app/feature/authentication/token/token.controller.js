@@ -39,10 +39,10 @@ module.exports = async (req, res, next) => {
           attempt_login_number: user.attempt_login_number + 1,
           latest_login_at: Sequelize.fn('NOW')
         }, {
-            where: {
-              id: user.id
-            }
-          })
+          where: {
+            id: user.id
+          }
+        })
         if (user.attempt_login_number + 1 == config.lockUser.maximumAttemptsLogin) {
           return res.forbidden(res.__("ACCOUNT_TEMPORARILY_LOCKED_DUE_TO_MANY_WRONG_ATTEMPTS"), "ACCOUNT_TEMPORARILY_LOCKED_DUE_TO_MANY_WRONG_ATTEMPTS");
         }
@@ -67,10 +67,10 @@ module.exports = async (req, res, next) => {
         attempt_login_number: 0,
         latest_login_at: Sequelize.fn('NOW')
       }, {
-          where: {
-            id: user.id
-          }
-        })
+        where: {
+          id: user.id
+        }
+      })
     }
 
     if (user.twofa_enable_flg) {
@@ -115,12 +115,12 @@ async function _createOTP(memberId, verifyToken) {
   await OTP.update({
     expired: true
   }, {
-      where: {
-        member_id: memberId,
-        action_type: OtpType.TWOFA_MOBILE
-      },
-      returning: true
-    })
+    where: {
+      member_id: memberId,
+      action_type: OtpType.TWOFA_MOBILE
+    },
+    returning: true
+  })
 
   await OTP.create({
     code: verifyToken,
