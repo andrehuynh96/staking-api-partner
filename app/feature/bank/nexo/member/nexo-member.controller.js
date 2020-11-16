@@ -27,7 +27,7 @@ module.exports = {
       return res.ok(mapper(nexoMember));
     } catch (err) {
       logger[err.canLogAxiosError ? 'error' : 'info']('create nexo account fail:', err);
-      if (err.response.status == 400) {
+      if (err.response && err.response.status == 400) {
         return res.badRequest(err.response.data.error.detail, "NEXO_CREATE_ACCOUNT_ERROR");
       }
       next(err);
@@ -60,7 +60,7 @@ module.exports = {
       return res.ok(true);
     } catch (err) {
       logger[err.canLogAxiosError ? 'error' : 'info']('verify nexo account fail:', err);
-      if (err.response.status == 400) {
+      if (err.response && err.response.status == 400) {
         return res.badRequest(err.response.data.error.detail, "NEXO_VERIFY_ACCOUNT_ERROR");
       }
       next(err);
@@ -84,7 +84,7 @@ module.exports = {
       return res.ok(true);
     } catch (err) {
       logger[err.canLogAxiosError ? 'error' : 'info']('request recovery nexo accouont fail:', err);
-      if (err.response.status == 400) {
+      if (err.response && err.response.status == 400) {
         return res.badRequest(err.response.data.error.detail, "NEXO_PROVIDER_ERROR");
       }
       next(err);
@@ -122,7 +122,7 @@ module.exports = {
       return res.ok(true);
     } catch (err) {
       logger[err.canLogAxiosError ? 'error' : 'info']('verify recovery nexo account code fail:', err);
-      if (err.response.status == 400) {
+      if (err.response && err.response.status == 400) {
         return res.badRequest(err.response.data.error.detail, "NEXO_PROVIDER_ERROR");
       }
       next(err);
@@ -174,7 +174,7 @@ module.exports = {
       return res.ok(balanceMapper(result))
     } catch (err) {
       logger[err.canLogAxiosError ? 'error' : 'info']('get balance by nexo account fail:', err);
-      if (err.response.status == 400) {
+      if (err.response && err.response.status == 400) {
         return res.badRequest(err.response.data.error.detail, "NEXO_PROVIDER_ERROR");
       }
       next(err);
