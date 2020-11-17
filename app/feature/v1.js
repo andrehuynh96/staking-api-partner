@@ -33,6 +33,9 @@ router.use(require('./coin-gecko'));
 // Get Asset
 router.use(require('./get-asset/get-asset.route'));
 
+//Notifications
+router.use(require('./notification/notification.route'))
+
 // Send Wyre
 router.use('/fiat', require('./fiat'));
 module.exports = router;
