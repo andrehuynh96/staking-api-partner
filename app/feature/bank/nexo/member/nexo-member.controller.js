@@ -82,6 +82,7 @@ module.exports = {
       if (member.member_id && req.user.id && member.member_id != req.user.id) {
         return res.badRequest(res.__("DONT_HAVE_PERMISSION_TO_CHANGE_NEXO_ACCOUNT"), "DONT_HAVE_PERMISSION_TO_CHANGE_NEXO_ACCOUNT");
       }
+
       const Service = BankFactory.create(BankProvider.Nexo, {});
       let result = await Service.verifyEmail({
         nexo_id: member.nexo_id,
@@ -116,8 +117,13 @@ module.exports = {
           email: req.body.email
         }
       });
-      if (!member)
+      if (!member) {
         return res.badRequest(res.__("NEXO_MEMBER_NOT_EXISTED"), "NEXO_MEMBER_NOT_EXISTED");
+      }
+      if (member.member_id && req.user.id && member.member_id != req.user.id) {
+        return res.badRequest(res.__("DONT_HAVE_PERMISSION_TO_CHANGE_NEXO_ACCOUNT"), "DONT_HAVE_PERMISSION_TO_CHANGE_NEXO_ACCOUNT");
+      }
+
       const Service = BankFactory.create(BankProvider.Nexo, {});
       let result = await Service.requestRecoveryCode({
         email: req.body.email
@@ -133,29 +139,39 @@ module.exports = {
       next(err);
     }
   },
+
   verifyRecovery: async (req, res, next) => {
     try {
-      let { email, code } = req.body;
+      let { email, code, device_code } = req.body;
       let member = NexoMember.findOne({
         where: {
           email: email
         }
       });
-      if (!member)
+      if (!member) {
         return res.badRequest(res.__("NEXO_MEMBER_NOT_EXISTED"), "NEXO_MEMBER_NOT_EXISTED");
+      }
+      if (member.member_id && req.user.id && member.member_id != req.user.id) {
+        return res.badRequest(res.__("DONT_HAVE_PERMISSION_TO_CHANGE_NEXO_ACCOUNT"), "DONT_HAVE_PERMISSION_TO_CHANGE_NEXO_ACCOUNT");
+      }
+
       const Service = BankFactory.create(BankProvider.Nexo, {});
       let result = await Service.verifyRecoveryCode({
         email: email,
         code: code
       });
-      if (result.error)
+      if (result.error) {
         return res.badRequest(result.error.message, "NEXO_PROVIDER_ERROR");
+      }
       let update_data = {
         nexo_id: result.id,
         user_secret: result.secret,
+        device_code: device_code
       }
-      // if (req.user && req.user.id)
-      //   update_data.member_id = req.user.id
+      if (req.user && req.user.id && !member.member_id) {
+        update_data.member_id = req.user.id
+      }
+
       await NexoMember.update(update_data,
         {
           where: {
@@ -171,6 +187,7 @@ module.exports = {
       next(err);
     }
   },
+
   getAccount: async (req, res, next) => {
     try {
       let { params: { device_code }, user } = req;
@@ -192,6 +209,7 @@ module.exports = {
       next(err);
     }
   },
+
   getBalance: async (req, res, next) => {
     try {
       let { params: { device_code }, user } = req;

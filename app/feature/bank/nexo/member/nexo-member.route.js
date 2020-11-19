@@ -294,7 +294,8 @@ module.exports = router;
  *            example:
  *               {
  *                  "email": "jackpercy@olympios.com",
- *                   "code": "123456"
+ *                  "code": "123456",
+ *                  "device_code":"fsdf6dd_fd_3edc"
                   }
  *     produces:
  *       - application/json
