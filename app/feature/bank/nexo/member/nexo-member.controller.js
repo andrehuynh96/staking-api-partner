@@ -112,7 +112,7 @@ module.exports = {
 
   recoveryRequest: async (req, res, next) => {
     try {
-      let member = NexoMember.findOne({
+      let member = await NexoMember.findOne({
         where: {
           email: req.body.email
         }
@@ -143,7 +143,7 @@ module.exports = {
   verifyRecovery: async (req, res, next) => {
     try {
       let { email, code, device_code } = req.body;
-      let member = NexoMember.findOne({
+      let member = await NexoMember.findOne({
         where: {
           email: email
         }
