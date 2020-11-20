@@ -6,9 +6,9 @@ const controller = require('./token.controller');
 const router = express.Router();
 
 router.get('/token-prices',
-    authenticate,
-    cache(config.cacheDurationTime),
-    controller.getTokenPrice
+  //authenticate,
+  cache(config.cacheDurationTime),
+  controller.getTokenPrice
 );
 
 /**
@@ -20,14 +20,8 @@ router.get('/token-prices',
 *       - Coin Gecko
 *     description:
 *     parameters:
-*       - name: authorization
-*         in: header
-*         schema:
-*           type: string
-*           example:
-*             Bearer access_token
 *       - in: query
-*         name: platform
+*         name: ref_id
 *         type: string
 *         required: true
 *       - in: query
@@ -45,8 +39,8 @@ router.get('/token-prices',
                         "usd": 0.999936,
                         "usd_24h_change": -0.02670708857383355
                     }
-                }
-            }
+                  }
+              }
 *       400:
 *         description: Error
 *         schema:
@@ -66,9 +60,9 @@ router.get('/token-prices',
 */
 
 router.get('/token-histories',
-    authenticate,
-    cache(config.cacheDurationTime),
-    controller.getTokenHistories
+  //authenticate,
+  cache(config.cacheDurationTime),
+  controller.getTokenHistories
 );
 
 /**
@@ -80,14 +74,8 @@ router.get('/token-histories',
 *       - Coin Gecko
 *     description:
 *     parameters:
-*       - name: authorization
-*         in: header
-*         schema:
-*           type: string
-*           example:
-*             Bearer access_token
 *       - in: query
-*         name: platform
+*         name: ref_id
 *         type: string
 *         required: true
 *       - in: query

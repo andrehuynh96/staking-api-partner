@@ -6,9 +6,9 @@ const controller = require('./coin.controller');
 const router = express.Router();
 
 router.get('/prices',
-    authenticate,
-    cache(config.cacheDurationTime),
-    controller.getPrice
+  //authenticate,
+  cache(config.cacheDurationTime),
+  controller.getPrice
 );
 
 /**
@@ -20,12 +20,6 @@ router.get('/prices',
 *       - Coin Gecko
 *     description:
 *     parameters:
-*       - name: authorization
-*         in: header
-*         schema:
-*           type: string
-*           example:
-*             Bearer access_token
 *       - in: query
 *         name: platform
 *         type: string
@@ -38,10 +32,10 @@ router.get('/prices',
 *             {
                 "data":
                     {
-                        "price":5.15,
-                        "usd_24h_change":5.0521196510214885
+                      "price":5.15,
+                      "usd_24h_change":5.0521196510214885
                     }
-                }
+              }
 *       400:
 *         description: Error
 *         schema:
@@ -61,9 +55,9 @@ router.get('/prices',
 */
 
 router.get('/histories',
-    authenticate,
-    cache(config.cacheDurationTime),
-    controller.getHistories
+  //authenticate,
+  cache(config.cacheDurationTime),
+  controller.getHistories
 );
 
 /**
@@ -75,12 +69,6 @@ router.get('/histories',
 *       - Coin Gecko
 *     description:
 *     parameters:
-*       - name: authorization
-*         in: header
-*         schema:
-*           type: string
-*           example:
-*             Bearer access_token
 *       - in: query
 *         name: platform
 *         type: string
@@ -180,10 +168,112 @@ router.get('/histories',
 *           $ref: '#/definitions/500'
 */
 
+router.get('/multi-prices',
+  //authenticate,
+  cache(config.cacheDurationTime),
+  controller.getMultiPrice
+);
+
+/**
+* @swagger
+* /api/v1/coin-gecko/multi-prices:
+*   get:
+*     summary: get multi coin prices
+*     tags:
+*       - Coin Gecko
+*     description:
+*     parameters:
+*       - in: query
+*         name: platforms
+*         type: string
+*         required: true
+*     responses:
+*       200:
+*         description: Ok
+*         examples:
+*           application/json:
+*             {
+                "data": {
+                    "gas": {
+                        "usd": 1.64,
+                        "usd_24h_change": 1.329113946915967
+                    },
+                    "cardano": {
+                        "usd": 0.08628,
+                        "usd_24h_change": 10.721321253927602
+                    },
+                    "qtum": {
+                        "usd": 2.28,
+                        "usd_24h_change": 4.031394688213249
+                    },
+                    "ethereum": {
+                        "usd": 343.87,
+                        "usd_24h_change": 6.0063639865603164
+                    },
+                    "eos": {
+                        "usd": 2.52,
+                        "usd_24h_change": 2.7459988830385207
+                    },
+                    "neo": {
+                        "usd": 22.73,
+                        "usd_24h_change": 12.483676728286445
+                    },
+                    "bitcoin": {
+                        "usd": 10689.01,
+                        "usd_24h_change": 3.8338274610288865
+                    },
+                    "harmony": {
+                        "usd": 0.00509215,
+                        "usd_24h_change": 8.037133356696074
+                    },
+                    "tezos": {
+                        "usd": 2.16,
+                        "usd_24h_change": 7.065228781610871
+                    },
+                    "tomochain": {
+                        "usd": 0.884278,
+                        "usd_24h_change": 8.935711808116586
+                    },
+                    "v-systems": {
+                        "usd": 0.01875572,
+                        "usd_24h_change": 3.614422240918748
+                    },
+                    "binancecoin": {
+                        "usd": 24.46,
+                        "usd_24h_change": 5.340935685302037
+                    },
+                    "ong": {
+                        "usd": 0.1171,
+                        "usd_24h_change": 3.5388923703448505
+                    },
+                    "ontology": {
+                        "usd": 0.641535,
+                        "usd_24h_change": 7.753945608327552
+                    }
+                }
+            }
+*       400:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/400'
+*       401:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/401'
+*       404:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/404'
+*       500:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/500'
+*/
+
 router.get('/markets',
-    authenticate,
-    cache(config.cacheDurationTime),
-    controller.getMarkets
+  //authenticate,
+  cache(config.cacheDurationTime),
+  controller.getMarkets
 );
 
 /**
@@ -195,12 +285,6 @@ router.get('/markets',
 *       - Coin Gecko
 *     description:
 *     parameters:
-*       - name: authorization
-*         in: header
-*         schema:
-*           type: string
-*           example:
-*             Bearer access_token
 *       - in: query
 *         name: platform
 *         type: string
