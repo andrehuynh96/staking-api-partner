@@ -2,7 +2,7 @@ const express = require('express');
 const parseUser = require('app/middleware/parse-user.middleware');
 const controller = require('./nexo-member.controller');
 const validator = require('app/middleware/validator.middleware');
-const { create, verify, recovery_request, recovery_verify } = require('./validator');
+const { create, verify, recovery_request, recovery_verify, resend_active_code } = require('./validator');
 const router = express.Router();
 
 
@@ -12,6 +12,14 @@ router.post(
   validator(create),
   controller.create
 );
+
+router.post(
+  '/members/resend-active-code',
+  parseUser,
+  validator(resend_active_code),
+  controller.resendActiveCode
+);
+
 
 router.post(
   '/members/verify',
@@ -115,6 +123,57 @@ module.exports = router;
  *         schema:
  *           $ref: '#/definitions/500'
  */
+
+
+/**
+ * @swagger
+ * /api/v1/bank/nexo/members/resend-active-code:
+ *   post:
+ *     summary: resend active code
+ *     tags:
+ *       - Bank
+ *     description: Time to resend is 30 minutes
+ *     parameters:
+ *       - in: body
+ *         name: data
+ *         description: Data.
+ *         schema:
+ *            type: object
+ *            required:
+ *            - email
+ *            - code
+ *            example:
+ *               {
+ *                  "email": "thangdv@deliomart.com"
+                  }
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Ok
+ *         examples:
+ *           application/json:
+ *             {
+ *                 "data": true
+ *             }
+ *       400:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/400'
+ *       401:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/401'
+ *       404:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/404'
+ *       500:
+ *         description: Error
+ *         schema:
+ *           $ref: '#/definitions/500'
+ */
+
 
 /**
  * @swagger
@@ -235,7 +294,8 @@ module.exports = router;
  *            example:
  *               {
  *                  "email": "jackpercy@olympios.com",
- *                   "code": "123456"
+ *                  "code": "123456",
+ *                  "device_code":"fsdf6dd_fd_3edc"
                   }
  *     produces:
  *       - application/json
@@ -265,105 +325,105 @@ module.exports = router;
  *           $ref: '#/definitions/500'
  */
 
-  /**
- * @swagger
- * /api/v1/bank/nexo/members/{device_code}:
- *   get:
- *     summary: get nexo account
- *     tags:
- *       - Bank
- *     description:
- *     parameters:
- *       - in: path
- *         name: device_code
- *         type: string
- *         required: true
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Ok
- *         examples:
- *           application/json:
- *             {
- *                "data": {
-                        "id":"",
-                        "email":"",
-                        "first_name": "",
-                        "last_name": "",
-                        "nexo_id": "",
-                        "created_at": "",
-                        "updated_at": ""
-                    }
- *              }
- *       400:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/400'
- *       401:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/401'
- *       404:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/404'
- *       500:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/500'
- */
+/**
+* @swagger
+* /api/v1/bank/nexo/members/{device_code}:
+*   get:
+*     summary: get nexo account
+*     tags:
+*       - Bank
+*     description:
+*     parameters:
+*       - in: path
+*         name: device_code
+*         type: string
+*         required: true
+*     produces:
+*       - application/json
+*     responses:
+*       200:
+*         description: Ok
+*         examples:
+*           application/json:
+*             {
+*                "data": {
+                      "id":"",
+                      "email":"",
+                      "first_name": "",
+                      "last_name": "",
+                      "nexo_id": "",
+                      "created_at": "",
+                      "updated_at": ""
+                  }
+*              }
+*       400:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/400'
+*       401:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/401'
+*       404:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/404'
+*       500:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/500'
+*/
 
- /**
- * @swagger
- * /api/v1/bank/nexo/members/balance/{device_code}:
- *   get:
- *     summary: get balance by current log in user nexo account
- *     tags:
- *       - Bank
- *     description:
- *     parameters:
- *       - in: path
- *         name: device_code
- *         type: string
- *         required: true
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Ok
- *         examples:
- *           application/json:
- *             {
- *              "data": {
- *                "items": [
- *                  {
-                      'id': '',
-                      'name': '',
-                      'interest_rate': '',
-                      'interest_earned': '',
-                      'amount': '',
-                      'min_earnable': '',
-                      'deposit_enabled': '',
-                      'withdraw_enabled': '' 
- *                  }
- *                 ]
- *               }
- *              }
- *       400:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/400'
- *       401:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/401'
- *       404:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/404'
- *       500:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/500'
- */
+/**
+* @swagger
+* /api/v1/bank/nexo/members/balance/{device_code}:
+*   get:
+*     summary: get balance by current log in user nexo account
+*     tags:
+*       - Bank
+*     description:
+*     parameters:
+*       - in: path
+*         name: device_code
+*         type: string
+*         required: true
+*     produces:
+*       - application/json
+*     responses:
+*       200:
+*         description: Ok
+*         examples:
+*           application/json:
+*             {
+*              "data": {
+*                "items": [
+*                  {
+                     'id': '',
+                     'name': '',
+                     'interest_rate': '',
+                     'interest_earned': '',
+                     'amount': '',
+                     'min_earnable': '',
+                     'deposit_enabled': '',
+                     'withdraw_enabled': ''
+*                  }
+*                 ]
+*               }
+*              }
+*       400:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/400'
+*       401:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/401'
+*       404:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/404'
+*       500:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/500'
+*/
