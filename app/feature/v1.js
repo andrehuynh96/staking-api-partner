@@ -8,7 +8,7 @@ router.use(require('./tracking-voting/tracking-voting.route'));
 router.use(require('./erc20/plan/plan.route'));
 router.use(require('./erc20/deposit/erc20.route'));
 
-// Wallet 
+// Wallet
 router.use(require('./wallet/wallet.route'));
 
 router.use(require('./authentication'));
@@ -38,4 +38,8 @@ router.use(require('./notification/notification.route'))
 
 // Send Wyre
 router.use('/fiat', require('./fiat'));
+
+// Survey
+router.use('/surveys', require('./survey'));
+
 module.exports = router;
