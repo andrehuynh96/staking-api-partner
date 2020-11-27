@@ -91,7 +91,7 @@ module.exports = {
               is_other_flg: true
             }
           },
-          require: false,
+          required: false,
         }],
         order: [[{ model: Answers, as: 'Answers' }, 'is_other_flg', 'ASC']]
       });
@@ -178,7 +178,7 @@ module.exports = {
               is_other_flg: true
             }
           },
-          require: false,
+          required: false,
         }],
         order: [[{ model: Answers, as: 'Answers' }, 'is_other_flg', 'ASC']]
       });
