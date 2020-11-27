@@ -82,8 +82,15 @@ module.exports = {
         },
         include: [{
           model: Answers,
-          as: "Answers"
-        }]
+          as: "Answers",
+          where: {
+            [Op.or]: {
+              text: { [Op.not]: '' },
+              is_other_flg: true
+            }
+          },
+        }],
+        order: [[{ model: Answers, as: 'Answers' }, 'is_other_flg', 'ASC']]
       });
 
       let ret_survey = surveyMapper(survey);
@@ -155,13 +162,20 @@ module.exports = {
       let point = surveyHelper.getSurveyPoint(survey, membershipType.name);
       let questions = await Questions.findAll({
         where: {
-          survey_id: id,
+          survey_id: survey.id,
           actived_flg: true
         },
         include: [{
           model: Answers,
-          as: "Answers"
-        }]
+          as: "Answers",
+          where: {
+            [Op.or]: {
+              text: { [Op.not]: '' },
+              is_other_flg: true
+            }
+          },
+        }],
+        order: [[{ model: Answers, as: 'Answers' }, 'is_other_flg', 'ASC']]
       });
 
       if (questions.length != items.length) {
