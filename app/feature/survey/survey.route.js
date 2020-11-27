@@ -169,8 +169,12 @@ module.exports = router;
   *                 examples:
   *                     application/json:
   *                         {
-  *                             "data": true
-  *                         }
+  *                             "data": {
+  *                               "total_answer": 10,
+                                  "total_correct": 10,
+                                  "point": 10
+                                }
+  *                        }
   *             400:
   *                 description: Error
   *                 schema:

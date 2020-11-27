@@ -25,6 +25,7 @@ const surveyHelper = require('app/lib/utils/survey-helper');
 const MembershipType = require('app/model/wallet').membership_types;
 const Sequelize = require('sequelize');
 const SurveyResultStatus = require("app/model/wallet/value-object/survey-result-status");
+const SurveyType = require('app/model/wallet/value-object/survey-type');
 
 
 const database = require('app/lib/database').db().wallet;
@@ -78,7 +79,8 @@ module.exports = {
       let questions = await Questions.findAll({
         where: {
           survey_id: survey.id,
-          actived_flg: true
+          actived_flg: true,
+          deleted_flg: false
         },
         include: [{
           model: Answers,
@@ -89,6 +91,7 @@ module.exports = {
               is_other_flg: true
             }
           },
+          require: false,
         }],
         order: [[{ model: Answers, as: 'Answers' }, 'is_other_flg', 'ASC']]
       });
@@ -163,7 +166,8 @@ module.exports = {
       let questions = await Questions.findAll({
         where: {
           survey_id: survey.id,
-          actived_flg: true
+          actived_flg: true,
+          deleted_flg: false
         },
         include: [{
           model: Answers,
@@ -174,6 +178,7 @@ module.exports = {
               is_other_flg: true
             }
           },
+          require: false,
         }],
         order: [[{ model: Answers, as: 'Answers' }, 'is_other_flg', 'ASC']]
       });
@@ -199,11 +204,9 @@ module.exports = {
           let result = true;
           userAns.open = false;
           for (let j = 0; j < userAns.answer_id.length; j++) {
-            let userAnsId = userAns.answer_id[j],
-              userAnsVal = userAns.value[j];
-
+            let userAnsId = userAns.answer_id[j];
             let currentAnswer = answer.find(x => x.id == userAnsId);
-            if (!currentAnswer.is_correct_flg || userAnsVal != currentAnswer.text) {
+            if (!currentAnswer.is_correct_flg) {
               result = false;
               break;
             }
@@ -231,15 +234,6 @@ module.exports = {
         item.answer_id = item.answer_id.join(',');
       });
 
-      await Member.increment({
-        points: point
-      }, {
-        where: {
-          id: user.id
-        },
-        transaction
-      });
-
       await SurveyAnswer.bulkCreate(items, { transaction: transaction });
 
       await SurveyResult.create({
@@ -251,19 +245,34 @@ module.exports = {
         status: SurveyResultStatus.COMPLETE
       }, { transaction });
 
-      await PointHistory.create({
-        member_id: user.id,
-        status: PointStatus.APPROVED,
-        action: PointAction.SURVEY,
-        currency_symbol: 'MS_POINT',
-        system_type: SystemType.MEMBERSHIP,
-        object_id: id,
-        amount: point
-      }, { transaction });
+      if (SurveyType.QUIZ != survey.QUIZ ||
+        (SurveyType.QUIZ == survey.QUIZ && totalCorrect == totalAnswers)) {
+        await Member.increment({
+          points: point
+        }, {
+          where: {
+            id: user.id
+          },
+          transaction
+        });
+        await PointHistory.create({
+          member_id: user.id,
+          status: PointStatus.APPROVED,
+          action: PointAction.SURVEY,
+          currency_symbol: 'MS_POINT',
+          system_type: SystemType.MEMBERSHIP,
+          object_id: id,
+          amount: point
+        }, { transaction });
+      }
 
       await transaction.commit();
 
-      return res.ok(true);
+      return res.ok({
+        total_answer: totalAnswers,
+        total_correct: totalCorrect,
+        point: point
+      });
     } catch (err) {
       logger.error('submit surveys fail: ', err);
       if (transaction) await transaction.rollback();
