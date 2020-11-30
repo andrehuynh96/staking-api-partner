@@ -117,10 +117,7 @@ module.exports = {
           email: req.body.email
         }
       });
-      if (!member) {
-        return res.badRequest(res.__("NEXO_MEMBER_NOT_EXISTED"), "NEXO_MEMBER_NOT_EXISTED");
-      }
-      if (member.member_id && req.user.id && member.member_id != req.user.id) {
+      if (member && member.member_id && req.user.id && member.member_id != req.user.id) {
         return res.badRequest(res.__("DONT_HAVE_PERMISSION_TO_CHANGE_NEXO_ACCOUNT"), "DONT_HAVE_PERMISSION_TO_CHANGE_NEXO_ACCOUNT");
       }
 
@@ -148,10 +145,7 @@ module.exports = {
           email: email
         }
       });
-      if (!member) {
-        return res.badRequest(res.__("NEXO_MEMBER_NOT_EXISTED"), "NEXO_MEMBER_NOT_EXISTED");
-      }
-      if (member.member_id && req.user.id && member.member_id != req.user.id) {
+      if (member && member.member_id && req.user.id && member.member_id != req.user.id) {
         return res.badRequest(res.__("DONT_HAVE_PERMISSION_TO_CHANGE_NEXO_ACCOUNT"), "DONT_HAVE_PERMISSION_TO_CHANGE_NEXO_ACCOUNT");
       }
 
@@ -172,12 +166,16 @@ module.exports = {
         update_data.member_id = req.user.id
       }
 
-      await NexoMember.update(update_data,
+      if (member) await NexoMember.update(update_data,
         {
           where: {
             email: email
           }
         });
+      else await NexoMember.create({
+        ...update_data,
+        status: Status.ACTIVATED
+      });
       return res.ok(true);
     } catch (err) {
       logger[err.canLogAxiosError ? 'error' : 'info']('verify recovery nexo account code fail:', err);

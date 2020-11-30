@@ -1,7 +1,7 @@
 const logger = require("app/lib/logger");
 const Member = require("app/model/wallet").members;
 const MemberStatus = require('app/model/wallet/value-object/member-status');
-const MembershipTypeName = require('app/model/wallet/value-object/membership-type');
+const MembershipTypeKey = require('app/model/wallet/value-object/membership-type');
 const KycLevel = require('app/model/wallet/value-object/kyc-level');
 const Affiliate = require('app/lib/reward-system/affiliate');
 const Membership = require('app/lib/reward-system/membership');
@@ -58,7 +58,7 @@ module.exports = async (req, res, next) => {
         where: {
           is_enabled: true,
           deleted_flg: false,
-          name: MembershipTypeName.Gold
+          key: MembershipTypeKey.GOLD
         }
       })
       if (membershipType) {
