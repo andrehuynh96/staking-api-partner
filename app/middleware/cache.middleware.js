@@ -5,7 +5,9 @@ const secret = "MS_CACHE";
 
 module.exports = (duration) => {
   return async (req, res, next) => {
-    let key = req.originalUrl || req.url;
+    let url = req.originalUrl || req.url;
+    const key = url.replace('/api/v1','');
+    console.log(key);
     const keyHash = crypto.createHmac('sha256', secret)
       .update(key)
       .digest('hex');
