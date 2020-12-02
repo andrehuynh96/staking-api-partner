@@ -7,7 +7,6 @@ module.exports = (duration) => {
   return async (req, res, next) => {
     let url = req.originalUrl || req.url;
     const key = url.replace('/api/v1','');
-    console.log(key);
     const keyHash = crypto.createHmac('sha256', secret)
       .update(key)
       .digest('hex');
