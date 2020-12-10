@@ -116,7 +116,9 @@ class Nexo extends Banking {
         method: "GET",
         secret: secret
       });
-
+      result.balances.forEach(i => {
+        i.currency_id = i.currency_ids[i.name.toLowerCase()];
+      });
       return result.balances;
     }
     catch (err) {
