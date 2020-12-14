@@ -45,30 +45,30 @@ module.exports = {
         wallet_id,
         to,
         from,
-      }
+      };
 
       const timeFilter = _getDateFilter(type.toUpperCase(), "created_at");
 
-      let sqlItems = `SELECT 
-                        SUM(reward) AS reward, 
-                        SUM(amount) AS staked, 
+      let sqlItems = `SELECT
+                        SUM(reward) AS reward,
+                        SUM(amount) AS staked,
                         platform AS currency,
                         COUNT(platform) AS number_row,
                         ${type.toUpperCase() === 'YEAR' ? 'sum(cast(missed_daily as int)) = COUNT(platform)' : ' (sum(cast(missed_daily as int))>0 AND SUM(amount)> 0)'} as missed_daily,
                         ${timeFilter} AS ct 
                         FROM member_assets 
                         WHERE member_assets.address IN (
-                            SELECT wpk.address 
-                            FROM 
+                            SELECT wpk.address
+                            FROM
                                 wallets AS w
-                            RIGHT JOIN 
-                                wallet_priv_keys AS wpk 
-                                ON w.id = wpk.wallet_id 
-                            WHERE 
+                            RIGHT JOIN
+                                wallet_priv_keys AS wpk
+                                ON w.id = wpk.wallet_id
+                            WHERE
                                 w.member_id = :memberId
                                 ${wallet_id ? ' AND w.id = :wallet_id' : ''}
-                        )  
-                        ${'ALL' !== type ? ' AND created_at >= TO_TIMESTAMP(:from) AND created_at <= TO_TIMESTAMP(:to)' : ''} 
+                        )
+                        ${'ALL' !== type ? ' AND created_at >= TO_TIMESTAMP(:from) AND created_at <= TO_TIMESTAMP(:to)' : ''}
                         ${'ALL' !== platform ? ' AND platform = :platform ' : ''}
                         GROUP BY ct, currency ORDER BY ct ${sort}`;
 
@@ -133,24 +133,24 @@ module.exports = {
         offset,
         limit,
         to
-      }
+      };
 
-      let sqlTotal = `                       
-                        SELECT 
+      let sqlTotal = `
+                        SELECT
                         COUNT(id) AS total
-                        FROM member_assets 
+                        FROM member_assets
                         WHERE member_assets.address IN (
-                            SELECT wpk.address 
-                            FROM 
+                            SELECT wpk.address
+                            FROM
                                 wallets AS w
-                            RIGHT JOIN 
-                                wallet_priv_keys AS wpk 
-                                ON w.id = wpk.wallet_id 
-                            WHERE 
-                                w.member_id = :memberId ${wallet_id ? ' AND w.id = :wallet_id' : ''} 
-                        ) 
+                            RIGHT JOIN
+                                wallet_priv_keys AS wpk
+                                ON w.id = wpk.wallet_id
+                            WHERE
+                                w.member_id = :memberId ${wallet_id ? ' AND w.id = :wallet_id' : ''}
+                        )
                         ${'' !== platform ? ' AND platform = :platform' : ''} AND created_at <= TO_TIMESTAMP(:to)`;
-      // 
+      //
 
       const totalResults = await db.sequelize.query(sqlTotal, {
         replacements: where,
@@ -159,24 +159,25 @@ module.exports = {
 
       const total = parseInt(totalResults[0].total);
 
-      let sqlItems = `SELECT 
-                        platform AS currency, 
-                        reward, 
-                        amount AS staked, 
+      let sqlItems = `SELECT
+                        platform AS currency,
+                        reward,
+                        amount AS staked,
+                        missed_daily,
                         created_at,
                         updated_at
-                        FROM member_assets 
+                        FROM member_assets
                         WHERE member_assets.address IN (
-                            SELECT wpk.address 
-                            FROM 
+                            SELECT wpk.address
+                            FROM
                                 wallets AS w
-                            RIGHT JOIN 
-                                wallet_priv_keys AS wpk 
-                                ON w.id = wpk.wallet_id 
-                            WHERE 
+                            RIGHT JOIN
+                                wallet_priv_keys AS wpk
+                                ON w.id = wpk.wallet_id
+                            WHERE
                                 w.member_id = :memberId ${wallet_id ? ' AND w.id = :wallet_id' : ''}
-                        ) 
-                        ${'' !== platform ? ' AND platform = :platform' : ''} AND created_at <= TO_TIMESTAMP(:to) 
+                        )
+                        ${'' !== platform ? ' AND platform = :platform' : ''} AND created_at <= TO_TIMESTAMP(:to)
                         ORDER BY created_at ${sort} LIMIT :limit OFFSET :offset`;
 
       const itemResults = await db.sequelize.query(sqlItems, {
@@ -189,7 +190,8 @@ module.exports = {
           symbol: item.currency,
           reward: parseFloat((new BigNumber(item.reward))),
           staked: parseFloat((new BigNumber(item.staked))),
-          create_at: item.created_at
+          create_at: item.created_at,
+          missed_daily: item.missed_daily,
         };
       });
 
@@ -249,7 +251,7 @@ function _getDateRangeUnitTimeStamp(dateType, dateNum) {
 
   const from = Math.floor(fromDate.valueOf() / 1000); // second
   const to = Math.floor(toDate.valueOf() / 1000);
-  return { from, to }
+  return { from, to };
 }
 
 
@@ -261,9 +263,9 @@ function _getDateFilter(dateType, columnName) {
       query = `CONCAT(
             DATE_PART('YEAR', ${columnName}),
             '-',
-            TRIM(to_char(DATE_PART('MONTH', ${columnName}),'00')), 
+            TRIM(to_char(DATE_PART('MONTH', ${columnName}),'00')),
             '-',
-            TRIM(to_char(DATE_PART('DAY', ${columnName}),'00')), 
+            TRIM(to_char(DATE_PART('DAY', ${columnName}),'00')),
             ' ',
             DATE_PART('HOUR', ${columnName}),
             ':00')`;
@@ -274,7 +276,7 @@ function _getDateFilter(dateType, columnName) {
       query = `CONCAT(
                 DATE_PART('YEAR', ${columnName}),
                 '-',
-                TRIM(to_char(DATE_PART('MONTH', ${columnName}),'00')), 
+                TRIM(to_char(DATE_PART('MONTH', ${columnName}),'00')),
                 '-',
                 TRIM(to_char(DATE_PART('DAY', ${columnName}),'00')))`;
       break;

@@ -18,7 +18,7 @@ module.exports = {
       return { httpCode: 200, data: result.data };
     }
     catch (err) {
-      logger.error("platformVote fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("platformVote fail:", err);
       return { httpCode: err.response.status, data: err.response.data };
     }
   },
@@ -40,7 +40,7 @@ module.exports = {
       return { httpCode: 200, data: result.data };
     }
     catch (err) {
-      logger.error("platformVote fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("platformVote fail:", err);
       return { httpCode: err.response.status, data: err.response.data };
     }
   },
@@ -61,7 +61,7 @@ module.exports = {
       return { httpCode: 200, data: result.data };
     }
     catch (err) {
-      logger.error("platformVote fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("platformVote fail:", err);
       return { httpCode: err.response.status, data: err.response.data };
     }
   },
@@ -99,7 +99,7 @@ module.exports = {
 
     }
     catch (err) {
-      logger.error("getERC20Deposit fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("getERC20Deposit fail:", err);
       return { httpCode: err.response.status, data: err.response.data };
     }
   },
@@ -129,7 +129,7 @@ module.exports = {
 
     }
     catch (err) {
-      logger.error("getERC20History fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("getERC20History fail:", err);
       return { httpCode: err.response.status, data: err.response.data };
     }
   },
@@ -154,7 +154,7 @@ module.exports = {
       return { httpCode: 200, data: result.data };
     }
     catch (err) {
-      logger.error("getAddressAggregation fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("getAddressAggregation fail:", err);
       return { httpCode: err.response.status, data: err.response.data };
     }
   },
@@ -172,7 +172,7 @@ module.exports = {
       return { httpCode: 200, data: result.data };
     }
     catch (err) {
-      logger.error("getAllStakingPlan fail:", err);
+      logger[err.canLogAxiosError ? 'error' : 'info']("getAllStakingPlan fail:", err);
       return { httpCode: err.response.status, data: err.response.data };
     }
   }

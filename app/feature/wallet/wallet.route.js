@@ -79,7 +79,7 @@ module.exports = router;
  *         description: Ok
  *         examples:
  *           application/json:
- *             {  
+ *             {
                "data": {
                  "items": [{
                       "id": 1,
@@ -126,6 +126,11 @@ module.exports = router;
  *           type: string
  *           example:
  *             Bearer 123123123
+ *       - name: twofa_code
+ *         in: query
+ *         type: string
+ *         format: string
+ *         description: input twofa_code if user turn on twofa
  *       - in: body
  *         name: data
  *         description: Data for wallet.
@@ -134,7 +139,7 @@ module.exports = router;
  *            required:
  *            - encrypted_passphrase
  *            example:
- *               {     
+ *               {
                     "encrypted_passphrase": "",
                     "name": "thangdv",
                     "default_flg": true
@@ -149,7 +154,7 @@ module.exports = router;
  *             {
  *                 "data":{
                         "id": "656b6f1c-1039-11ea-8d71-362b9e155667",
-                        "name": "thangdv",     
+                        "name": "thangdv",
                         "default_flg":true,
                         "created_at":""
                     }
@@ -172,164 +177,164 @@ module.exports = router;
  *           $ref: '#/definitions/500'
  */
 
- /**
- * @swagger
- * /api/v1/wallets/{id}:
- *   put:
- *     summary: update wallet
- *     tags:
- *       - Wallets
- *     description:
- *     parameters:
- *       - name: authorization
- *         in: header
- *         required: true
- *         schema:
- *           type: string
- *           example:
- *             Bearer 123123123
- *       - in: path
- *         name: id
- *         type: string
- *         required: true
- *       - in: body
- *         name: data
- *         description: Data for wallet.
- *         schema:
- *            type: object
- *            example:
- *               {     
- *                  "name": "wallet",
-                    "default_flg": true
-                  }
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Ok
- *         examples:
- *           application/json:
- *             {
- *                 "data":{
-                        "id": "656b6f1c-1039-11ea-8d71-362b9e155667",
-                        "name": "wallet",     
-                        "default_flg":true,
-                        "created_at":""
-                    }
- *             }
- *       400:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/400'
- *       401:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/401'
- *       404:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/404'
- *       500:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/500'
- *   delete:
- *     summary: delete wallet
- *     tags:
- *       - Wallets
- *     description:
- *     parameters:
- *       - name: authorization
- *         in: header
- *         required: true
- *         schema:
- *           type: string
- *           example:
- *             Bearer 123123123
- *       - in: path
- *         name: id
- *         type: string
- *         required: true
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Ok
- *         examples:
- *           application/json:
- *             {
- *                 "data":{
-                      "deleted": true
-                    }
- *             }
- *       400:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/400'
- *       401:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/401'
- *       404:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/404'
- *       500:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/500'
- */
+/**
+* @swagger
+* /api/v1/wallets/{id}:
+*   put:
+*     summary: update wallet
+*     tags:
+*       - Wallets
+*     description:
+*     parameters:
+*       - name: authorization
+*         in: header
+*         required: true
+*         schema:
+*           type: string
+*           example:
+*             Bearer 123123123
+*       - in: path
+*         name: id
+*         type: string
+*         required: true
+*       - in: body
+*         name: data
+*         description: Data for wallet.
+*         schema:
+*            type: object
+*            example:
+*               {
+*                  "name": "wallet",
+                   "default_flg": true
+                 }
+*     produces:
+*       - application/json
+*     responses:
+*       200:
+*         description: Ok
+*         examples:
+*           application/json:
+*             {
+*                 "data":{
+                       "id": "656b6f1c-1039-11ea-8d71-362b9e155667",
+                       "name": "wallet",
+                       "default_flg":true,
+                       "created_at":""
+                   }
+*             }
+*       400:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/400'
+*       401:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/401'
+*       404:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/404'
+*       500:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/500'
+*   delete:
+*     summary: delete wallet
+*     tags:
+*       - Wallets
+*     description:
+*     parameters:
+*       - name: authorization
+*         in: header
+*         required: true
+*         schema:
+*           type: string
+*           example:
+*             Bearer 123123123
+*       - in: path
+*         name: id
+*         type: string
+*         required: true
+*     produces:
+*       - application/json
+*     responses:
+*       200:
+*         description: Ok
+*         examples:
+*           application/json:
+*             {
+*                 "data":{
+                     "deleted": true
+                   }
+*             }
+*       400:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/400'
+*       401:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/401'
+*       404:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/404'
+*       500:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/500'
+*/
 
- /**
- * @swagger
- * /api/v1/wallets/{wallet_id}/passphrase:
- *   get:
- *     summary: get encrypted passphrase
- *     tags:
- *       - Wallets
- *     description:
- *     parameters:
- *       - name: authorization
- *         in: header
- *         required: true
- *         schema:
- *           type: string
- *           example:
- *             Bearer 123123123
- *       - in: path
- *         name: wallet_id
- *         type: string
- *         required: true
- *       - in: query
- *         name: twofa_code
- *         type: string
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Ok
- *         examples:
- *           application/json:
- *             {
- *                 "data":{
-                        "encrypted_passphrase": ""
-                    }
- *             }
- *       400:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/400'
- *       401:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/401'
- *       404:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/404'
- *       500:
- *         description: Error
- *         schema:
- *           $ref: '#/definitions/500'
- */
+/**
+* @swagger
+* /api/v1/wallets/{wallet_id}/passphrase:
+*   get:
+*     summary: get encrypted passphrase
+*     tags:
+*       - Wallets
+*     description:
+*     parameters:
+*       - name: authorization
+*         in: header
+*         required: true
+*         schema:
+*           type: string
+*           example:
+*             Bearer 123123123
+*       - in: path
+*         name: wallet_id
+*         type: string
+*         required: true
+*       - in: query
+*         name: twofa_code
+*         type: string
+*     produces:
+*       - application/json
+*     responses:
+*       200:
+*         description: Ok
+*         examples:
+*           application/json:
+*             {
+*                 "data":{
+                       "encrypted_passphrase": ""
+                   }
+*             }
+*       400:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/400'
+*       401:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/401'
+*       404:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/404'
+*       500:
+*         description: Error
+*         schema:
+*           $ref: '#/definitions/500'
+*/
 

@@ -31,7 +31,7 @@ router.get(
 module.exports = router;
 
 
-/*********************************************************************/
+/** *******************************************************************/
 
 
 /**
@@ -68,7 +68,7 @@ module.exports = router;
  *             {
  *                 "data": {
                       "items": [
-                        { 
+                        {
                           "id": 1,
                           "currency_symbol": "MS_POINT",
                           "amount": 100,
@@ -148,7 +148,7 @@ module.exports = router;
  *           $ref: '#/definitions/500'
  */
 
- /**
+/**
  * @swagger
  * /api/v1/claim-points:
  *   post:
@@ -157,6 +157,13 @@ module.exports = router;
  *       - Claim Point
  *     description:
  *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example:
+ *             Bearer 123123123
  *       - in: body
  *         name: data
  *         description: Data for claim point.
@@ -202,6 +209,14 @@ module.exports = router;
  *     tags:
  *       - Claim Point
  *     description:
+ *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example:
+ *             Bearer 123123123
  *     produces:
  *       - application/json
  *     responses:
