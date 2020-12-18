@@ -26,6 +26,11 @@ router.post(
   controller.make
 );
 
+router.get(
+  '/transactions/callback/:token',
+  //authenticate,
+  controller.callback
+)
 
 router.get(
   '/transactions/:id/:device_code',
@@ -39,11 +44,6 @@ router.get(
   controller.getTxs
 );
 
-router.get(
-  '/transactions/callback/:token',
-  //authenticate,
-  controller.callback
-)
 
 module.exports = router;
 
