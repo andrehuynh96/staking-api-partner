@@ -121,9 +121,8 @@ module.exports = {
         return res.badRequest(result.error.message, 'FIAT_PROVIDER_ERROR');
       }
 
-      await FiatTransaction.create({
+      let dataFiat = {
         token: verifyToken,
-        member_id: req.user.id,
         from_currency: req.body.source_currency,
         to_cryptocurrency: req.body.dest_currency,
         from_amount: req.body.amount,
@@ -133,8 +132,13 @@ module.exports = {
         redirect_url: urlSuccess,
         failure_redirect_url: urlFailure,
         payment_url: result.url,
-        fee_currency: ''
-      });
+        fee_currency: '',
+        device_code: req.body.device_code
+      };
+      if (req.user) {
+        dataFiat.member_id = req.user.id;
+      }
+      await FiatTransaction.create(dataFiat);
 
       return res.ok(result);
     } catch (err) {
