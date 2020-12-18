@@ -225,7 +225,7 @@ module.exports = router;
                         "payment_method":"debit-card",
                         "redirect_url": "https://www.google.com",
                         "failure_redirect_url": "https://www.google.com",
-                        "device_code":"EFVGYHGFDewrF76&cQPLSwedftL""
+                        "device_code":"EFVGYHGFDewrF76&cQPLSwedftL"
                   }
  *     produces:
  *       - application/json
