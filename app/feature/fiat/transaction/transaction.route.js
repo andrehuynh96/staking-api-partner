@@ -39,6 +39,12 @@ router.get(
   controller.getTxs
 );
 
+router.get(
+  '/transactions/callback/:token',
+  //authenticate,
+  controller.callback
+)
+
 module.exports = router;
 
 
