@@ -215,6 +215,7 @@ module.exports = router;
  *            - dest_currency
  *            - dest_address
  *            - payment_method
+ *            - device_code
  *            example:
  *               {
                         "source_currency":"USD",
@@ -223,7 +224,8 @@ module.exports = router;
                         "dest_address": "moTXHK5dfgT62Y8XMM6RxRAVV8ojmofAnR",
                         "payment_method":"debit-card",
                         "redirect_url": "https://www.google.com",
-                        "failure_redirect_url": "https://www.google.com"
+                        "failure_redirect_url": "https://www.google.com",
+                        "device_code":"EFVGYHGFDewrF76&cQPLSwedftL""
                   }
  *     produces:
  *       - application/json
