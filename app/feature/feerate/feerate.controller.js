@@ -24,7 +24,7 @@ module.exports = {
 
   getAll: async (req, res, next) => {
     try {
-      let { query: { search } } = req;
+      let { query: { search } } = req
       let limit = parseInt(req.query.limit) || 10;
       let offset = req.query.offset ? parseInt(req.query.offset) : 0;
       let where = {};
