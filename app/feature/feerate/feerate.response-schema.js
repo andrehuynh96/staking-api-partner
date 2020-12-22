@@ -33,5 +33,6 @@ module.exports = srcObject => {
   else {
     let result = objectMapper(srcObject, destObject.single);
     result.hig = result.high;
+    return result;
   }
 }; 
