@@ -55,8 +55,8 @@ module.exports = {
                         platform AS currency,
                         COUNT(platform) AS number_row,
                         ${type.toUpperCase() === 'YEAR' ? 'sum(cast(missed_daily as int)) = COUNT(platform)' : ' (sum(cast(missed_daily as int))>0 AND SUM(amount)> 0)'} as missed_daily,
-                        ${timeFilter} AS ct
-                        FROM member_assets
+                        ${timeFilter} AS ct 
+                        FROM member_assets 
                         WHERE member_assets.address IN (
                             SELECT wpk.address
                             FROM
@@ -87,7 +87,7 @@ module.exports = {
           reward: parseFloat((new BigNumber(itemResults[i].reward))),
           staked: parseFloat((new BigNumber(itemResults[i].staked)).div(parseFloat(itemResults[i].number_row))),
           date: itemResults[i].ct,
-          missed_daily:itemResults[i].missed_daily
+          missed_daily: itemResults[i].missed_daily
         });
       }
 
