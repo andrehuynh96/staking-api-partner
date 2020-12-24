@@ -17,7 +17,7 @@ router.post(
 
 module.exports = router;
 
-/**********************************************************************/
+/** ********************************************************************/
 
 /**
  * @swagger
@@ -117,7 +117,7 @@ module.exports = router;
  *            - code
  *            - nexo_transaction_id
  *            example:
- *               {  
+ *               {
  *                  "nexo_id": "",
                     "code":"41827922",
                     "nexo_transaction_id": ""

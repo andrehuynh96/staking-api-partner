@@ -12,7 +12,6 @@ module.exports = {
     try {
       let member = await NexoMember.findOne({
         where: {
-          member_id: req.user.id,
           nexo_id: req.body.nexo_id
         }
       });
@@ -21,11 +20,11 @@ module.exports = {
       if (member.status != Status.ACTIVATED)
         return res.badRequest(res.__("NEXO_MEMBER_NOT_ACTIVATED"), "NEXO_MEMBER_NOT_ACTIVATED");
       const Service = BankFactory.create(BankProvider.Nexo, {});
-      let result = await Service.withdraw({ 
+      let result = await Service.withdraw({
         ...req.body,
         secret: member.user_secret
       });
-      if (result.error) 
+      if (result.error)
         return res.badRequest(result.error.message, "NEXO_WITHDRAW_ERROR");
       let transaction = await NexoTransaction.create({
         ...req.body,
