@@ -1,5 +1,6 @@
 const logger = require("app/lib/logger");
 const Member = require("app/model/wallet").members;
+const MembershipType = require("app/model/wallet").membership_types;
 const MemberStatus = require('app/model/wallet/value-object/member-status');
 const MembershipTypeKey = require('app/model/wallet/value-object/membership-type');
 const KycLevel = require('app/model/wallet/value-object/kyc-level');
