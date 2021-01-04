@@ -1,6 +1,8 @@
 const logger = require('app/lib/logger');
 const Feerates = require('app/model/wallet').feerates;
 const mapper = require('./feerate.response-schema');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
   get: async (req, res, next) => {
@@ -8,7 +10,7 @@ module.exports = {
       let { symbol } = req.params
       let coin = await Feerates.findOne({
         where: {
-          symbol : symbol.toUpperCase()
+          symbol: symbol.toUpperCase()
         },
         raw: true
       })
@@ -21,7 +23,7 @@ module.exports = {
   },
 
   getAll: async (req, res, next) => {
-    try{
+    try {
       let { query: { search } } = req
       let limit = parseInt(req.query.limit) || 10;
       let offset = req.query.offset ? parseInt(req.query.offset) : 0;

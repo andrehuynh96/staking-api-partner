@@ -9,7 +9,8 @@ const schema = Joi.object().keys({
     .required(),
   phone: Joi.string().optional().allow(""),
   referrer_code: Joi.string().optional().allow(""),
-  language: Joi.string().optional().allow("")
+  language: Joi.string().optional().allow(""),
+  country: Joi.string().regex(/^[a-zA-Z]{2,30}$/).optional().allow(""),
 });
 
 module.exports = schema;

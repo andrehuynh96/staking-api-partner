@@ -15,7 +15,7 @@ const destObject = {
     id: 'id',
     name: 'name',
     symbol: 'symbol',
-    high: 'hig',
+    high: 'high',
     medium: 'medium',
     low: 'low',
     createdAt: 'created_at',
@@ -31,6 +31,11 @@ module.exports = srcObject => {
     }
   }
   else {
-    return objectMapper(srcObject, destObject.single);
+    let result = objectMapper(srcObject, destObject.single);
+    if (result) {
+      result.hig = result.high;
+    }
+
+    return result;
   }
 }; 

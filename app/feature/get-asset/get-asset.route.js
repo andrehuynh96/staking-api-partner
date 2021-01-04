@@ -141,7 +141,8 @@ module.exports = router;
                          {
                            "reward": 18,
                            "staked": 20,
-                           "date": "2020-40"
+                           "date": "2020-40",
+                          "missed_daily": true
                          }
                        ]
                      },
