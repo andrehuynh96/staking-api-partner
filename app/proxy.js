@@ -6,7 +6,6 @@ const proxy = require('express-http-proxy');
 router.use('/quras', proxy(config.quras_api, {
   proxyReqOptDecorator: function (proxyReqOpts, srcReq) {
     proxyReqOpts.rejectUnauthorized = false;
-    console.log(proxyReqOpts)
     return proxyReqOpts;
   }
 }));
