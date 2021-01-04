@@ -114,7 +114,8 @@ async function _createAccount(req, res, next) {
     phone: req.body.phone || "",
     ...affiliateInfo,
     membership_type_id: null,
-    current_language: req.body.language
+    current_language: req.body.language,
+    country: req.body.country
   });
 
   if (!member) {

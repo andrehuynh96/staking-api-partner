@@ -42,7 +42,8 @@ module.exports = router;
                         "password":"abc123456",
                         "phone":"0902907856",
                         "referrer_code":"WDRF3F1C",
-                        "language": "EN"
+                        "language": "EN",
+                        "country" : "EN"
                   }
  *     produces:
  *       - application/json
