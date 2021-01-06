@@ -67,6 +67,9 @@ module.exports = router;
                           "addressFormatLink": "https://blockscout.com/etc/mainnet/address/{0}",
                           "web_site_url": "https://ethereumclassic.org/",
                           "status": 1,
+                          "mobile_status": 1,
+                          "mobile_ios_status": 1,
+                          "mobile_android_status": 2,
                           "default_flg": true,
                           "staking_flg": true,
                           "staking_info": {
