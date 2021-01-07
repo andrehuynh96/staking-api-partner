@@ -159,6 +159,7 @@ const config = {
     logLevel: process.env.HANGOUT_ERROR_LOG_LEVEL || 'error',
     webhookUrl: process.env.HANGOUT_ERROR_CHANEL_WEBHOOK_URL,
   },
+  quras_api: process.env.QURAS_API,
 };
 
 module.exports = config;

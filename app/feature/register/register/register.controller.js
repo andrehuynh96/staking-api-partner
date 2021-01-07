@@ -99,7 +99,7 @@ async function _createAccount(req, res, next) {
   let createAffiliate = await Affiliate.register({ email, referrerCode: req.body.referrer_code || "" });
   if (createAffiliate.httpCode == 200) {
     affiliateInfo.referral_code = createAffiliate.data.data.code;
-    affiliateInfo.referrer_code = req.body.referrer_code || "";
+    affiliateInfo.referrer_code = req.body.referrer_code || null;
     affiliateInfo.affiliate_id = createAffiliate.data.data.client_affiliate_id;
   }
   else {
@@ -114,7 +114,8 @@ async function _createAccount(req, res, next) {
     phone: req.body.phone || "",
     ...affiliateInfo,
     membership_type_id: null,
-    current_language: req.body.language
+    current_language: req.body.language,
+    country: req.body.country
   });
 
   if (!member) {
