@@ -32,7 +32,7 @@ axios.interceptors.response.use(function (response) {
 }, function (error) {
   const status = error.response ? Number(error.response.status) : 0;
   if (status >= 500) {
-    error.canLogAxiosError = true;
+    error.canLogAxiosError = response.data.error.code != -32602;
   }
 
   return Promise.reject(error);
