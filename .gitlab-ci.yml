@@ -18,26 +18,18 @@ stak-stage-ap-ms-dapp-api:
   - branches
  tags:
   - stak-stage-ap-ms-bastion
+  
+PROD:
+  stage: deploy
+  script:
+    - cd /home/ubuntu/staking-iac/ansible
+    - sudo su ubuntu -c "ansible-playbook stak-prod-mp-ap-admin-api.yml --extra-vars=\"node_git_version=${CI_COMMIT_TAG}\""
+  only:
+    - master
+  tags:
+    - stak-prod-ms-mp-bastion
 
-.BuildJSApp:
- stage: build
- script:
-  - cd ${ANSIBLE_DIR}
-  - project=`echo ${CI_COMMIT_TAG} | awk -F'-' '{print $2}'`
-  - ansible_file=`grep ${CI_PROJECT_NAME}.git *.yml | awk '{print $1}'|awk -F':' '{print $1}' | grep ${_ENV} | grep $project`
-  - sudo su ubuntu -c "ansible-playbook $ansible_file --extra-vars=\"node_git_version=${CI_COMMIT_TAG}\""
-
-.OnlyProductionMS:
- only:
-  - /^.*-ms$/
- except:
-  - branches
-
-ProdMoonStakeDAppApi:
- variables:
-  _ENV: "prod" 
- extends:
-  - .BuildJSApp
-  - .OnlyProductionMS
- tags:
-  - prod-stak-ap-ms-ansible 
+#   only:
+#     - /^.*[0-9]$/
+#   except:
+#     - branches
