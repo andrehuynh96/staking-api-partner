@@ -151,7 +151,7 @@ class Changelly extends Exchange {
 
     let response = await axios(options);
     if (response.data.error) {
-      logger.error(`changelly service error:`, response.data.error);
+      logger[response.data.error.code <= -32600 ? 'error' : 'info']('create nexo account fail:', err);
     }
     return toSnakeCase(response.data);
   }
