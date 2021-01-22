@@ -160,6 +160,7 @@ const config = {
     webhookUrl: process.env.HANGOUT_ERROR_CHANEL_WEBHOOK_URL,
   },
   quras_api: process.env.QURAS_API,
+  dot_wss: process.env.DOT_WSS,
 };
 
 module.exports = config;
