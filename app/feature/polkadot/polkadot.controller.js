@@ -30,7 +30,7 @@ module.exports = {
       const eraResult = await cache.getAsync(keyEra);
       if (eraResult) {
         eras = JSON.parse(eraResult);
-        if (reward == null && !eras.indexOf(currentEra - 1)) {
+        if (reward == null && eras.indexOf(currentEra - 1) == -1) {
           eras.push(currentEra - 1);
         }
       }
