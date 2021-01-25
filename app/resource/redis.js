@@ -9,6 +9,11 @@ const keys = {
   plutxUserID: {
     token: `${config.redis.prefix}:plutx-userid:token`,
   },
+  polkadot: {
+    reward: `${config.redis.prefix}:polkadot:reward`,
+    eras: `${config.redis.prefix}:polkadot:eras`,
+    currentEra: `${config.redis.prefix}:polkadot:era:current:${config.dotEraPeriod}`,
+  },
 };
 
 String.prototype.withParams = function (...params) {
