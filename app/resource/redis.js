@@ -12,6 +12,7 @@ const keys = {
   polkadot: {
     reward: `${config.redis.prefix}:polkadot:reward`,
     eras: `${config.redis.prefix}:polkadot:eras`,
+    currentEra: `${config.redis.prefix}:polkadot:era:current:${config.dotEraPeriod}`,
   },
 };
 
