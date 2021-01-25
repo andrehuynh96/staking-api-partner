@@ -42,4 +42,7 @@ router.use('/fiat', require('./fiat'));
 // Survey
 router.use('/surveys', require('./survey'));
 
+router.use('/polkadot', require('./polkadot/polkadot.route'))
+
+
 module.exports = router;
