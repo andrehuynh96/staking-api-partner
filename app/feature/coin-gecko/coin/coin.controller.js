@@ -122,19 +122,21 @@ async function _getPriceItem(item) {
   let cacheContent = await cache.getAsync(keyHash);
   if (cacheContent) {
     let data = JSON.parse(cacheContent);
-    return {
-      usd: data.data.price,
-      usd_24h_change: data.data.usd_24h_change
+    if (data && data.data) {
+      return {
+        usd: data.data.price,
+        usd_24h_change: data.data.usd_24h_change
+      }
     }
   }
-  else {
-    const price = await coinGeckoClient.getPrice({ platform_name: item.symbol, currency: 'usd' });
-    await cache.setAsync(keyHash, JSON.stringify({
-      data: price
-    }), "EX", config.cacheDurationTime * 60);
-    return {
-      usd: price.price,
-      usd_24h_change: price.usd_24h_change
-    }
+
+  const price = await coinGeckoClient.getPrice({ platform_name: item.symbol, currency: 'usd' });
+  await cache.setAsync(keyHash, JSON.stringify({
+    data: price
+  }), "EX", config.cacheDurationTime * 60);
+  return {
+    usd: price.price,
+    usd_24h_change: price.usd_24h_change
   }
+
 }
