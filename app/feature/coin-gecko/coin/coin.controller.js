@@ -131,12 +131,14 @@ async function _getPriceItem(item) {
   }
 
   const price = await coinGeckoClient.getPrice({ platform_name: item.symbol, currency: 'usd' });
-  await cache.setAsync(keyHash, JSON.stringify({
-    data: price
-  }), "EX", config.cacheDurationTime * 60);
-  return {
-    usd: price.price,
-    usd_24h_change: price.usd_24h_change
+  if (price) {
+    await cache.setAsync(keyHash, JSON.stringify({
+      data: price
+    }), "EX", config.cacheDurationTime * 60);
+    return {
+      usd: price.price,
+      usd_24h_change: price.usd_24h_change
+    }
   }
-
+  return null;
 }
