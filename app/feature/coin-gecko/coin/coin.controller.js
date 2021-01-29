@@ -3,6 +3,11 @@ const coinGeckoClient = require('app/lib/coin-gecko-client');
 const TimeUnit = require('app/model/wallet/value-object/time-unit');
 const Platform = require('app/model/wallet/value-object/platform');
 const { getDateRangeUnitTimeStamp } = require('app/lib/utils');
+const redis = require("app/lib/redis");
+const cache = redis.client();
+const secret = "MS_CACHE";
+const config = require('app/config');
+const crypto = require('crypto');
 
 module.exports = {
   getPrice: async (req, res, next) => {
@@ -14,7 +19,6 @@ module.exports = {
       }
 
       const price = await coinGeckoClient.getPrice({ platform_name: platform, currency: 'usd' });
-
       return res.ok(price);
     }
     catch (error) {
@@ -22,6 +26,7 @@ module.exports = {
       next(error);
     }
   },
+
   getHistories: async (req, res, next) => {
     try {
       const { date_type, platform } = req.query;
@@ -46,6 +51,7 @@ module.exports = {
       next(error);
     }
   },
+
   getMultiPrice: async (req, res, next) => {
     try {
       const platforms = req.query.platforms;
@@ -70,8 +76,8 @@ module.exports = {
         return res.badRequest(res.__("MISSING_PARAMETER"), "MISSING_PARAMETER", { field: notFoundList });
       }
 
-      const coingeckoIds = platformList.map(item => supportPlatforms[item].coingeckoId);
-      const result = await coinGeckoClient.getMultiPrice(coingeckoIds);
+      const valid = platformList.map(item => supportPlatforms[item]);
+      const result = await _getPrice(valid);
       return res.ok(result);
     }
     catch (error) {
@@ -79,10 +85,10 @@ module.exports = {
       next(error);
     }
   },
+
   getMarkets: async (req, res, next) => {
     try {
       const platform = req.query.platform;
-
       if (!Platform[platform]) {
         return res.badRequest(res.__("MISSING_PARAMETER"), "MISSING_PARAMETER");
       }
@@ -94,6 +100,41 @@ module.exports = {
     catch (error) {
       logger.error('get market of platform fail', error);
       next(error);
+    }
+  }
+}
+
+async function _getPrice(platforms) {
+  let response = {};
+  for (let i of platforms) {
+    let result = await _getPriceItem(i);
+    response[i.coingeckoId] = result;
+  }
+  return response;
+}
+
+async function _getPriceItem(item) {
+  const key = `/coin-gecko/prices?platform=${item.symbol}`
+  const keyHash = crypto.createHmac('sha256', secret)
+    .update(key)
+    .digest('hex');
+
+  let cacheContent = await cache.getAsync(keyHash);
+  if (cacheContent) {
+    let data = JSON.parse(cacheContent);
+    return {
+      usd: data.data.price,
+      usd_24h_change: data.data.usd_24h_change
+    }
+  }
+  else {
+    const price = await coinGeckoClient.getPrice({ platform_name: item.symbol, currency: 'usd' });
+    await cache.setAsync(keyHash, JSON.stringify({
+      data: price
+    }), "EX", config.cacheDurationTime * 60);
+    return {
+      usd: price.price,
+      usd_24h_change: price.usd_24h_change
     }
   }
 }
