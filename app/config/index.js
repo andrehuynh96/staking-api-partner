@@ -162,6 +162,7 @@ const config = {
   quras_api: process.env.QURAS_API,
   dotWss: process.env.DOT_WSS,
   dotEraPeriod: parseInt(process.env.DOT_ERA_PERIOD || '2'),
+  enableDocsLink: process.env.ENABLE_DOCS_LINK == "1",
 };
 
 module.exports = config;
