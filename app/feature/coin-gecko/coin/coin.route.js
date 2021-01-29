@@ -170,6 +170,21 @@ router.get('/histories',
 
 router.get('/multi-prices',
   //authenticate,
+  (req, res, next) => {
+    if (req.query.platforms) {
+      req.query.platforms = req.query.platforms.split(',').sort().join(',');
+      if (req.originalUrl.indexOf('platforms') > -1) {
+        req.originalUrl = req.originalUrl.substr(0, req.originalUrl.indexOf('platforms'));
+        req.originalUrl += `platforms=${req.query.platforms}`;
+      }
+      if (req.url.indexOf('platforms') > -1) {
+        req.url = req.url.substr(0, req.url.indexOf('platforms'));
+        req.url += `platforms=${req.query.platforms}`;
+      }
+    }
+
+    next();
+  },
   cache(config.cacheDurationTime),
   controller.getMultiPrice
 );
