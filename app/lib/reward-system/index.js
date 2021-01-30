@@ -253,6 +253,30 @@ class RewardSystem {
     }
   }
 
+  async updateMembershipType({ email, membership_type_id, referrer_code }) {
+    try {
+      const data = {
+        ext_client_id: email,
+        membership_type_id: membership_type_id,
+        affiliate_code: referrer_code,
+      };
+      let headers = await this._getHeader();
+      let result = await axios.put(`${this.baseUrl}/clients/membership-type`,
+        {
+          ...data
+        },
+        {
+          headers: headers
+        });
+      return { httpCode: 200, data: result.data };
+
+    }
+    catch (err) {
+      logger[err.canLogAxiosError ? 'error' : 'info']("Update Membership Type:", err);
+      return { httpCode: err.response.status, data: err.response.data };
+    }
+  }
+
   async _getHeader(checksum = false) {
     let accessToken = await this._getToken();
     let header = {
