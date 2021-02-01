@@ -21,11 +21,15 @@ describe('Test DOT', function () {
   it.only('Get getRewardsEra', async () => {
     let activeEra = await Index.activeEra();
     let i = 0;
-    let eras = Array.from(Array(84), () => {
+    let eras = Array.from(Array(10), () => {
       i++;
       return activeEra.index - i;
     });
+    console.log(eras);
+    let s = Date.now();
     let result = await Index.getRewardsEra('14Ns6kKbCoka3MS4Hn6b7oRw9fFejG8RH5rq5j63cWUfpPDJ', eras);
+    let e = Date.now();
+    console.log((e - s) / 1000);
     console.log(JSON.stringify(result))
   });
 });
