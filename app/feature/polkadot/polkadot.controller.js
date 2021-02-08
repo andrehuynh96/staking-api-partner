@@ -55,7 +55,7 @@ module.exports = {
   }
 }
 
-async function _getRewards(assress, eras, currentEra) {
+async function _getRewards(address, eras, currentEra) {
   let res = [];
   let total = 0;
   let eraValid = []
@@ -64,7 +64,7 @@ async function _getRewards(assress, eras, currentEra) {
       eraValid.push(i);
     }
   }
-  let response = await Polkadot.getRewardsEra(assress, eraValid);
+  let response = await Polkadot.getRewardsEra(address, eraValid);
   for (let i of response) {
     if (i) {
       if (i.rewards.length > 0) {

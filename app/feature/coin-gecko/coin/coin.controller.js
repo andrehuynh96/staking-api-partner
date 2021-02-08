@@ -77,6 +77,7 @@ module.exports = {
       }
 
       const valid = platformList.map(item => supportPlatforms[item]);
+
       const result = await _getPrice(valid);
       return res.ok(result);
     }
@@ -106,15 +107,43 @@ module.exports = {
 
 async function _getPrice(platforms) {
   let response = {};
+  let req = [];
   for (let i of platforms) {
-    let result = await _getPriceItem(i);
-    response[i.coingeckoId] = result;
+    const result = await _getCachePrice(i.symbol);
+    if (result) {
+      response[i.coingeckoId] = result;
+    }
+    else {
+      req.push(i);
+    }
   }
+  if (req.length > 0) {
+    const prices = await coinGeckoClient.getMultiPrice(req.map(x => x.coingeckoId));
+    if (prices) {
+      response = { ...response, ...prices };
+      for (let i of req) {
+        let p = prices[i.coingeckoId];
+        if (p) {
+          const key = `/coin-gecko/prices?platform=${i.symbol}`
+          const keyHash = crypto.createHmac('sha256', secret)
+            .update(key)
+            .digest('hex');
+          await cache.setAsync(keyHash, JSON.stringify({
+            data: {
+              price: p.usd,
+              usd_24h_change: p.usd_24h_change
+            }
+          }), "EX", config.cacheDurationTime * 60);
+        }
+      }
+    }
+  }
+
   return response;
 }
 
-async function _getPriceItem(item) {
-  const key = `/coin-gecko/prices?platform=${item.symbol}`
+async function _getCachePrice(symbol) {
+  const key = `/coin-gecko/prices?platform=${symbol}`;
   const keyHash = crypto.createHmac('sha256', secret)
     .update(key)
     .digest('hex');
@@ -129,14 +158,5 @@ async function _getPriceItem(item) {
       }
     }
   }
-
-  const price = await coinGeckoClient.getPrice({ platform_name: item.symbol, currency: 'usd' });
-  await cache.setAsync(keyHash, JSON.stringify({
-    data: price
-  }), "EX", config.cacheDurationTime * 60);
-  return {
-    usd: price.price,
-    usd_24h_change: price.usd_24h_change
-  }
-
+  return null;
 }

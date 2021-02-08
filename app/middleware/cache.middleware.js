@@ -18,7 +18,9 @@ module.exports = (duration) => {
     } else {
       res.sendResponse = res.send;
       res.send = async (body) => {
-        await cache.setAsync(keyHash, JSON.stringify(body), "EX", duration * 60);
+        if (body.data != undefined) {
+          await cache.setAsync(keyHash, JSON.stringify(body), "EX", duration * 60);
+        }
         res.sendResponse(body);
       }
       next();
