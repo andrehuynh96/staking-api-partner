@@ -1,43 +1,28 @@
 stages:
- - build
- - test
- - deploy
- 
-variables:
- GIT_STRATEGY: none
- ANSIBLE_DIR: "/home/ubuntu/staking-iac/ansible"
+  - build
+  - test
+  - deploy
 
-stak-stage-ap-ms-dapp-api:
- stage: deploy
- script:
-  - cd /home/ubuntu/staking-iac/ansible
-  - sudo su ubuntu -c "ansible-playbook stak-stage-ap-ms-dapp-api.yml --extra-vars=\"node_git_version=${CI_COMMIT_TAG}\""
- only:
-  - /^.*-ms-rc$/
- except:
-  - branches
- tags:
-  - stak-stage-ap-ms-bastion
+STAGING:
+  stage: deploy
+  script:
+    - cd /home/ubuntu/staking-iac/ansible
+    - sudo su ubuntu -c "ansible-playbook stak-stage-ap-ms-dapp-api.yml --extra-vars=\"node_git_version=${CI_COMMIT_TAG}\""
+  only:
+    - /^.*-ms-rc$/
+  except:
+    - branches
+  tags:
+    - stak-stage-ap-ms-bastion
 
-.BuildJSApp:
- stage: build
- script:
-  - cd ${ANSIBLE_DIR}
-  - project=`echo ${CI_COMMIT_TAG} | awk -F'-' '{print $2}'`
-  - ansible_file=`grep ${CI_PROJECT_NAME}.git *.yml | awk '{print $1}'|awk -F':' '{print $1}' | grep ${_ENV} | grep $project`
-  - sudo su ubuntu -c "ansible-playbook $ansible_file --extra-vars=\"node_git_version=${CI_COMMIT_TAG}\""
-
-.OnlyProductionMS:
- only:
-  - /^.*-ms$/
- except:
-  - branches
-
-ProdMoonStakeDAppApi:
- variables:
-  _ENV: "prod" 
- extends:
-  - .BuildJSApp
-  - .OnlyProductionMS
- tags:
-  - prod-stak-ap-ms-ansible 
+PRODUCTION:
+  stage: deploy
+  script:
+    - cd /home/ubuntu/staking-iac/ansible
+    - sudo su ubuntu -c "ansible-playbook stak-prod-ap-ms-dapp-api.yml --extra-vars=\"node_git_version=${CI_COMMIT_TAG}\""
+  only:
+    - /^.*-ms$/
+  except:
+    - branches
+  tags:
+    - stak-prod-ap-ms-bastion
