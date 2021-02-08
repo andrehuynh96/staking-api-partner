@@ -13,13 +13,23 @@ describe('Test DOT', function () {
     expect(result).to.be.an('boolean');
   });
 
-  it.only('Get activeEra', async () => {
+  it('Get activeEra', async () => {
     let result = await Index.activeEra();
-    console.log(result)
+    console.log(result);
   });
 
-  it('Get getRewardsEra', async () => {
-    let result = await Index.getRewardsEra('5HQGHHrz1DMhCP8UkoqJieTRw7KHTjRjLyCujDvu8fPJm5gu', [3164, 3165, 3223, 3224, 3225, 3226, 3227]);
+  it.only('Get getRewardsEra', async () => {
+    let activeEra = await Index.activeEra();
+    let i = 0;
+    let eras = Array.from(Array(10), () => {
+      i++;
+      return activeEra.index - i;
+    });
+    console.log(eras);
+    let s = Date.now();
+    let result = await Index.getRewardsEra('14Ns6kKbCoka3MS4Hn6b7oRw9fFejG8RH5rq5j63cWUfpPDJ', eras);
+    let e = Date.now();
+    console.log((e - s) / 1000);
     console.log(JSON.stringify(result))
   });
 });
