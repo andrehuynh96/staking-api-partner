@@ -110,14 +110,17 @@ async function _getPrice(platforms) {
   let req = [];
   for (let i of platforms) {
     const result = await _getCachePrice(i.symbol);
-    if (result) {
-      response[i.coingeckoId] = result;
-    }
-    else {
-      req.push(i);
+    if (i.coingeckoId) {
+      if (result) {
+        response[i.coingeckoId] = result;
+      }
+      else {
+        req.push(i);
+      }
     }
   }
   if (req.length > 0) {
+
     const prices = await coinGeckoClient.getMultiPrice(req.map(x => x.coingeckoId));
     if (prices) {
       response = { ...response, ...prices };
