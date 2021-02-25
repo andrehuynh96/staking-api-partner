@@ -15,20 +15,23 @@ module.exports = {
           nexo_id: req.body.nexo_id
         }
       });
-      if (!member)
+      if (!member) {
         return res.badRequest(res.__("NEXO_MEMBER_NOT_EXISTED"), "NEXO_MEMBER_NOT_EXISTED");
-      if (member.status != Status.ACTIVATED)
+      }
+      if (member.status != Status.ACTIVATED) {
         return res.badRequest(res.__("NEXO_MEMBER_NOT_ACTIVATED"), "NEXO_MEMBER_NOT_ACTIVATED");
+      }
       const Service = BankFactory.create(BankProvider.Nexo, {});
       let result = await Service.withdraw({
         ...req.body,
         secret: member.user_secret
       });
-      if (result.error)
+      if (result.error) {
         return res.badRequest(result.error.message, "NEXO_WITHDRAW_ERROR");
+      }
       let transaction = await NexoTransaction.create({
         ...req.body,
-        member_id: req.user.id,
+        member_id: member.member_id,
         nexo_transaction_id: result.id,
         address: result.wallet_address,
         nexo_currency_id: result.currency_id,
@@ -44,26 +47,30 @@ module.exports = {
       next(err);
     }
   },
+
   verify: async (req, res, next) => {
     try {
       let member = await NexoMember.findOne({
         where: {
-          member_id: req.user.id,
+          //  member_id: req.user.id,
           nexo_id: req.body.nexo_id
         }
       });
-      if (!member)
+      if (!member) {
         return res.badRequest(res.__("NEXO_MEMBER_NOT_EXISTED"), "NEXO_MEMBER_NOT_EXISTED");
-      if (member.status != Status.ACTIVATED)
+      }
+      if (member.status != Status.ACTIVATED) {
         return res.badRequest(res.__("NEXO_MEMBER_NOT_ACTIVATED"), "NEXO_MEMBER_NOT_ACTIVATED");
+      }
       const Service = BankFactory.create(BankProvider.Nexo, {});
       let result = await Service.verifyWithdraw({
         nexo_id: member.nexo_id,
         secret: member.user_secret,
         code: req.body.code
       });
-      if (result.error)
+      if (result.error) {
         return res.badRequest(result.error.message, "NEXO_VERIFY_WITHDRAW_ERROR");
+      }
       await NexoTransaction.update({
         status: TransactionStatus.PENDING
       }, {
