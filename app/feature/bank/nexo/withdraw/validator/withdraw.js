@@ -4,10 +4,11 @@ const schema = Joi.object().keys({
   nexo_id: Joi.string().required(),
   wallet_id: Joi.string().required(),
   wallet_address: Joi.string().required(),
-  tag: Joi.string().allow(null, '').optional,
+  tag: Joi.string().allow(null, '').optional(),
   amount: Joi.number().required(),
   platform: Joi.string().required(),
-  currency_id: Joi.string().required()
+  currency_id: Joi.string().required(),
+  device_code: Joi.string().allow(null, '').optional(),
 });
 
 module.exports = schema;
