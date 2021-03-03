@@ -8,11 +8,17 @@ const cache = redis.client();
 const secret = "MS_CACHE";
 const config = require('app/config');
 const crypto = require('crypto');
+const mxcPrice = require('app/lib/mxc-price');
 
 module.exports = {
   getPrice: async (req, res, next) => {
     try {
       const platform = req.query.platform;
+      //:TODO hardcode CPAY call to mxc due to coingecko not yet support
+      if (platform.toUpperCase() === 'CPAY') {
+        const price = await mxcPrice.getPrice(platform);
+        return res.ok(price);
+      }
 
       if (!Platform[platform]) {
         return res.badRequest(res.__("MISSING_PARAMETER"), "MISSING_PARAMETER");
@@ -55,7 +61,14 @@ module.exports = {
   getMultiPrice: async (req, res, next) => {
     try {
       const platforms = req.query.platforms;
-      const platformList = platforms.split(',');
+      let platformList = platforms.split(',');
+      let cpayPrice = null;;
+      //:TODO hardcode CPAY call to mxc due to coingecko not yet support
+      if (platformList.includes('CPAY')) {
+        cpayPrice = await mxcPrice.getPrice('CPAY');
+        platformList = platformList.filter(x => x != "CPAY");
+      }
+
       let supportPlatforms = Object.values(Platform).reduce((result, value) => {
         result[value.symbol] = value;
         return result;
@@ -77,8 +90,14 @@ module.exports = {
       }
 
       const valid = platformList.map(item => supportPlatforms[item]);
-
       const result = await _getPrice(valid);
+
+      if (cpayPrice) {
+        result.cpay = {
+          usd: cpayPrice.price,
+          usd_24h_change: cpayPrice.usd_24h_change
+        };
+      }
       return res.ok(result);
     }
     catch (error) {
