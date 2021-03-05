@@ -12,7 +12,7 @@ router.get('/ada/tokens',
 
 /**
  * @swagger
- * /api/v1//ada/tokens:
+ * /api/v1/ada/tokens:
  *   get:
  *     summary: get ada tokens
  *     tags:
