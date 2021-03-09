@@ -5,6 +5,7 @@ const moment = require('moment');
 const Joi = require('joi');
 const BigNumber = require('bignumber.js');
 const { assetListSchema, historySchema } = require('./validator');
+const { platformVote } = require("app/lib/staking-api");
 
 module.exports = {
   getAssetList: async (req, res, next) => {
@@ -39,9 +40,9 @@ module.exports = {
         }
       }
 
+      platform = await _getPlatfrom(platform);
       let where = {
         memberId: req.user.id,
-        platform,
         wallet_id,
         to,
         from,
@@ -69,7 +70,7 @@ module.exports = {
                                 ${wallet_id ? ' AND w.id = :wallet_id' : ''}
                         )
                         ${'ALL' !== type ? ' AND created_at >= TO_TIMESTAMP(:from) AND created_at <= TO_TIMESTAMP(:to)' : ''}
-                        ${'ALL' !== platform ? ' AND platform = :platform ' : ''}
+                        AND platform IN(${platform}) 
                         GROUP BY ct, currency ORDER BY ct ${sort}`;
 
       const itemResults = await db.sequelize.query(sqlItems, {
@@ -297,4 +298,24 @@ function _getDateFilter(dateType, columnName) {
   }
 
   return query;
+}
+
+
+async function _getPlatfrom(platform = 'ALL') {
+  try {
+    if (platform != 'ALL') {
+      return `'${platform}'`;
+    }
+
+    let result = await platformVote();
+    result = result.data.data.filter(x => x.affiliate_flg);
+    let validator = result.map(x => x.symbol);
+    validator = validator.join("','");
+    return `'${validator}'`;
+  }
+  catch (err) {
+    logger.error('get asset history fail:', err);
+  }
+
+  return '';
 }
