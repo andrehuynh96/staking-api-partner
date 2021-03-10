@@ -25,6 +25,7 @@
   "author": "infinito",
   "license": "ISC",
   "dependencies": {
+    "@emurgo/cip14-js": "^2.0.0",
     "@panva/jose": "^1.9.2",
     "@polkadot/api": "^3.5.1",
     "@polkadot/util-crypto": "^5.3.1",

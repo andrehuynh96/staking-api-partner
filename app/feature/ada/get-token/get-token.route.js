@@ -30,9 +30,6 @@ router.get('/ada/tokens',
  *       - name: asset_name
  *         in: query
  *         type: string
- *       - name: address
- *         in: query
- *         type: string
  *       - name: authorization
  *         in: header
  *         schema:
