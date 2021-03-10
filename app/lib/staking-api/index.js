@@ -5,7 +5,7 @@ const redisResource = require("app/resource/redis");
 const redis = require("app/lib/redis");
 const cache = redis.client();
 
-module.exports = {
+module.exports = { 
   platformVote: async () => {
     try {
       let accessToken = await _getToken();
