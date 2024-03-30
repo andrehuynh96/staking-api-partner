@@ -78,6 +78,7 @@
     "swagger-jsdoc": "^3.4.0",
     "swagger-ui-express": "^4.1.2",
     "uuid": "^7.0.3",
+    "web3": "^1.2.6",
     "uuid-validate": "0.0.3"
   },
   "devDependencies": {
