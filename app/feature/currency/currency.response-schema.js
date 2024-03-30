@@ -15,7 +15,10 @@ const destObject = {
     '[].createdAt': '[].created_at',
     '[].updatedAt': '[].updated_at',
     '[].default_flg': '[].default_flg',
-    '[].mobile_status': '[].status',
+    '[].mobile_status': '[].mobile_status',
+    '[].status': '[].status',
+    '[].mobile_ios_status': '[].mobile_ios_status',
+    '[].mobile_android_status': '[].mobile_android_status',
     '[].web_site_url': '[].web_site_url',
     '[].network': '[].network',
     '[].explore_url': '[].explore_url',
@@ -36,7 +39,10 @@ const destObject = {
     createdAt: 'created_at',
     updatedAt: 'updated_at',
     default_flg: 'default_flg',
-    mobile_status: 'status',
+    mobile_status: 'mobile_status',
+    status: 'status',
+    mobile_ios_status: 'mobile_ios_status',
+    mobile_android_status: 'mobile_android_status',
     web_site_url: 'web_site_url',
     network: 'network',
     explore_url: 'explore_url',
@@ -55,4 +61,4 @@ module.exports = srcObject => {
   else {
     return objectMapper(srcObject, destObject.single);
   }
-}; 
+};

@@ -2,22 +2,25 @@ const express = require('express');
 const parseUser = require('app/middleware/parse-user.middleware');
 const controller = require('./nexo-withdraw.controller');
 const router = express.Router();
-
+const validator = require('app/middleware/validator.middleware');
+const { withdraw, verify } = require('./validator');
 router.post(
   '/withdraw',
+  validator(withdraw),
   parseUser,
   controller.withdraw
 )
 
 router.post(
   '/withdraw/verify',
+  validator(verify),
   parseUser,
   controller.verify
 )
 
 module.exports = router;
 
-/**********************************************************************/
+/** ********************************************************************/
 
 /**
  * @swagger
@@ -48,7 +51,8 @@ module.exports = router;
                     "platform": "",
                     "amount": 10,
                     "currency_id": "",
-                    "tag": ""
+                    "tag": "",
+                    "device_code": "",
                   }
  *     produces:
  *       - application/json
@@ -117,7 +121,7 @@ module.exports = router;
  *            - code
  *            - nexo_transaction_id
  *            example:
- *               {  
+ *               {
  *                  "nexo_id": "",
                     "code":"41827922",
                     "nexo_transaction_id": ""

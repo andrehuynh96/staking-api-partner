@@ -16,6 +16,12 @@ i18n.configure({
 });
 router.use(i18n.init);
 
+router.use((req, res, next) => {
+  req.baseurl = req.protocol + "://" + req.headers.host;
+  next();
+});
+
+
 router.use(
   bodyParser.urlencoded({
     limit: '5mb',
@@ -72,9 +78,12 @@ router.get('/', function (req, res) {
   res.json(result);
 });
 router.get('/health', (req, res) => res.send('OK!'));
-require('app/config/swagger')(router, '/staking-api-partner');
+if (config.enableDocsLink) {
+  require('app/config/swagger')(router, '/staking-api-partner');
+}
 router.use("/.well-known", express.static(path.join(__dirname, "../public")));
 router.use('/api', require('app/feature'));
+router.use(require('./proxy'));
 
 router.use(function (req, res) {
   res.notFound('Not Found');

@@ -33,8 +33,14 @@ module.exports = {
         where.default_flg = req.query.default;
       }
 
-      where.mobile_status = { [Op.or]: [CurrencyStatus.ENABLED, CurrencyStatus.MAINTENANCE] };
+      where.mobile_ios_status = { [Op.or]: [CurrencyStatus.ENABLED, CurrencyStatus.MAINTENANCE] };
+      where.mobile_android_status = { [Op.or]: [CurrencyStatus.ENABLED, CurrencyStatus.MAINTENANCE] };
       const { count: total, rows: items } = await Currency.findAndCountAll({ limit, offset, where: where, order: [['order_index', 'ASC']] });
+
+      items.forEach(item => {
+        item.status = item.mobile_ios_status;
+        item.mobile_status = item.mobile_ios_status;
+      });
 
       let votings = await StakingAPI.platformVote();
       let response = mapper(items);

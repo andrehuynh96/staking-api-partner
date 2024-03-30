@@ -6,7 +6,7 @@ const secret = "MS_CACHE";
 module.exports = (duration) => {
   return async (req, res, next) => {
     let url = req.originalUrl || req.url;
-    const key = url.replace('/api/v1','');
+    const key = url.replace('/api/v1', '');
     const keyHash = crypto.createHmac('sha256', secret)
       .update(key)
       .digest('hex');
@@ -18,7 +18,9 @@ module.exports = (duration) => {
     } else {
       res.sendResponse = res.send;
       res.send = async (body) => {
-        await cache.setAsync(keyHash, JSON.stringify(body), "EX", duration * 60);
+        if (body.data != undefined) {
+          await cache.setAsync(keyHash, JSON.stringify(body), "EX", duration * 60);
+        }
         res.sendResponse(body);
       }
       next();
